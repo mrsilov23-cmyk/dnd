@@ -2,85 +2,63 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>D&D Онлайн — Проклятие Чёрного дракона</title>
+<title>Бункер — Игра на выживание</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#1a1408;
-  --bg-deep:#0a0806;
-  --bg2:#1e180e;
-  --panel:#241c10;
-  --panel2:#2e2515;
-  --gold:#d4a94a;
-  --gold-bright:#f0cd7a;
-  --gold-dim:#8a6f2e;
-  --blood:#8a2e2e;
-  --blood-bright:#c34a4a;
-  --emerald:#5a8a5a;
-  --emerald-bright:#7fb87f;
-  --text:#e8dcc0;
-  --muted:#9a8b6a;
-  --purple:#9a7ac9;
+  --bg-deep:#0a0806;--bg:#151109;--bg2:#1e180e;
+  --panel:#241c10;--panel2:#2e2515;
+  --gold:#d4a94a;--gold-bright:#f0cd7a;--gold-dim:#8a6f2e;
+  --blood:#8a2e2e;--blood-bright:#c34a4a;
+  --emerald:#5a8a5a;--emerald-bright:#7fb87f;
+  --rust:#a55a2a;--warn:#d4884a;
+  --text:#e8dcc0;--muted:#9a8b6a;--purple:#9a7ac9;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   background:
-    radial-gradient(ellipse at 50% -10%, #3a2a15 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 110%, #2a1508 0%, transparent 60%),
+    radial-gradient(ellipse at 50% -10%, #2a1a0a 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 110%, #1a0a05 0%, transparent 60%),
     var(--bg-deep);
   color:var(--text);
   font:16px/1.6 'Cormorant Garamond', Georgia, serif;
-  min-height:100vh;
-  position:relative;
+  min-height:100vh;position:relative;
 }
 body::before{
-  content:'';
-  position:fixed;inset:0;
+  content:'';position:fixed;inset:0;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(212,169,74,.03) 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(212,169,74,.03) 0%, transparent 40%);
-  pointer-events:none;
-  z-index:0;
+    repeating-linear-gradient(0deg, rgba(212,169,74,.02) 0px, transparent 2px, transparent 4px),
+    radial-gradient(circle at 20% 30%, rgba(212,169,74,.03) 0%, transparent 40%);
+  pointer-events:none;z-index:0;
 }
 header{
-  padding:32px 16px 24px;
-  text-align:center;
-  position:relative;
-  z-index:1;
+  padding:32px 16px 24px;text-align:center;position:relative;z-index:1;
   border-bottom:1px solid var(--gold-dim);
   background:linear-gradient(180deg, rgba(212,169,74,.06), transparent);
 }
 header::after{
-  content:'❦';
-  position:absolute;
-  bottom:-13px;left:50%;transform:translateX(-50%);
-  color:var(--gold);
-  background:var(--bg-deep);
-  padding:0 12px;
-  font-size:18px;
+  content:'☢';position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);
+  color:var(--warn);background:var(--bg-deep);padding:0 12px;font-size:22px;
+  text-shadow:0 0 20px rgba(212,136,74,.6);
 }
 h1{
-  margin:0;
-  font-family:'Uncial Antiqua', 'Cinzel', serif;
-  font-weight:400;
-  color:var(--gold-bright);
-  font-size:clamp(1.5rem,4.5vw,2.6rem);
-  letter-spacing:2px;
-  text-shadow:0 0 30px rgba(212,169,74,.35), 0 2px 4px #000;
+  margin:0;font-family:'Uncial Antiqua', 'Cinzel', serif;font-weight:400;
+  color:var(--gold-bright);font-size:clamp(1.5rem,4.5vw,2.6rem);
+  letter-spacing:2px;text-shadow:0 0 30px rgba(212,169,74,.35), 0 2px 4px #000;
 }
 header p{color:var(--muted);margin:8px 0 0;font-style:italic;letter-spacing:1px;}
 main{
-  max-width:1240px;margin:24px auto;padding:0 14px 40px;
+  max-width:1300px;margin:24px auto;padding:0 14px 40px;
   display:grid;grid-template-columns:1fr 1fr;gap:18px;
   position:relative;z-index:1;
 }
 .panel{
   background:linear-gradient(160deg, var(--panel), var(--bg2));
-  border:1px solid var(--gold-dim);
-  border-radius:4px;padding:20px;min-width:0;position:relative;
+  border:1px solid var(--gold-dim);border-radius:4px;padding:20px;
+  min-width:0;position:relative;
   box-shadow:inset 0 0 60px rgba(0,0,0,.6), 0 4px 20px rgba(0,0,0,.5);
 }
 .panel::before{
@@ -103,7 +81,7 @@ input,select{background:#0d0a06;color:var(--text);width:100%;font-size:1rem;}
 input:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,169,74,.2);}
 button{
   cursor:pointer;background:linear-gradient(180deg, var(--gold), var(--gold-dim));
-  color:var(--ink);font-weight:600;border:1px solid var(--gold-bright);
+  color:#1a1408;font-weight:600;border:1px solid var(--gold-bright);
   letter-spacing:.5px;transition:.2s;
   font-family:'Cinzel', serif;font-size:.85rem;text-transform:uppercase;
 }
@@ -118,12 +96,15 @@ button.secondary{
 }
 button.secondary:hover:not(:disabled){
   border-color:var(--gold);color:var(--gold-bright);
-  background:linear-gradient(180deg, var(--panel2), #1a1408);
   box-shadow:0 0 12px rgba(212,169,74,.2);
 }
 button.danger{
   background:linear-gradient(180deg, var(--blood-bright), var(--blood));
   color:#ffe0e0;border-color:var(--blood-bright);
+}
+button.warn{
+  background:linear-gradient(180deg, var(--warn), #6a3a1a);
+  color:#fff;border-color:var(--warn);
 }
 .row{display:flex;gap:10px;align-items:end}
 .row>*{flex:1;min-width:0}
@@ -134,83 +115,138 @@ button.danger{
 .status{padding:10px 12px;border-radius:3px;background:rgba(212,169,74,.06);border:1px solid var(--gold-dim);margin:10px 0;font-style:italic;}
 .good{color:var(--emerald-bright)}
 .bad{color:var(--blood-bright)}
+.warn-c{color:var(--warn)}
 
 #diag{margin:14px auto 0;max-width:920px;text-align:left;background:#050402;border:1px solid var(--gold-dim);border-radius:3px;padding:12px;font:12px/1.6 'Courier New', monospace;color:var(--muted);}
 #diag b{color:var(--gold)}
 
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hero{
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);border-radius:3px;padding:12px;
-  cursor:pointer;transition:.2s;position:relative;
+/* СЦЕНАРИЙ */
+.scenario{
+  background:linear-gradient(160deg, #2a1a0a 0%, #1a0e05 100%);
+  border:1px solid var(--warn);border-radius:4px;padding:24px;
+  margin-bottom:16px;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.6), 0 0 30px rgba(212,136,74,.1);
 }
-.hero:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(212,169,74,.2)}
-.hero.active{
-  border:2px solid var(--gold-bright);padding:11px;
-  background:linear-gradient(160deg, #3a2e18, var(--panel2));
-  box-shadow:0 0 24px rgba(212,169,74,.4), inset 0 0 20px rgba(212,169,74,.1);
+.scenario::before{
+  content:'☢';position:absolute;top:50%;right:20px;transform:translateY(-50%);
+  font-size:140px;color:var(--warn);opacity:.08;pointer-events:none;
 }
-.hero b{display:block;color:var(--gold-bright);font-family:'Cinzel', serif;font-size:.95rem;letter-spacing:1px}
-.hero small{color:var(--muted);font-size:.82rem}
+.scenario-title{
+  font-family:'Cinzel', serif;color:var(--warn);font-size:1.3rem;
+  letter-spacing:3px;margin-bottom:12px;text-transform:uppercase;
+}
+.scenario-text{color:var(--text);line-height:1.7;font-size:1.02rem;font-style:italic;white-space:pre-wrap;}
+.scenario-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+.scenario-stat{
+  background:rgba(0,0,0,.4);border:1px solid var(--warn);border-radius:3px;
+  padding:10px;text-align:center;
+}
+.scenario-stat b{display:block;color:var(--warn);font-family:'Cinzel', serif;font-size:1.4rem;}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.stat{text-align:center;background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);border-radius:3px;padding:10px 6px;}
-.stat b{display:block;color:var(--gold-bright);font-size:1.3rem;font-family:'Cinzel', serif}
-
-/* КАРТИНКА ЛОКАЦИИ */
-.scene{
+/* КАРТОЧКА ПЕРСОНАЖА */
+.character-card{
   background:linear-gradient(160deg, #2a2011 0%, #1a1409 100%);
-  border:1px solid var(--gold-dim);border-radius:3px;
+  border:1px solid var(--gold-dim);border-radius:4px;padding:18px;
   margin-bottom:14px;position:relative;
-  box-shadow:inset 0 0 40px rgba(0,0,0,.5);
-  overflow:hidden;
 }
-.scene-illustration{
-  width:100%;height:280px;
-  position:relative;overflow:hidden;
-  border-bottom:2px solid var(--gold-dim);
-  background:#0a0806;
+.character-card::before{
+  content:'';position:absolute;top:6px;left:6px;right:6px;bottom:6px;
+  border:1px solid rgba(212,169,74,.15);border-radius:2px;pointer-events:none;
 }
-.scene-illustration svg{
-  width:100%;height:100%;display:block;
+.char-header{
+  text-align:center;margin-bottom:16px;padding-bottom:12px;
+  border-bottom:1px solid var(--gold-dim);
 }
-.scene-illustration::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg, transparent 60%, rgba(10,8,6,.9));
-  pointer-events:none;
-}
-.scene-title-overlay{
-  position:absolute;
-  bottom:12px;left:0;right:0;
-  text-align:center;
-  font-family:'Cinzel', serif;
-  color:var(--gold-bright);
-  font-size:1.35rem;
-  letter-spacing:3px;
-  text-shadow:0 0 20px rgba(212,169,74,.8), 0 2px 6px #000;
-  z-index:2;
-  padding:0 12px;
-}
-.scene-content{padding:22px;position:relative}
-.scene-content::before{content:'❧';position:absolute;top:6px;left:10px;color:var(--gold-dim);font-size:14px;}
-.scene-content::after{content:'❧';position:absolute;bottom:6px;right:10px;color:var(--gold-dim);font-size:14px;transform:scaleX(-1);}
-.scene-text{color:var(--text);line-height:1.7;white-space:pre-wrap;font-size:1.05rem;font-style:italic;margin-bottom:16px;}
-.choices{display:flex;flex-direction:column;gap:10px}
-.choice{
+.char-avatar{font-size:3.2rem;display:block;margin-bottom:4px;filter:drop-shadow(0 0 12px rgba(212,169,74,.4));}
+.char-name{font-family:'Cinzel', serif;color:var(--gold-bright);font-size:1.2rem;letter-spacing:2px;}
+
+/* Характеристики */
+.traits{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.trait{
   background:linear-gradient(160deg, var(--panel2), var(--bg2));
   border:1px solid var(--gold-dim);border-radius:3px;
-  padding:14px 16px;cursor:pointer;text-align:left;color:var(--text);
-  font-weight:400;font-family:'Cormorant Garamond', serif;font-size:1.02rem;
-  transition:.2s;display:flex;justify-content:space-between;align-items:center;gap:12px;
-  text-transform:none;letter-spacing:0;
+  padding:10px 12px;position:relative;transition:.3s;
 }
-.choice:hover:not(:disabled){
-  border-color:var(--gold);background:linear-gradient(160deg, #3a2e18, var(--panel2));
+.trait.revealed{
+  border-color:var(--gold-bright);
+  background:linear-gradient(160deg, #3a2e18, var(--panel2));
   box-shadow:0 0 16px rgba(212,169,74,.25);
 }
-.choice:disabled{opacity:.4;cursor:not-allowed}
-.choice .check{font-size:.8rem;color:var(--purple);white-space:nowrap;font-family:'Cinzel', serif;letter-spacing:1px;}
-.choice .arrow{color:var(--gold);font-size:1.2rem}
+.trait.hidden-trait{
+  background:repeating-linear-gradient(45deg, var(--panel2), var(--panel2) 6px, var(--bg2) 6px, var(--bg2) 12px);
+  text-align:center;
+}
+.trait-label{
+  font-family:'Cinzel', serif;font-size:.72rem;color:var(--muted);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;
+}
+.trait-value{color:var(--text);font-size:.95rem;line-height:1.4;}
+.trait.hidden-trait .trait-value{color:var(--muted);font-size:1.2rem;letter-spacing:2px;}
+
+/* СПИСОК ИГРОКОВ */
+.players-list{display:flex;flex-direction:column;gap:10px;}
+.player-card{
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);border-radius:4px;
+  padding:12px 14px;position:relative;transition:.2s;
+}
+.player-card.turn{
+  border-color:var(--gold-bright);
+  box-shadow:0 0 20px rgba(212,169,74,.35);
+  background:linear-gradient(160deg, #3a2e18, var(--panel2));
+}
+.player-card.ejected{opacity:.35;filter:grayscale(1);border-color:var(--blood);}
+.player-card.ejected::after{
+  content:'ИЗГНАН';position:absolute;top:50%;right:14px;transform:translateY(-50%);
+  font-family:'Cinzel', serif;color:var(--blood-bright);font-size:.85rem;letter-spacing:2px;
+}
+.player-name{
+  font-family:'Cinzel', serif;color:var(--gold-bright);
+  font-size:1rem;letter-spacing:1px;margin-bottom:6px;
+}
+.player-traits{
+  display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;
+  font-size:.82rem;color:var(--muted);
+}
+.player-traits span b{color:var(--text);font-weight:400;}
+
+/* ГОЛОСОВАНИЕ */
+.vote-grid{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.vote-btn{
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);border-radius:3px;
+  padding:10px 14px;text-align:left;color:var(--text);
+  font-family:'Cormorant Garamond', serif;font-size:1rem;
+  text-transform:none;letter-spacing:0;font-weight:400;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:.2s;cursor:pointer;
+}
+.vote-btn:hover:not(:disabled){
+  border-color:var(--blood-bright);
+  background:linear-gradient(160deg, #3a1818, var(--panel2));
+  box-shadow:0 0 16px rgba(195,74,74,.3);
+}
+.vote-btn.chosen{
+  border-color:var(--blood-bright);
+  background:linear-gradient(160deg, #4a1818, var(--panel2));
+  color:#ffd0d0;
+}
+.vote-btn:disabled{opacity:.4;cursor:not-allowed;}
+.vote-count{
+  font-family:'Cinzel', serif;color:var(--blood-bright);
+  font-size:.9rem;letter-spacing:1px;
+}
+
+/* ЖУРНАЛ */
+#feed{height:240px;overflow:auto;background:#0a0604;border:1px solid var(--gold-dim);border-radius:3px;padding:12px;font-size:.92rem;}
+.entry{padding:7px 0;border-bottom:1px dashed rgba(212,169,74,.15);overflow-wrap:anywhere;line-height:1.5;}
+.entry b{color:var(--gold-bright);font-family:'Cinzel', serif;font-size:.85rem;letter-spacing:.5px}
+.entry .muted{font-size:.78rem}
+
+.notice{background:rgba(212,169,74,.06);border:1px solid var(--gold-dim);border-left:3px solid var(--gold);padding:12px 14px;border-radius:3px;font-size:.92rem;font-style:italic;}
+.hidden{display:none!important}
+hr{border:0;border-top:1px solid var(--gold-dim);margin:18px 0;opacity:.4}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px;font-style:italic;position:relative;z-index:1;}
 
 .turn-banner{
   background:
@@ -226,140 +262,20 @@ button.danger{
   0%,100%{box-shadow:0 0 0 0 rgba(212,169,74,.3), inset 0 0 20px rgba(212,169,74,.05)}
   50%{box-shadow:0 0 30px 4px rgba(212,169,74,.4), inset 0 0 30px rgba(212,169,74,.15)}
 }
-.turn-banner.enemy-turn{
-  border-color:var(--blood-bright);
-  background:
-    linear-gradient(90deg, transparent, rgba(195,74,74,.18), transparent),
-    linear-gradient(160deg, #2a1414, #1a0c0c);
-  animation:enemyGlow 1.5s infinite;
-}
-@keyframes enemyGlow{
-  0%,100%{box-shadow:0 0 0 0 rgba(195,74,74,.3), inset 0 0 20px rgba(195,74,74,.05)}
-  50%{box-shadow:0 0 30px 4px rgba(195,74,74,.5), inset 0 0 30px rgba(195,74,74,.2)}
-}
-.turn-banner.enemy-turn .who{color:var(--blood-bright)}
 .turn-banner .crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);color:var(--gold-bright);background:var(--bg-deep);padding:0 10px;font-size:18px;}
-.turn-banner.enemy-turn .crown{color:var(--blood-bright)}
-
-/* КУБИК */
-.dice-overlay{
-  position:fixed;inset:0;background:rgba(5,4,2,.85);backdrop-filter:blur(4px);
-  z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
-  opacity:0;pointer-events:none;transition:opacity .3s;
-}
-.dice-overlay.show{opacity:1;pointer-events:auto}
-.dice-stage{display:flex;flex-direction:column;align-items:center;gap:20px;}
-.d20{width:180px;height:180px;position:relative;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 0 40px rgba(212,169,74,.6));}
-.d20 svg{width:100%;height:100%}
-.d20 .num{position:absolute;font-family:'Cinzel', serif;font-size:3.5rem;font-weight:700;color:var(--gold-bright);text-shadow:0 0 20px rgba(212,169,74,.8), 0 0 40px rgba(212,169,74,.4);}
-.d20.rolling{animation:rollSpin .8s cubic-bezier(.3,.1,.3,1);}
-@keyframes rollSpin{
-  0%{transform:rotate(0deg) scale(1)}
-  25%{transform:rotate(180deg) scale(1.15)}
-  50%{transform:rotate(360deg) scale(.9)}
-  75%{transform:rotate(540deg) scale(1.1)}
-  100%{transform:rotate(720deg) scale(1)}
-}
-.d20.crit{filter:drop-shadow(0 0 60px var(--emerald-bright))}
-.d20.crit .num{color:var(--emerald-bright);text-shadow:0 0 30px var(--emerald-bright)}
-.d20.fumble{filter:drop-shadow(0 0 60px var(--blood-bright))}
-.d20.fumble .num{color:var(--blood-bright);text-shadow:0 0 30px var(--blood-bright)}
-.d20.enemy-die{filter:drop-shadow(0 0 50px var(--blood-bright))}
-.d20.enemy-die .num{color:var(--blood-bright);text-shadow:0 0 30px var(--blood-bright)}
-.dice-label{font-family:'Cinzel', serif;color:var(--gold-bright);font-size:1.3rem;letter-spacing:3px;text-align:center;}
-.dice-sub{font-style:italic;color:var(--muted);text-align:center;max-width:500px;font-size:1rem;}
-.dice-verdict{font-family:'Cinzel', serif;font-size:1.6rem;letter-spacing:3px;text-align:center;margin-top:8px;}
-.dice-verdict.good{color:var(--emerald-bright);text-shadow:0 0 30px rgba(127,184,127,.6)}
-.dice-verdict.bad{color:var(--blood-bright);text-shadow:0 0 30px rgba(195,74,74,.6)}
-.dice-continue{margin-top:10px;padding:12px 40px;font-size:1rem;}
-
-/* БОЙ */
-.combat{border:1px solid var(--gold-dim);border-radius:3px;padding:16px;background:linear-gradient(160deg, #1e1410, #0e0a07);margin-bottom:14px;}
-.combat.active{border-color:var(--blood-bright);box-shadow:0 0 24px rgba(138,46,46,.25)}
-.combat-round{font-family:'Cinzel', serif;color:var(--blood-bright);letter-spacing:2px;margin-bottom:12px;text-align:center;border-bottom:1px solid var(--blood);padding-bottom:8px;font-size:1.05rem;}
-.combatant{
-  display:flex;align-items:center;gap:12px;padding:10px 12px;
-  border-radius:3px;background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  margin:6px 0;border:1px solid var(--gold-dim);transition:.2s;
-}
-.combatant.turn{border-color:var(--gold-bright);background:linear-gradient(160deg, #3a2e18, var(--panel2));box-shadow:0 0 20px rgba(212,169,74,.3);}
-.combatant.enemy-turn{border-color:var(--blood-bright);background:linear-gradient(160deg, #3a1818, var(--panel2));box-shadow:0 0 20px rgba(195,74,74,.4);}
-.combatant.dead{opacity:.35;filter:grayscale(1)}
-.combatant .emoji{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(212,169,74,.4))}
-.combatant .info{flex:1;min-width:0}
-.combatant .name{font-family:'Cinzel', serif;font-weight:600;color:var(--gold-bright);font-size:.95rem;letter-spacing:1px;}
-.combatant.enemy-turn .name{color:var(--blood-bright)}
-.combatant .hpbar{height:8px;background:#0a0604;border-radius:3px;overflow:hidden;margin-top:6px;border:1px solid rgba(212,169,74,.2);}
-.combatant .hpbar i{display:block;height:100%;transition:.4s;box-shadow:inset 0 0 8px rgba(0,0,0,.6);}
-.combatant .hp-text{font-size:.82rem;color:var(--muted);margin-top:3px;font-style:italic}
-.combatant .target-btn{
-  background:transparent;border:1px solid var(--gold-dim);color:var(--text);
-  padding:6px 12px;font-size:.8rem;border-radius:3px;
-  font-family:'Cinzel', serif;letter-spacing:1px;
-}
-.combatant .target-btn.selected{
-  border-color:var(--gold-bright);background:rgba(212,169,74,.15);
-  color:var(--gold-bright);box-shadow:0 0 12px rgba(212,169,74,.4);
-}
-.combat-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.combat-actions button{min-width:0;padding:12px 10px}
-.ability{
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--purple);border-radius:3px;padding:10px 12px;
-  cursor:pointer;text-align:left;color:var(--text);font-weight:400;
-  font-family:'Cormorant Garamond', serif;text-transform:none;letter-spacing:0;
-}
-.ability:disabled{opacity:.4;cursor:not-allowed}
-.ability:hover:not(:disabled){border-color:var(--gold);box-shadow:0 0 12px rgba(154,122,201,.4)}
-.ability b{color:var(--purple);display:block;font-size:.9rem;font-family:'Cinzel', serif;letter-spacing:1px;margin-bottom:2px;}
-.ability .cd{color:var(--muted);font-size:.8rem;font-style:italic}
-
-.xpbar{height:10px;background:#0a0604;border-radius:3px;overflow:hidden;margin:6px 0;border:1px solid rgba(212,169,74,.2);}
-.xpbar i{display:block;height:100%;background:linear-gradient(90deg, var(--purple), var(--gold-bright));transition:.4s;box-shadow:inset 0 0 10px rgba(255,255,255,.2);}
-.hero-hp{height:7px;background:#0a0604;border-radius:3px;overflow:hidden;margin-top:4px;}
-.hero-hp i{display:block;height:100%;background:linear-gradient(90deg, var(--emerald), var(--emerald-bright));transition:.4s}
-
-.inv{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
-.inv span{background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);border-radius:3px;padding:4px 9px;font-size:.82rem;font-style:italic;}
-
-.cond{font-size:.72rem;padding:2px 7px;border-radius:2px;margin-left:4px;display:inline-block;font-family:'Cinzel', serif;letter-spacing:1px;text-transform:uppercase;}
-.cond.poison{background:rgba(154,122,201,.2);color:#c9a0ff;border:1px solid var(--purple)}
-.cond.burn{background:rgba(195,74,74,.2);color:#ff9e6b;border:1px solid var(--blood-bright)}
-.cond.stun{background:rgba(212,169,74,.15);color:#ffe06b;border:1px solid var(--gold)}
-
-#feed{height:240px;overflow:auto;background:#0a0604;border:1px solid var(--gold-dim);border-radius:3px;padding:12px;font-size:.92rem;}
-.entry{padding:7px 0;border-bottom:1px dashed rgba(212,169,74,.15);overflow-wrap:anywhere;line-height:1.5;}
-.entry b{color:var(--gold-bright);font-family:'Cinzel', serif;font-size:.85rem;letter-spacing:.5px}
-.entry .muted{font-size:.78rem}
-
-.player{padding:9px 11px;border-radius:3px;background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);margin:6px 0;overflow-wrap:anywhere;}
-.tag{font-size:.72rem;color:var(--gold-bright);margin-left:6px;font-family:'Cinzel', serif;letter-spacing:1px;}
-
-.notice{background:rgba(212,169,74,.06);border:1px solid var(--gold-dim);border-left:3px solid var(--gold);padding:12px 14px;border-radius:3px;font-size:.92rem;font-style:italic;}
-.hidden{display:none!important}
-hr{border:0;border-top:1px solid var(--gold-dim);margin:18px 0;opacity:.4}
-footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px;font-style:italic;position:relative;z-index:1;}
-
-.scene-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.scene-picker button{flex:1;min-width:130px;font-size:.78rem;padding:9px}
-.master-panel{border:1px dashed var(--gold-dim);border-radius:3px;padding:12px;margin-top:10px;background:rgba(212,169,74,.03);}
 
 @media(max-width:800px){
   main{grid-template-columns:1fr}
   .row{align-items:stretch}
-  .cards{grid-template-columns:1fr 1fr}
-  .combat-actions{grid-template-columns:1fr}
-  .d20{width:140px;height:140px}
-  .d20 .num{font-size:2.8rem}
-  .scene-illustration{height:200px}
-  .scene-title-overlay{font-size:1.05rem;letter-spacing:2px}
+  .traits{grid-template-columns:1fr}
+  .scenario-stats{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <header>
-  <h1>🐉 Проклятие Чёрного дракона</h1>
-  <p>Настольное приключение в реальном времени</p>
+  <h1>☢ Бункер</h1>
+  <p>Игра на выживание · 5–12 игроков · одна комната</p>
   <div id="diag">
     <div>🔧 <b>Диагностика:</b></div>
     <div id="d1">⏳ Загрузка модулей Firebase…</div>
@@ -371,14 +287,15 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px
 </header>
 
 <main>
+<!-- КОМНАТА -->
 <section class="panel">
 <h2>🌐 Комната</h2>
 <div class="row">
   <div><label for="playerName">Ваше имя</label><input id="playerName" maxlength="24" placeholder="Например, Артём"></div>
-  <div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. DRAGON7"></div>
+  <div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. BUNKER7"></div>
 </div>
 <div class="actions">
-  <button id="createRoom">Создать комнату (мастер)</button>
+  <button id="createRoom">Создать комнату (я мастер)</button>
   <button id="joinRoom" class="secondary">Войти по коду</button>
 </div>
 <div class="status" id="connection">Не подключено. Создайте комнату или введите код.</div>
@@ -386,62 +303,54 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px
   <b style="color:var(--gold-bright);font-family:'Cinzel',serif">Комната: <span id="roomLabel"></span></b>
   <p class="muted small">Отправьте друзьям ссылку ниже.</p>
   <div class="row"><input id="inviteLink" readonly><button id="copyLink" class="secondary">Копировать</button></div>
-  <h3>👥 Игроки</h3><div id="players"></div>
+  <h3>👥 Игроки (<span id="playerCount">0</span>/12)</h3>
+  <div id="players" class="players-list"></div>
 </div>
-<hr>
-<h2>🧙 Ваш персонаж</h2>
-<div id="heroPanel">
-  <div class="cards" id="heroes"></div>
-  <div id="charStats" class="stats"></div>
-  <div class="xpbar"><i id="xpFill" style="width:0%"></i></div>
-  <p class="muted small" id="xpText">XP: 0 / 100 · Уровень 1</p>
+</section>
+
+<!-- МОЙ ПЕРСОНАЖ -->
+<section class="panel">
+<h2>🎭 Мой персонаж</h2>
+<div id="myChar">
+  <div class="status muted">Подключитесь к комнате, чтобы получить персонажа.</div>
+</div>
+<div class="actions">
+  <button id="revealBtn" disabled>Открыть характеристику</button>
+  <button id="rerollBtn" class="secondary" disabled>🎲 Сменить персонажа (1 раз)</button>
+</div>
+</section>
+
+<!-- СЦЕНАРИЙ -->
+<section class="panel">
+<h2>📜 Сценарий</h2>
+<div id="scenarioContainer">
+  <div class="scenario">
+    <div class="scenario-title">☢ Ядерная война</div>
+    <div class="scenario-text">Подключитесь, чтобы увидеть параметры бункера.</div>
+  </div>
+</div>
+<div id="masterPanel" class="hidden">
+  <h3>🎬 Панель мастера</h3>
+  <p class="muted small">Вы — ведущий. Управляйте раундами и голосованиями.</p>
+  <div id="masterTurnInfo" class="status" style="margin:8px 0"></div>
   <div class="actions">
-    <button id="pickHero" disabled>Выбрать персонажа</button>
-    <button id="heal" class="secondary" disabled>🧪 Зелье (+6 HP)</button>
+    <button id="startGameBtn" class="warn">▶️ Начать игру</button>
+    <button id="nextPhaseBtn" class="secondary">⏭️ Следующая фаза</button>
+    <button id="forceVoteBtn" class="secondary">🗳️ Начать голосование</button>
+    <button id="resetGameBtn" class="secondary danger">🔄 Сбросить игру</button>
   </div>
-  <h3>🎒 Инвентарь и золото</h3>
-  <div class="inv" id="inventory"><span class="muted small">Пусто</span></div>
-  <p class="small" style="margin-top:6px">💰 Золото: <b id="gold" style="color:var(--gold-bright)">0</b></p>
-</div>
-<div id="masterHint" class="hidden notice">
-  <b>Вы — мастер (ведущий).</b> Вы не ходите по очереди, не выбираете варианты и не бросаете кубик. Ваша задача — открывать сцены, объявлять отдых и управлять приключением.
 </div>
 </section>
 
+<!-- ГОЛОСОВАНИЕ -->
 <section class="panel">
-<h2>📖 Приключение</h2>
-<div id="turnBanner"></div>
-<div id="sceneContainer">
-  <div class="scene">
-    <div class="scene-illustration" id="sceneIllus"></div>
-    <div class="scene-content">
-      <div class="scene-text">Создайте комнату или подключитесь, чтобы начать приключение.</div>
-    </div>
-  </div>
-</div>
-<div id="masterScene" class="hidden">
-  <div class="master-panel">
-    <h3>🎬 Панель мастера</h3>
-    <p class="muted small">Вы — ведущий. Игровые действия совершают только игроки.</p>
-    <div id="masterTurnInfo" class="status" style="margin:8px 0"></div>
-    <h3>Открыть сцену</h3>
-    <div class="scene-picker" id="scenePicker"></div>
-    <div class="actions" style="margin-top:10px">
-      <button id="masterSkipTurn" class="secondary">⏭️ Пропустить ход</button>
-      <button id="masterForceCombat" class="secondary">⚔️ Начать бой (случайно)</button>
-      <button id="restBtn" class="secondary">🔥 Долгий отдых</button>
-    </div>
-  </div>
+<h2>🗳️ Голосование</h2>
+<div id="voteContainer">
+  <div class="status muted">Голосование не начато.</div>
 </div>
 </section>
 
-<section class="panel">
-<h2>⚔️ Бой</h2>
-<div id="combatContainer">
-  <div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>
-</div>
-</section>
-
+<!-- ЖУРНАЛ -->
 <section class="panel">
 <h2>📜 Журнал</h2>
 <div id="feed" aria-live="polite"></div>
@@ -451,48 +360,33 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px
 </div>
 <div class="actions">
   <button id="exportLog" class="secondary" disabled>Скачать журнал</button>
-  <button id="clearRoom" class="secondary danger" disabled>Сбросить (мастер)</button>
 </div>
 </section>
 
+<!-- ПРАВИЛА -->
 <section class="panel">
-<h2>📖 Свиток мастера</h2>
-<p style="font-style:italic">В деревне Серебряный Брод пропадают жители, а вода в реке чернеет. Мэр обещает награду тому, кто раскроет тайну.</p>
-<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Каждый вход в локацию случайно определяет врагов, лут и события.</div>
-<h3>Ветки сюжета</h3>
+<h2>📖 Правила</h2>
+<div class="notice">
+<b>Цель:</b> попасть в бункер и выжить 10 лет после ядерной войны.<br><br>
+<b>Мест в бункере:</b> N−2 (если играют 8 — мест 6).<br><br>
+<b>Раунды:</b> каждый раунд игроки по очереди открывают одну характеристику. Когда все открыли — <b>голосование</b>. Тот, против кого больше голосов — изгнан.<br><br>
+<b>Победа:</b> когда остаётся N−2 игроков — они выживают, остальные погибают снаружи.
+</div>
+<h3>Характеристики</h3>
 <ul class="small" style="line-height:1.8">
-<li><b>Расследование:</b> таверна → допрос → следы на севере.</li>
-<li><b>Шепчущий лес:</b> гоблины, пленник, выбор.</li>
-<li><b>Старый храм:</b> загадка трёх символов.</li>
-<li><b>Логово дракона:</b> финал — сразиться или снять ошейник.</li>
+<li><b>Профессия</b> — чем полезен в бункере</li>
+<li><b>Биология</b> — пол, возраст</li>
+<li><b>Здоровье</b> — болезни, зависимости</li>
+<li><b>Хобби</b> — навык для выживания</li>
+<li><b>Фобия</b> — слабость</li>
+<li><b>Инвентарь</b> — 2 предмета</li>
+<li><b>Спецусловие</b> — уникальная особенность</li>
 </ul>
 </section>
 </main>
 <footer>Firebase + localhost или HTTPS. Панель диагностики сверху покажет проблемы.</footer>
 
-<div class="dice-overlay" id="diceOverlay">
-  <div class="dice-stage">
-    <div class="dice-label" id="diceLabel">Бросок</div>
-    <div class="d20" id="d20">
-      <svg viewBox="0 0 100 100">
-        <polygon points="50,3 95,27 95,73 50,97 5,73 5,27" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
-        <polygon points="50,3 95,27 50,50 5,27" fill="rgba(212,169,74,.08)" stroke="#d4a94a" stroke-width="1"/>
-        <polygon points="95,27 95,73 50,50" fill="rgba(212,169,74,.05)" stroke="#d4a94a" stroke-width="1"/>
-        <polygon points="95,73 50,97 50,50" fill="rgba(212,169,74,.03)" stroke="#d4a94a" stroke-width="1"/>
-        <polygon points="50,97 5,73 50,50" fill="rgba(212,169,74,.05)" stroke="#d4a94a" stroke-width="1"/>
-        <polygon points="5,73 5,27 50,50" fill="rgba(212,169,74,.08)" stroke="#d4a94a" stroke-width="1"/>
-        <polygon points="5,27 50,3 50,50" fill="rgba(212,169,74,.1)" stroke="#d4a94a" stroke-width="1"/>
-      </svg>
-      <div class="num" id="d20num">?</div>
-    </div>
-    <div class="dice-sub" id="diceSub"></div>
-    <div class="dice-verdict" id="diceVerdict"></div>
-    <button class="dice-continue hidden" id="diceContinue">Продолжить</button>
-  </div>
-</div>
-
 <script type="module">
-const d = id => document.getElementById(id);
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -503,8 +397,8 @@ try{
   ({initializeApp}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"));
   ({getAuth,signInAnonymously,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
   ({getDatabase,ref,set,get,update,push,onValue}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
-  d('d1').innerHTML='✅ Модули Firebase загружены';
-}catch(e){d('d1').innerHTML='❌ '+e.message;throw e;}
+  $('d1').innerHTML='✅ Модули Firebase загружены';
+}catch(e){$('d1').innerHTML='❌ '+e.message;throw e;}
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIkOkge0LtsNqMIVGQLi-YV43awOyS_iA",
@@ -517,1121 +411,220 @@ const firebaseConfig = {
   measurementId: "G-ELWNLG3S4N"
 };
 let app,auth,db,uid=null,roomId=null,roomData=null;
-let selected=null,myPlayer=null,isMaster=false;
-let unsubRoom=null,unsubLog=null;
-let selectedTarget=null;
-let lastDiceKey=null;
-let enemyTurnLock=false;
+let isMaster=false,unsubRoom=null,unsubLog=null;
+let myVote=null,lastChatKey=null;
 
 try{
   app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);
-  d('d2').innerHTML='✅ Приложение инициализировано';
-  d('d4').innerHTML='✅ База: '+firebaseConfig.databaseURL;
-}catch(e){d('d2').innerHTML='❌ '+e.message;throw e;}
+  $('d2').innerHTML='✅ Приложение инициализировано';
+  $('d4').innerHTML='✅ База: '+firebaseConfig.databaseURL;
+}catch(e){$('d2').innerHTML='❌ '+e.message;throw e;}
 
 signInAnonymously(auth)
-  .then(()=>{d('d3').innerHTML='✅ Анонимный вход выполнен';})
-  .catch(e=>{d('d3').innerHTML='❌ '+e.code+' — '+e.message;});
+  .then(()=>{$('d3').innerHTML='✅ Анонимный вход выполнен';})
+  .catch(e=>{$('d3').innerHTML='❌ '+e.code+' — '+e.message;});
 onAuthStateChanged(auth,user=>{
-  if(!user){d('d5').innerHTML='⏳ Ждём авторизации…';return;}
+  if(!user){$('d5').innerHTML='⏳ Ждём авторизации…';return;}
   uid=user.uid;
-  d('d5').innerHTML='✅ uid='+uid.slice(0,8)+'…';
+  $('d5').innerHTML='✅ uid='+uid.slice(0,8)+'…';
   const code=new URLSearchParams(location.search).get('room');
   if(code){$('roomCode').value=code;connectRoom(code).catch(e=>status(e.message));}
 });
 
-/* ---------- Данные ---------- */
-const heroes = [
- {id:'warrior',role:'Воин',name:'Борин Железный Щит',emoji:'🛡️',hp:14,atk:3,ac:14,
-  abilities:[{id:'power',name:'Мощный удар',desc:'2d6+atk',cd:2,type:'attack'},{id:'shield',name:'Стена щитов',desc:'+3 HP',cd:3,type:'buff'}]},
- {id:'mage',role:'Маг',name:'Лира Искророждённая',emoji:'🔮',hp:9,atk:4,ac:11,
-  abilities:[{id:'fireball',name:'Огненный шар',desc:'2d6 урона',cd:3,type:'attack'},{id:'heal',name:'Лечащий свет',desc:'1d8 HP союзнику',cd:2,type:'heal'}]},
- {id:'ranger',role:'Следопыт',name:'Тарен Лесной След',emoji:'🏹',hp:11,atk:3,ac:13,
-  abilities:[{id:'volley',name:'Град стрел',desc:'2 атаки',cd:2,type:'multi'},{id:'trap',name:'Ловушка',desc:'Оглушение',cd:3,type:'stun'}]},
- {id:'rogue',role:'Разбойница',name:'Мира Тихий Шаг',emoji:'🗡️',hp:10,atk:4,ac:12,
-  abilities:[{id:'sneak',name:'Скрытая атака',desc:'2d6+atk',cd:2,type:'attack'},{id:'poison',name:'Отравленный клинок',desc:'Урон + яд',cd:3,type:'poison'}]}
+/* ---------- ДАННЫЕ ПЕРСОНАЖЕЙ ---------- */
+const professions = [
+  {name:'Врач',emoji:'⚕️',bonus:'+лечит болезни'},
+  {name:'Инженер',emoji:'🔧',bonus:'+ремонт оборудования'},
+  {name:'Военный',emoji:'🎖️',bonus:'+защита бункера'},
+  {name:'Учитель',emoji:'📚',bonus:'+обучение детей'},
+  {name:'Повар',emoji:'🍳',bonus:'+экономия еды'},
+  {name:'Фермер',emoji:'🌾',bonus:'+выращивание еды'},
+  {name:'Электрик',emoji:'⚡',bonus:'+энергоснабжение'},
+  {name:'Химик',emoji:'🧪',bonus:'+очистка воды'},
+  {name:'Психолог',emoji:'🧠',bonus:'+снятие стресса'},
+  {name:'Охотник',emoji:'🏹',bonus:'+добыча еды'},
+  {name:'Строитель',emoji:'🔨',bonus:'+укрепление стен'},
+  {name:'Медсестра',emoji:'💉',bonus:'+первая помощь'},
+  {name:'Программист',emoji:'💻',bonus:'+связь и системы'},
+  {name:'Священник',emoji:'✝️',bonus:'+моральный дух'},
+  {name:'Пожарный',emoji:'🚒',bonus:'+борьба с огнём'},
+  {name:'Биолог',emoji:'🧬',bonus:'+анализ образцов'},
+  {name:'Полицейский',emoji:'🚔',bonus:'+порядок в бункере'},
+  {name:'Механик',emoji:'⚙️',bonus:'+починка транспорта'},
+  {name:'Ветеринар',emoji:'🐾',bonus:'+уход за животными'},
+  {name:'Швея',emoji:'🧵',bonus:'+пошив одежды'}
 ];
-const enemyTypes = {
-  goblin:{name:'Гоблин',emoji:'👺',hp:8,atk:2,ac:11,xp:25,gold:5},
-  wolf:{name:'Лесной волк',emoji:'🐺',hp:12,atk:3,ac:12,xp:35,gold:3},
-  bandit:{name:'Бандит',emoji:'🗡️',hp:14,atk:3,ac:12,xp:45,gold:15},
-  troll:{name:'Тролль',emoji:'🧟',hp:26,atk:5,ac:13,xp:90,gold:30},
-  spider:{name:'Гигантский паук',emoji:'🕷️',hp:10,atk:3,ac:12,xp:30,gold:8},
-  skeleton:{name:'Скелет',emoji:'💀',hp:9,atk:2,ac:11,xp:20,gold:4},
-  ghost:{name:'Призрак',emoji:'👻',hp:11,atk:4,ac:13,xp:50,gold:20},
-  dragon:{name:'Чёрный дракон',emoji:'🐉',hp:50,atk:6,ac:16,xp:300,gold:250}
-};
-
-/* ---------- КАРТИНКИ ЛОКАЦИЙ (SVG) ---------- */
-const illustrations = {
-  village: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="vsky" cx="50%" cy="20%" r="80%">
-          <stop offset="0%" stop-color="#3a2a15"/>
-          <stop offset="60%" stop-color="#1a1208"/>
-          <stop offset="100%" stop-color="#0a0806"/>
-        </radialGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#vsky)"/>
-      <circle cx="650" cy="60" r="22" fill="#f0cd7a" opacity="0.9"/>
-      <circle cx="650" cy="60" r="35" fill="#d4a94a" opacity="0.15"/>
-      <path d="M0 200 Q 200 170 400 190 T 800 180 L800 280 L0 280 Z" fill="#1a1409"/>
-      <path d="M0 220 Q 200 200 400 215 T 800 210 L800 280 L0 280 Z" fill="#0a0806"/>
-      <!-- дома -->
-      <g fill="#2a1e10" stroke="#4a3a1a" stroke-width="1.5">
-        <polygon points="80,180 110,150 140,180"/>
-        <rect x="85" y="180" width="50" height="50" fill="#1a1409"/>
-        <polygon points="200,175 235,140 270,175"/>
-        <rect x="205" y="175" width="60" height="55" fill="#1a1409"/>
-        <polygon points="350,185 380,160 410,185"/>
-        <rect x="355" y="185" width="50" height="45" fill="#1a1409"/>
-      </g>
-      <!-- окна -->
-      <g fill="#f0cd7a" opacity="0.7">
-        <rect x="100" y="195" width="8" height="10"/>
-        <rect x="220" y="190" width="8" height="10"/>
-        <rect x="240" y="190" width="8" height="10"/>
-        <rect x="370" y="200" width="8" height="10"/>
-      </g>
-      <!-- дорога -->
-      <path d="M0 260 Q 400 240 800 260" stroke="#4a3a1a" stroke-width="3" fill="none" opacity="0.5"/>
-      <!-- река -->
-      <path d="M0 265 Q 200 255 400 268 T 800 262" stroke="#2a3a4a" stroke-width="6" fill="none" opacity="0.6"/>
-    </svg>
-  `,
-  tavern: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="tsky" cx="50%" cy="40%" r="70%">
-          <stop offset="0%" stop-color="#5a3a15"/>
-          <stop offset="60%" stop-color="#2a1808"/>
-          <stop offset="100%" stop-color="#0a0604"/>
-        </radialGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#tsky)"/>
-      <!-- свеча -->
-      <g transform="translate(400,90)">
-        <ellipse cx="0" cy="0" rx="18" ry="28" fill="#f0cd7a" opacity="0.4"/>
-        <ellipse cx="0" cy="0" rx="10" ry="18" fill="#f0cd7a" opacity="0.7"/>
-        <ellipse cx="0" cy="0" rx="4" ry="10" fill="#ffffff"/>
-        <rect x="-4" y="20" width="8" height="60" fill="#d4a94a"/>
-        <rect x="-4" y="20" width="8" height="60" fill="#8a6f2e" opacity="0.4"/>
-      </g>
-      <!-- кружки -->
-      <g transform="translate(180,210)">
-        <rect x="0" y="0" width="30" height="40" fill="#5a3a1a" stroke="#d4a94a" stroke-width="1.5"/>
-        <path d="M30 8 Q 45 8 45 20 Q 45 32 30 32" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
-        <ellipse cx="15" cy="2" rx="15" ry="4" fill="#8a6f2e" opacity="0.6"/>
-      </g>
-      <g transform="translate(600,210)">
-        <rect x="0" y="0" width="30" height="40" fill="#5a3a1a" stroke="#d4a94a" stroke-width="1.5"/>
-        <path d="M30 8 Q 45 8 45 20 Q 45 32 30 32" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
-      </g>
-      <!-- стол -->
-      <rect x="150" y="240" width="500" height="20" fill="#3a2a15" stroke="#4a3a1a" stroke-width="1.5"/>
-      <!-- бочки -->
-      <g transform="translate(70,200)">
-        <ellipse cx="25" cy="0" rx="25" ry="6" fill="#4a3a1a"/>
-        <rect x="0" y="0" width="50" height="50" fill="#3a2a15" stroke="#5a4a2a" stroke-width="1"/>
-        <line x1="0" y1="15" x2="50" y2="15" stroke="#8a6f2e" stroke-width="1"/>
-        <line x1="0" y1="35" x2="50" y2="35" stroke="#8a6f2e" stroke-width="1"/>
-      </g>
-    </svg>
-  `,
-  forest: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0a1a0e"/>
-          <stop offset="50%" stop-color="#0a1208"/>
-          <stop offset="100%" stop-color="#050804"/>
-        </linearGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#fsky)"/>
-      <!-- луна -->
-      <circle cx="680" cy="50" r="18" fill="#c9d0e0" opacity="0.6"/>
-      <circle cx="680" cy="50" r="30" fill="#c9d0e0" opacity="0.1"/>
-      <!-- деревья задние -->
-      <g fill="#0a1208" opacity="0.7">
-        <polygon points="100,280 130,60 160,280"/>
-        <polygon points="220,280 250,40 280,280"/>
-        <polygon points="400,280 430,70 460,280"/>
-        <polygon points="560,280 590,50 620,280"/>
-        <polygon points="700,280 730,80 760,280"/>
-      </g>
-      <!-- деревья передние -->
-      <g fill="#050804">
-        <polygon points="40,280 70,100 100,280"/>
-        <polygon points="300,280 340,120 380,280"/>
-        <polygon points="500,280 540,100 580,280"/>
-        <polygon points="740,280 770,140 800,280"/>
-      </g>
-      <!-- тропа -->
-      <path d="M300 280 Q 400 220 450 180 Q 500 140 520 100" stroke="#1a1409" stroke-width="12" fill="none" opacity="0.5"/>
-      <!-- туман -->
-      <ellipse cx="400" cy="240" rx="300" ry="30" fill="#9a8b6a" opacity="0.06"/>
-      <ellipse cx="200" cy="260" rx="200" ry="20" fill="#9a8b6a" opacity="0.05"/>
-    </svg>
-  `,
-  temple: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="tsky2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1a0a1e"/>
-          <stop offset="60%" stop-color="#0a0610"/>
-          <stop offset="100%" stop-color="#050408"/>
-        </linearGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#tsky2)"/>
-      <!-- звёзды -->
-      <g fill="#c9d0e0" opacity="0.5">
-        <circle cx="100" cy="40" r="1.5"/>
-        <circle cx="200" cy="70" r="1"/>
-        <circle cx="350" cy="30" r="1.5"/>
-        <circle cx="500" cy="60" r="1"/>
-        <circle cx="650" cy="40" r="1.5"/>
-        <circle cx="750" cy="80" r="1"/>
-      </g>
-      <!-- колонны -->
-      <g fill="#2a2018" stroke="#4a3a1a" stroke-width="1.5">
-        <rect x="100" y="80" width="30" height="180"/>
-        <rect x="180" y="80" width="30" height="180"/>
-        <rect x="590" y="80" width="30" height="180"/>
-        <rect x="670" y="80" width="30" height="180"/>
-      </g>
-      <!-- арка -->
-      <path d="M130 80 Q 400 -20 670 80 L 670 60 Q 400 -40 130 60 Z" fill="#2a2018" stroke="#4a3a1a" stroke-width="1.5"/>
-      <!-- дверь с символами -->
-      <rect x="330" y="130" width="140" height="130" fill="#0a0806" stroke="#8a6f2e" stroke-width="2"/>
-      <g fill="#d4a94a" opacity="0.8">
-        <!-- солнце -->
-        <circle cx="370" cy="170" r="8"/>
-        <g stroke="#d4a94a" stroke-width="1.5">
-          <line x1="370" y1="155" x2="370" y2="148"/>
-          <line x1="370" y1="185" x2="370" y2="192"/>
-          <line x1="355" y1="170" x2="348" y2="170"/>
-          <line x1="385" y1="170" x2="392" y2="170"/>
-        </g>
-        <!-- глаз -->
-        <ellipse cx="400" cy="200" rx="12" ry="7" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
-        <circle cx="400" cy="200" r="3" fill="#d4a94a"/>
-        <!-- коготь -->
-        <path d="M420 185 Q 430 195 425 210 Q 435 200 440 215" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
-      </g>
-    </svg>
-  `,
-  lair: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="lsky" cx="50%" cy="80%" r="80%">
-          <stop offset="0%" stop-color="#4a0a0a"/>
-          <stop offset="40%" stop-color="#2a0808"/>
-          <stop offset="100%" stop-color="#0a0202"/>
-        </radialGradient>
-        <radialGradient id="leye" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#ff4a4a"/>
-          <stop offset="60%" stop-color="#8a1e1e"/>
-          <stop offset="100%" stop-color="#2a0808" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#lsky)"/>
-      <!-- пещера: сталактиты -->
-      <g fill="#0a0202">
-        <polygon points="80,0 100,60 60,0"/>
-        <polygon points="200,0 220,80 180,0"/>
-        <polygon points="350,0 370,50 330,0"/>
-        <polygon points="500,0 520,70 480,0"/>
-        <polygon points="650,0 670,55 630,0"/>
-        <polygon points="750,0 770,45 730,0"/>
-      </g>
-      <!-- озеро -->
-      <ellipse cx="400" cy="260" rx="350" ry="40" fill="#0a0a1a" opacity="0.9"/>
-      <ellipse cx="400" cy="260" rx="300" ry="25" fill="#1a1a3a" opacity="0.5"/>
-      <!-- дракон (силуэт) -->
-      <g transform="translate(400,150)" fill="#0a0202" stroke="#4a0808" stroke-width="1">
-        <!-- тело -->
-        <ellipse cx="0" cy="0" rx="80" ry="40"/>
-        <!-- голова -->
-        <path d="M-80 -10 Q -120 -20 -130 0 Q -120 20 -80 10 Z"/>
-        <!-- рог -->
-        <path d="M-110 -15 Q -115 -35 -105 -30"/>
-        <!-- глаз -->
-        <circle cx="-105" cy="-5" r="6" fill="url(#leye)"/>
-        <circle cx="-105" cy="-5" r="2" fill="#ffaaaa"/>
-        <!-- крыло -->
-        <path d="M-20 -30 Q 30 -90 100 -70 Q 60 -40 40 -20 Z" opacity="0.9"/>
-        <!-- хвост -->
-        <path d="M80 0 Q 130 10 150 40 Q 120 20 90 20 Z"/>
-      </g>
-      <!-- свечение глаз -->
-      <circle cx="295" cy="145" r="40" fill="#ff4a4a" opacity="0.15"/>
-    </svg>
-  `,
-  epilogue: `
-    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="esky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#4a3a1a"/>
-          <stop offset="50%" stop-color="#2a1e0a"/>
-          <stop offset="100%" stop-color="#0a0806"/>
-        </linearGradient>
-      </defs>
-      <rect width="800" height="280" fill="url(#esky)"/>
-      <!-- лучи солнца -->
-      <g opacity="0.15">
-        <polygon points="400,0 350,280 450,280" fill="#f0cd7a"/>
-        <polygon points="400,0 250,280 320,280" fill="#f0cd7a"/>
-        <polygon points="400,0 480,280 550,280" fill="#f0cd7a"/>
-      </g>
-      <!-- солнце -->
-      <circle cx="400" cy="80" r="50" fill="#f0cd7a" opacity="0.4"/>
-      <circle cx="400" cy="80" r="30" fill="#f0cd7a" opacity="0.8"/>
-      <circle cx="400" cy="80" r="18" fill="#ffffff"/>
-      <!-- земля -->
-      <path d="M0 200 Q 200 180 400 200 T 800 190 L800 280 L0 280 Z" fill="#2a1e0a"/>
-      <path d="M0 230 Q 200 215 400 230 T 800 225 L800 280 L0 280 Z" fill="#1a1409"/>
-      <!-- силуэт дракона улетающего -->
-      <g transform="translate(600,100)" fill="#0a0806">
-        <ellipse cx="0" cy="0" rx="30" ry="12"/>
-        <path d="M-30 -5 Q -45 -10 -50 0 Q -45 10 -30 5 Z"/>
-        <path d="M-15 -10 Q 10 -40 50 -30 Q 20 -15 15 -5 Z"/>
-        <path d="M30 0 Q 60 5 70 20 Q 50 10 35 10 Z"/>
-      </g>
-    </svg>
-  `
-};
-
-/* ---------- РАНДОМ КАК В D&D ---------- */
-const rand = arr => arr[Math.floor(Math.random()*arr.length)];
-const randInt = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
-
-/* Пул врагов для каждой локации — выбирается случайно */
-const enemyPool = {
-  village:['goblin','bandit'],
-  tavern:['bandit','goblin'],
-  forest:['goblin','wolf','spider','bandit'],
-  temple:['skeleton','ghost','spider','wolf'],
-  lair:['dragon']
-};
-/* Пул лута для исследования */
-const lootPool = [
-  {gold:randInt(5,20),text:'находит горсть монет'},
-  {gold:randInt(10,30),text:'находит кошель с золотом'},
-  {item:'🧪 Зелье лечения',text:'находит зелье лечения'},
-  {item:'🗝️ Ржавый ключ',text:'находит ржавый ключ'},
-  {item:'💎 Самоцвет',text:'находит самоцвет'},
-  {item:'📜 Старый свиток',text:'находит обрывок свитка'}
+const biologies = [
+  {text:'Мужчина, 25 лет'},{text:'Женщина, 32 года'},{text:'Мужчина, 45 лет'},
+  {text:'Женщина, 19 лет'},{text:'Мужчина, 60 лет'},{text:'Женщина, 50 лет'},
+  {text:'Мужчина, 30 лет'},{text:'Женщина, 27 лет'},{text:'Мужчина, 38 лет'},
+  {text:'Женщина, 22 года'},{text:'Мужчина, 52 года'},{text:'Женщина, 41 год'},
+  {text:'Мужчина, 35 лет (лысый)'},{text:'Женщина, 28 лет (беременна)'},
+  {text:'Мужчина, 33 года (татуировки)'},{text:'Женщина, 36 лет (рыжая)'}
 ];
-/* Случайные события при исследовании */
-const randomEvents = [
-  {text:'На вас нападают из засады!',combat:'goblin',count:2},
-  {text:'Вы проваливаетесь в яму — 2 урона.',damageAll:2},
-  {text:'Туман сгущается, но вы находите тропу.',nothing:true},
-  {text:'Из кустов выскакивает волк!',combat:'wolf',count:1},
-  {text:'Вы находите следы — они ведут дальше.',nothing:true},
-  {text:'Стая ворон кружит над головой…',nothing:true}
+const healths = [
+  {text:'Абсолютно здоров',good:true},
+  {text:'Аллергия на пыль'},
+  {text:'Диабет 2 типа'},
+  {text:'Астма',bad:true},
+  {text:'Близорукость -6'},
+  {text:'Зависимость от алкоголя',bad:true},
+  {text:'Клаустрофобия',bad:true},
+  {text:'Идеальное здоровье',good:true},
+  {text:'Хроническая бессонница'},
+  {text:'Аллергия на антибиотики'},
+  {text:'Протез ноги',bad:true},
+  {text:'Заикание'},
+  {text:'Гипертония'},
+  {text:'Крепкое здоровье, редко болеет',good:true},
+  {text:'Панические атаки',bad:true},
+  {text:'Никотиновая зависимость'}
+];
+const hobbies = [
+  {text:'Разведение кур'},
+  {text:'Стрельба из лука'},
+  {text:'Выращивание овощей'},
+  {text:'Рыбалка'},
+  {text:'Ремонт техники'},
+  {text:'Медитация'},
+  {text:'Кулинария'},
+  {text:'Шитьё'},
+  {text:'Плотничество'},
+  {text:'Изучение языков'},
+  {text:'Шахматы'},
+  {text:'Пчеловодство'},
+  {text:'Игра на гитаре'},
+  {text:'Скалолазание'},
+  {text:'Собирательство трав'},
+  {text:'Вязание'},
+  {text:'Радиолюбительство'},
+  {text:'Оригами'},
+  {text:'Гончарное дело'},
+  {text:'Астрономия'}
+];
+const phobias = [
+  {text:'Боязнь темноты',bad:true},
+  {text:'Боязнь замкнутых пространств',bad:true},
+  {text:'Боязнь крови',bad:true},
+  {text:'Боязнь насекомых'},
+  {text:'Боязнь воды'},
+  {text:'Клаустрофобия',bad:true},
+  {text:'Боязнь одиночества'},
+  {text:'Нет фобий',good:true},
+  {text:'Боязнь громких звуков'},
+  {text:'Боязнь огня',bad:true},
+  {text:'Социофобия'},
+  {text:'Боязнь микробов'},
+  {text:'Акрофобия'},
+  {text:'Нет фобий — стальные нервы',good:true},
+  {text:'Боязнь животных'},
+  {text:'Боязнь тишины'}
+];
+const inventories = [
+  {text:'Аптечка первой помощи'},
+  {text:'Набор инструментов'},
+  {text:'Семена овощей (10 видов)'},
+  {text:'Охотничье ружьё + 20 патронов'},
+  {text:'Радиостанция'},
+  {text:'Солнечная батарея'},
+  {text:'Фильтр для воды'},
+  {text:'Запас консервов (10 банок)'},
+  {text:'Канистра бензина (20 л)'},
+  {text:'Книга «Медицина без лекарств»'},
+  {text:'Спальный мешок'},
+  {text:'Мультитул'},
+  {text:'Фонарик + батарейки'},
+  {text:'Противорадиационный костюм'},
+  {text:'Дозиметр'},
+  {text:'Гитара'},
+  {text:'Топор'},
+  {text:'Лук и 30 стрел'},
+  {text:'Медикаменты (антибиотики)'},
+  {text:'Генератор (бензиновый)'},
+  {text:'Семейные фотографии'},
+  {text:'Учебник физики'},
+  {text:'Маска с фильтром'},
+  {text:'Палатка'},
+  {text:'Набор для шитья'},
+  {text:'Пчелиный улей (мини)'},
+  {text:'Коза (живая)'},
+  {text:'Курица (живая)'},
+  {text:'Пистолет + 15 патронов'},
+  {text:'Семена пшеницы'}
+];
+const specials = [
+  {text:'Иммунитет к радиации',good:true},
+  {text:'Опыт выживания в дикой природе'},
+  {text:'Знает расположение ближайшего города'},
+  {text:'Разбирается в оружии'},
+  {text:'Умеет добывать огонь без спичек'},
+  {text:'Хорошо ладит с людьми'},
+  {text:'Имеет медицинские знания'},
+  {text:'Знает, как очистить воду подручными средствами'},
+  {text:'Умеет охотиться'},
+  {text:'Не боится крови',good:true},
+  {text:'Мастер на все руки'},
+  {text:'Знает язык жестов'},
+  {text:'Имеет фотографическую память',good:true},
+  {text:'Умеет готовить из чего угодно'},
+  {text:'Умеет лечить животных'},
+  {text:'Знает основы электротехники'},
+  {text:'Отличный рассказчик'},
+  {text:'Может быстро бегать'},
+  {text:'Хорошо стреляет'},
+  {text:'Умеет шить и вязать'}
 ];
 
-/* Случайная генерация врагов для боя */
-function generateEncounter(locationId){
-  const pool = enemyPool[locationId]||['goblin'];
-  const type = rand(pool);
-  const count = randInt(1,3);
-  return {type,count};
-}
-
-/* ---------- Сцены ---------- */
-const scenes = {
-  village: {
-    title:'🏘️ Серебряный Брод',
-    illustration:'village',
-    text:'В деревне пропадают люди. Вода в реке чернеет. Мэр встречает вас у ратуши:\n\n«Герои, помогите! Три дня назад ушли трое — и не вернулись. Следы ведут к лесу. Если найдёте — награжу щедро.»',
-    choices:[
-      {text:'Расспросить мэра о пропавших', check:'skill', dc:10, success:'Мэр рассказал: пропали дровосек, его дочь и старый охотник.', fail:'Мэр путается в показаниях.', next:'tavern'},
-      {text:'Осмотреть берег реки', check:'skill', dc:12, success:'На берегу — чёрные чешуйки и след огромной лапы.', fail:'Река мутная, ничего не видно.', next:'tavern'},
-      {text:'Исследовать окрестности (рандом)', explore:true},
-      {text:'Сразу идти в лес', next:'forest'}
-    ]
-  },
-  tavern: {
-    title:'🍺 Таверна «Пьяный Гоблин»',
-    illustration:'tavern',
-    text:'Тавернщик Гаррик протирает кружки:\n\n«Дровосек был должен мне. А ночью у леса кто-то шепчет. Слышите?»',
-    choices:[
-      {text:'Угостить тавернщика и разговорить', check:'skill', dc:11, success:'Гаррик видел человека в чёрном плаще с символом дракона.', fail:'Гаррик замкнулся.', next:'forest'},
-      {text:'Обыскать комнату охотника', check:'skill', dc:13, success:'Найдена карта с отметкой у храма и записка: «Ошейник снять нельзя, только разбить».', fail:'Хозяин забрал вещи.', next:'forest'},
-      {text:'Устроить драку (рандом)', explore:true},
-      {text:'Идти в лес', next:'forest'}
-    ]
-  },
-  forest: {
-    title:'🌲 Шепчущий лес',
-    illustration:'forest',
-    text:'Среди деревьев — разбитая телега. Шёпот: «Отдайте кристалл — пленник останется жив». На поляне — враги и связанный следопыт.',
-    choices:[
-      {text:'Атаковать врагов! (рандом)', randomCombat:true, next:'forest_after'},
-      {text:'Попробовать договориться', check:'skill', dc:14, success:'Враги дрогнули и отпустили пленника.', fail:'Переговоры провалились!', randomFailCombat:true, next:'forest_after'},
-      {text:'Исследовать чащу (рандом)', explore:true},
-      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы нашли тайную тропу к храму.', fail:'Ветка хрустнула — враги заметили вас!', randomFailCombat:true, next:'forest_after'}
-    ]
-  },
-  forest_after: {
-    title:'🌲 После боя в лесу',
-    illustration:'forest',
-    text:'Пленник — старый следопыт Эдрик:\n\n«Дракон не виноват. На нём ошейник, проклятие чёрного мага. Снимите ошейник — и дракон станет собой. В храме есть подсказка.»',
-    choices:[
-      {text:'Идти к старому храму', next:'temple'},
-      {text:'Обыскать телегу (рандом)', explore:true},
-      {text:'Вернуться в деревню', next:'village'}
-    ]
-  },
-  temple: {
-    title:'🏚️ Старый храм',
-    illustration:'temple',
-    text:'На каменной двери три символа: ☀️ солнце, 👁️ глаз, 🦅 коготь. Рядом высечено: «Свет видит, глаз знает, коготь берёт».',
-    choices:[
-      {text:'Солнце → глаз → коготь', check:'skill', dc:10, success:'Дверь открылась. Внутри — свиток с ритуалом.', next:'temple_after'},
-      {text:'Глаз → солнце → коготь', fail:'Из стены вырвалась тьма!', damageAll:3, next:'temple'},
-      {text:'Коготь → глаз → солнце', fail:'Из трещин пошли тени!', randomFailCombat:true, next:'temple_after'},
-      {text:'Обыскать развалины (рандом)', explore:true}
-    ]
-  },
-  temple_after: {
-    title:'🏚️ Храм: ритуал',
-    illustration:'temple',
-    text:'В свитке сказано: чтобы снять ошейник, нужно произнести истинное имя дракона — «Ашар-Нор» — и коснуться ошейника серебром.',
-    choices:[
-      {text:'Идти к логову дракона', next:'lair'},
-      {text:'Вернуться за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал.', fail:'Кузнец отказал: «Это реликвия».', next:'lair'},
-      {text:'Помолиться у алтаря (рандом)', explore:true}
-    ]
-  },
-  lair: {
-    title:'🐉 Логово дракона',
-    illustration:'lair',
-    text:'Чёрный дракон лежит над тёмным озером. На шее — магический ошейник. Дракон поднимает голову:\n\n«Убейте… меня… или снимите это…»',
-    choices:[
-      {text:'Произнести имя: Ашар-Нор', check:'skill', dc:13, success:'Ошейник треснул. Проклятие снято!', next:'epilogue_good'},
-      {text:'Сразиться с драконом', combat:'dragon', count:1, next:'epilogue_battle'},
-      {text:'Отступить', next:'village'}
-    ]
-  },
-  epilogue_good: {
-    title:'✨ Финал: Свобода',
-    illustration:'epilogue',
-    text:'Дракон Ашар-Нор свободен. Он улетает, оставив вам сокровище. Деревня спасена.\n\n🏆 ПОБЕДА!',
-    choices:[{text:'Начать новое приключение', next:'village'}]
-  },
-  epilogue_battle: {
-    title:'⚔️ Финал: Цена победы',
-    illustration:'epilogue',
-    text:'Дракон повержен, но тьма ошейника рассеялась. Вы победили, но тот, кто надел ошейник, ещё жив.\n\n🏆 ПОБЕДА (но не конец).',
-    choices:[{text:'Начать новое приключение', next:'village'}]
-  }
+/* ---------- ГЕНЕРАЦИЯ ПЕРСОНАЖА ---------- */
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const pickTwo = arr => {
+  const a=[...arr];const r=[];
+  for(let i=0;i<2;i++){const idx=Math.floor(Math.random()*a.length);r.push(a.splice(idx,1)[0]);}
+  return r;
 };
-
-/* ---------- Утилиты ---------- */
-const xpForLevel = lvl => 100+(lvl-1)*150;
-const rollDice = s => Math.floor(Math.random()*s)+1;
-const rollDamage = (c,s,b)=>{let t=0;for(let i=0;i<c;i++)t+=rollDice(s);return t+(b||0);};
-function status(s,good=false){$('connection').innerHTML=`<span class="${good?'good':'bad'}">${esc(s)}</span>`;}
-function setConnected(on){
-  ['sendChat','exportLog'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
-  ['clearRoom'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||!isMaster;});
-  ['pickHero','heal'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||isMaster;});
-}
-function defaultRoom(masterUid,name){
-  return {createdAt:Date.now(),masterUid,
-    players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,maxHp:null,xp:0,level:1,gold:0,inventory:[],conditions:[],cooldowns:{},joinedAt:Date.now(),isMaster:true}},
-    game:{scene:'village',sceneText:scenes.village.text},
-    turn:{order:[],turnIndex:0,phase:'idle',round:1},
-    combat:{active:false,round:0,enemies:{},returnScene:null},
-    dice:{id:null,uid:null,name:null,label:null,value:0,modifier:0,total:0,dc:0,verdict:'',sub:'',ts:0}
+function generateCharacter(seed){
+  // seed — для детерминированности (uid), но рандом реальный
+  return {
+    profession: pick(professions),
+    biology: pick(biologies),
+    health: pick(healths),
+    hobby: pick(hobbies),
+    phobia: pick(phobias),
+    inventory: pickTwo(inventories),
+    special: pick(specials),
+    revealed: {
+      profession:false, biology:false, health:false,
+      hobby:false, phobia:false, inventory:false, special:false
+    }
   };
 }
 
-/* ---------- Очередь ---------- */
-function isMyTurn(){
-  const t=roomData?.turn;
-  if(!t?.order?.length)return false;
-  if(isMaster)return false;
-  if(!uid)return false;
-  const me=roomData?.players?.[uid];
-  if(!me?.heroId)return false;
-  return t.order[t.turnIndex]===uid;
-}
-function currentTurnEntry(){const t=roomData?.turn;if(!t?.order?.length)return null;return t.order[t.turnIndex];}
-function isEnemyTurn(){const cur=currentTurnEntry();if(!cur)return false;return String(cur).startsWith('enemy:');}
-function currentTurnName(){return currentTurnNameByIdx(roomData?.turn?.turnIndex);}
-function currentTurnNameByIdx(idx){
-  const t=roomData?.turn;
-  if(!t?.order?.[idx])return '—';
-  const entry=t.order[idx];
-  if(String(entry).startsWith('enemy:')){
-    const eid=String(entry).slice(6);
-    const e=roomData.combat?.enemies?.[eid];
-    return e?`${e.emoji} ${e.name}`:'Враг';
-  }
-  return roomData.players?.[entry]?.name||'?';
-}
-
-/* ---------- Рендер ---------- */
-function renderHeroes(){
-  $('heroes').innerHTML=heroes.map(h=>`<div class="hero ${selected?.id===h.id?'active':''}" data-id="${h.id}"><b>${h.emoji} ${h.role}</b><small>${h.name}<br>❤️ ${h.hp} · ⚔️ +${h.atk} · 🛡️ ${h.ac}</small></div>`).join('');
-  document.querySelectorAll('.hero').forEach(el=>el.onclick=()=>{selected=heroes.find(h=>h.id===el.dataset.id);renderHeroes();});
-  renderStats();
-}
-function getMyHero(){const p=roomData?.players?.[uid];return heroes.find(x=>x.id===(p?.heroId||selected?.id))||selected||heroes[0];}
-function renderStats(){
-  const p=roomData?.players?.[uid];const h=getMyHero();
-  const hp=p?.hp??h.hp,maxHp=p?.maxHp??h.hp;
-  $('charStats').innerHTML=`<div class="stat">❤️ HP<b>${hp}/${maxHp}</b></div><div class="stat">⚔️ Атака<b>+${h.atk}</b></div><div class="stat">🛡️ Защита<b>${h.ac}</b></div>`;
-  const xp=p?.xp??0,lvl=p?.level??1,need=xpForLevel(lvl);
-  $('xpFill').style.width=Math.min(100,(xp/need)*100)+'%';
-  $('xpText').textContent=`XP: ${xp} / ${need} · Уровень ${lvl}`;
-  $('gold').textContent=p?.gold??0;
-  const inv=p?.inventory||[];
-  $('inventory').innerHTML=inv.length?inv.map(i=>`<span>${esc(i)}</span>`).join(''):'<span class="muted small">Пусто</span>';
-}
-function renderPlayers(){
-  const ps=Object.values(roomData?.players||{});
-  const cur=currentTurnEntry();
-  $('players').innerHTML=ps.map(p=>{
-    const h=heroes.find(x=>x.id===p.heroId);const lvl=p.level||1;
-    const maxHp=p.maxHp||h?.hp||10;const hp=p.hp??maxHp;
-    const pct=Math.max(0,Math.min(100,(hp/maxHp)*100));
-    const conds=(p.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
-    const isTurn=p.uid===cur;
-    const masterTag=p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':'';
-    return `<div class="player" style="${isTurn?'outline:2px solid var(--gold-bright);box-shadow:0 0 16px rgba(212,169,74,.4)':''}">${esc(p.name)}${masterTag}${isTurn?'<span class="tag">▶ ХОД</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):(p.uid===roomData.masterUid?'ведущий':'—')} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
-  }).join('')||'<span class="muted">Пока никого нет</span>';
-  renderStats();
-}
-function renderFeed(items){
-  $('feed').innerHTML=items.map(e=>`<div class="entry"><span class="muted">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <b>${esc(e.name||'Система')}:</b> ${esc(e.text)}</div>`).join('')||'<div class="muted">Журнал пуст.</div>';
-}
-function renderTurnBanner(){
-  const t=roomData?.turn;
-  const el=$('turnBanner');
-  if(!t?.order?.length){
-    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание партии</div><div class="hint">${isMaster?'Ждём, пока игроки подключатся и выберут персонажей.':'Ожидаем других игроков и мастера…'}</div></div>`;
-    return;
-  }
-  const enemyTurn=isEnemyTurn();
-  if(isMaster){
-    const phase=t.phase==='combat'?`Бой, раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
-    el.innerHTML=`<div class="turn-banner ${enemyTurn?'enemy-turn':''}"><div class="crown">${enemyTurn?'👹':'🎬'}</div><div class="who">Режим мастера</div><div class="hint">Сейчас: <b style="color:${enemyTurn?'var(--blood-bright)':'var(--gold-bright)'}">${esc(currentTurnName())}</b> · ${phase} · вы не ходите</div></div>`;
-    return;
-  }
-  if(enemyTurn){
-    el.innerHTML=`<div class="turn-banner enemy-turn"><div class="crown">👹</div><div class="who">Ход врага: ${esc(currentTurnName())}</div><div class="hint">Враг атакует…</div></div>`;
-    return;
-  }
-  const mine=isMyTurn();
-  const phase=t.phase==='combat'?`Раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
-  el.innerHTML=`<div class="turn-banner ${mine?'my-turn':''}"><div class="crown">👑</div><div class="who">Ход: ${esc(currentTurnName())}</div><div class="hint">${mine?'Ваш ход — выбирайте действие':'Ждите своей очереди…'} · ${phase}</div></div>`;
-}
-function renderScene(){
-  const sceneId=roomData?.game?.scene||'village';
-  const sc=scenes[sceneId]||scenes.village;
-  const mine=isMyTurn();
-  const illus=illustrations[sc.illustration]||illustrations.village;
-  const html=`
-    <div class="scene">
-      <div class="scene-illustration">
-        ${illus}
-        <div class="scene-title-overlay">${sc.title}</div>
-      </div>
-      <div class="scene-content">
-        <div class="scene-text">${esc(sc.text)}</div>
-        <div class="choices">
-          ${sc.choices.map((c,i)=>{
-            const check=c.check?`<span class="check">🎯 СЛ ${c.dc||11}</span>`:'';
-            const rnd=c.explore||c.randomCombat||c.randomFailCombat?`<span class="check">🎲 рандом</span>`:'';
-            return `<button class="choice" data-idx="${i}" ${mine?'':'disabled'}>
-              <span>${esc(c.text)}</span>
-              <span style="display:flex;align-items:center;gap:10px">${check}${rnd}<span class="arrow">→</span></span>
-            </button>`;
-          }).join('')}
-        </div>
-      </div>
-    </div>`;
-  $('sceneContainer').innerHTML=html;
-  document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>chooseOption(Number(b.dataset.idx)));
-
-  if(isMaster){
-    $('masterScene').classList.remove('hidden');
-    $('scenePicker').innerHTML=Object.entries(scenes).map(([id,s])=>`<button class="secondary" data-scene="${id}">${s.title}</button>`).join('');
-    document.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>setScene(b.dataset.scene));
-    const info=$('masterTurnInfo');
-    if(info)info.innerHTML=`Сейчас: <b style="color:var(--gold-bright)">${esc(currentTurnName())}</b>`;
-    const skip=$('masterSkipTurn');if(skip)skip.onclick=()=>endTurnAndMaybeEnemy();
-    const fc=$('masterForceCombat');
-    if(fc)fc.onclick=()=>{
-      const enc=generateEncounter(roomData.game.scene||'village');
-      startCombat(enc.type, enc.count, roomData.game.scene);
-    };
-  }else{
-    $('masterScene').classList.add('hidden');
-  }
-}
-async function setScene(sceneId){
-  if(!isMaster)return;
-  await update(ref(db,`rooms/${roomId}/game`),{scene:sceneId,sceneText:scenes[sceneId].text});
-  await addLog(`🎬 Мастер открыл сцену: ${scenes[sceneId].title}`);
-}
-
-/* ---------- Переход хода ---------- */
-async function advanceTurn(){
-  const t=roomData?.turn;
-  if(!t?.order?.length)return {nextIsEnemy:false};
-  let idx=(t.turnIndex+1)%t.order.length;
-  let round=t.round||1;
-  if(idx===0)round++;
-  let guard=0;
-  while(guard<50){
-    const entry=t.order[idx];
-    if(String(entry).startsWith('enemy:')){
-      const eid=String(entry).slice(6);
-      const e=roomData.combat?.enemies?.[eid];
-      if(e&&!e.dead)break;
-    }else{
-      const p=roomData.players?.[entry];
-      if(p?.heroId&&(p.hp??1)>0)break;
-    }
-    idx=(idx+1)%t.order.length;
-    if(idx===0)round++;
-    guard++;
-  }
-  const nextEntry=t.order[idx];
-  const nextIsEnemy=String(nextEntry).startsWith('enemy:');
-  await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,round,phase:t.phase});
-  const name=nextIsEnemy
-    ?(()=>{const eid=String(nextEntry).slice(6);const e=roomData.combat?.enemies?.[eid];return e?`${e.emoji} ${e.name}`:'Враг';})()
-    :(roomData.players?.[nextEntry]?.name||'?');
-  await addLog(`⏭️ Ход → ${nextIsEnemy?'👹 ':''}${name} (раунд ${round})`);
-  if(roomData?.turn){roomData.turn.turnIndex=idx;roomData.turn.round=round;}
-  return {nextIsEnemy};
-}
-async function endTurnAndMaybeEnemy(){
-  const {nextIsEnemy}=await advanceTurn();
-  renderTurnBanner();renderScene();renderCombat();renderPlayers();
-  if(nextIsEnemy)await runEnemyTurn();
-}
-
-/* ---------- Выбор варианта ---------- */
-async function chooseOption(idx){
-  if(isMaster)return status('Вы — мастер. Игровые решения принимают игроки.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const sceneId=roomData?.game?.scene||'village';
-  const sc=scenes[sceneId];
-  const choice=sc.choices[idx];
-  if(!choice)return;
-  const p=roomData?.players?.[uid];
-  if(!p?.heroId)return status('Сначала выберите персонажа.');
-  const h=heroes.find(x=>x.id===p.heroId);
-
-  await addLog(`выбирает: «${choice.text}»`, p.name);
-
-  // === Рандомное исследование ===
-  if(choice.explore){
-    const roll=rollDice(100);
-    if(roll<=20){
-      // бой
-      const enc=generateEncounter(sceneId);
-      await addLog(`🎲 Исследование: ${enc.count}× ${enemyTypes[enc.type].name} нападают!`);
-      await startCombat(enc.type,enc.count,sceneId);
-    } else if(roll<=70){
-      // лут
-      const loot=rand(lootPool);
-      await addLog(`🎲 Исследование: ${loot.text}`);
-      if(loot.gold){await update(ref(db,`rooms/${roomId}/players/${uid}`),{gold:(p.gold||0)+loot.gold});}
-      if(loot.item){await update(ref(db,`rooms/${roomId}/players/${uid}`),{inventory:[...(p.inventory||[]),loot.item]});}
-      await endTurnAndMaybeEnemy();
-    } else {
-      // событие
-      const ev=rand(randomEvents);
-      await addLog(`🎲 Исследование: ${ev.text}`);
-      if(ev.combat){await startCombat(ev.combat,ev.count||1,sceneId);return;}
-      if(ev.damageAll){
-        for(const pl of Object.values(roomData.players||{})){
-          if(!pl.heroId)continue;
-          const ph=heroes.find(x=>x.id===pl.heroId);
-          const mx=pl.maxHp||ph.hp;
-          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-ev.damageAll)});
-        }
+/* ---------- ДЕФОЛТНАЯ КОМНАТА ---------- */
+function defaultRoom(masterUid,name){
+  return {
+    createdAt:Date.now(),
+    masterUid,
+    players:{
+      [masterUid]:{
+        uid:masterUid,name,joinedAt:Date.now(),
+        isMaster:true,ejected:false,
+        character:null
       }
-      await endTurnAndMaybeEnemy();
-    }
-    return;
-  }
-
-  // === Рандомный бой ===
-  if(choice.randomCombat){
-    const enc=generateEncounter(sceneId);
-    await addLog(`🎲 Случайная стычка: ${enc.count}× ${enemyTypes[enc.type].name}!`);
-    await startCombat(enc.type,enc.count,choice.next||sceneId);
-    return;
-  }
-  if(choice.randomFailCombat){
-    const enc=generateEncounter(sceneId);
-    await addLog(`🎲 Провал: ${enc.count}× ${enemyTypes[enc.type].name} нападают!`);
-    await startCombat(enc.type,enc.count,choice.next||sceneId);
-    return;
-  }
-
-  // === Обычный бой ===
-  if(choice.combat){
-    await startCombat(choice.combat, choice.count||1, choice.next||sceneId);
-    return;
-  }
-
-  // === Проверка ===
-  if(choice.check){
-    const d20=rollDice(20);
-    const bonus=h.atk;
-    const total=d20+bonus;
-    const dc=choice.dc||11;
-    const success=d20===20||(d20!==1&&total>=dc);
-    const verdict=d20===20?'КРИТИЧЕСКИЙ УСПЕХ':d20===1?'КРИТИЧЕСКИЙ ПРОВАЛ':success?'УСПЕХ':'ПРОВАЛ';
-    await showDice({label:`Проверка: ${choice.text}`,sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,value:d20,modifier:bonus,total,dc,verdict,good:success,name:p.name});
-    await update(ref(db,`rooms/${roomId}/dice`),{id:Date.now(),uid,name:p.name,label:choice.text,value:d20,modifier:bonus,total,dc,verdict,sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,ts:Date.now(),good:success});
-    await addLog(`🎲 ${choice.text}: d20(${d20})+${bonus}=${total} vs ${dc} — ${success?'успех':'провал'}`, p.name);
-
-    let nextSceneId=sceneId;
-    if(success){
-      if(choice.success)await addLog(choice.success);
-      if(choice.next)nextSceneId=choice.next;
-    }else{
-      if(choice.fail)await addLog(choice.fail);
-      if(choice.failCombat){await startCombat(choice.failCombat,choice.count||1,choice.next||sceneId);return;}
-      if(choice.damageAll){
-        for(const pl of Object.values(roomData.players||{})){
-          if(!pl.heroId)continue;
-          const ph=heroes.find(x=>x.id===pl.heroId);
-          const mx=pl.maxHp||ph.hp;
-          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
-        }
-        await addLog(`💥 Все получают ${choice.damageAll} урона!`);
-      }
-      if(choice.next)nextSceneId=choice.next;
-    }
-    await commitSceneAndTurn(nextSceneId);
-    return;
-  }
-
-  // === Простой переход ===
-  if(choice.success)await addLog(choice.success);
-  if(choice.damageAll){
-    for(const pl of Object.values(roomData.players||{})){
-      if(!pl.heroId)continue;
-      const ph=heroes.find(x=>x.id===pl.heroId);
-      const mx=pl.maxHp||ph.hp;
-      await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
-    }
-    await addLog(`💥 Все получают ${choice.damageAll} урона!`);
-  }
-  await commitSceneAndTurn(choice.next||sceneId);
+    },
+    turn:{order:[],turnIndex:0,phase:'lobby',round:0,revealIndex:0},
+    bunker:{capacity:0,started:false,finished:false,winners:[]},
+    votes:{active:false,votes:{},finished:false,result:null}
+  };
 }
 
-async function commitSceneAndTurn(nextSceneId){
-  const t=roomData?.turn;
-  const nextSc=scenes[nextSceneId]||scenes[roomData.game.scene];
-  let newTurnIndex=t?.turnIndex??0;
-  let newRound=t?.round??1;
-  if(t?.order?.length){
-    let idx=(t.turnIndex+1)%t.order.length;
-    let round=t.round||1;
-    if(idx===0)round++;
-    let guard=0;
-    while(guard<50){
-      const entry=t.order[idx];
-      if(String(entry).startsWith('enemy:')){
-        const eid=String(entry).slice(6);
-        const e=roomData.combat?.enemies?.[eid];
-        if(e&&!e.dead)break;
-      }else{
-        const p=roomData.players?.[entry];
-        if(p?.heroId&&(p.hp??1)>0)break;
-      }
-      idx=(idx+1)%t.order.length;
-      if(idx===0)round++;
-      guard++;
-    }
-    newTurnIndex=idx;newRound=round;
-  }
-  await update(ref(db,`rooms/${roomId}`),{
-    'game/scene':nextSceneId,
-    'game/sceneText':nextSc.text,
-    'turn/turnIndex':newTurnIndex,
-    'turn/round':newRound
-  });
-  if(roomData){
-    roomData.game.scene=nextSceneId;
-    roomData.game.sceneText=nextSc.text;
-    if(roomData.turn){roomData.turn.turnIndex=newTurnIndex;roomData.turn.round=newRound;}
-  }
-  await addLog(`🎬 Сцена: ${nextSc.title} · ⏭️ Ход → ${currentTurnNameByIdx(newTurnIndex)} (раунд ${newRound})`);
-  renderTurnBanner();renderScene();renderCombat();renderPlayers();
-  const nextEntry=roomData.turn?.order?.[newTurnIndex];
-  if(nextEntry&&String(nextEntry).startsWith('enemy:'))await runEnemyTurn();
-}
-
-/* ---------- Кубик ---------- */
-async function showDice({label,sub,value,modifier,total,dc,verdict,good,name,enemy=false}){
-  $('diceLabel').textContent=label;
-  $('diceSub').textContent=sub;
-  $('diceVerdict').textContent=verdict;
-  $('diceVerdict').className='dice-verdict '+(good?'good':'bad');
-  const d20=$('d20');
-  d20.classList.remove('crit','fumble','enemy-die');
-  if(enemy)d20.classList.add('enemy-die');
-  else{if(value===20)d20.classList.add('crit');if(value===1)d20.classList.add('fumble');}
-  $('d20num').textContent='?';
-  $('diceOverlay').classList.add('show');
-  d20.classList.add('rolling');
-  const spinInterval=setInterval(()=>{$('d20num').textContent=rollDice(20);},80);
-  await new Promise(r=>setTimeout(r,800));
-  clearInterval(spinInterval);
-  d20.classList.remove('rolling');
-  $('d20num').textContent=value;
-  $('diceContinue').classList.remove('hidden');
-  if(!enemy)await addLog(`🎲 ${name}: ${label} — d20(${value})+${modifier}=${total} vs ${dc} — ${verdict}`);
-}
-function hideDice(){$('diceOverlay').classList.remove('show');$('diceContinue').classList.add('hidden');}
-$('diceContinue').onclick=()=>hideDice();
-
-/* ---------- Ход врага ---------- */
-async function runEnemyTurn(){
-  if(enemyTurnLock)return;
-  enemyTurnLock=true;
-  try{
-    await new Promise(r=>setTimeout(r,600));
-    const snap=await get(ref(db,`rooms/${roomId}`));
-    const data=snap.val();
-    if(!data?.combat?.active){enemyTurnLock=false;return;}
-    const t=data.turn;
-    const entry=t?.order?.[t.turnIndex];
-    if(!entry||!String(entry).startsWith('enemy:')){enemyTurnLock=false;return;}
-    const eid=String(entry).slice(6);
-    const e=data.combat.enemies?.[eid];
-    if(!e||e.dead){enemyTurnLock=false;await forceAdvanceAfterEnemy();return;}
-    const alive=Object.values(data.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
-    if(!alive.length){enemyTurnLock=false;return;}
-    const target=alive[Math.floor(Math.random()*alive.length)];
-    const h=heroes.find(x=>x.id===target.heroId);
-    if(!h){enemyTurnLock=false;return;}
-    const rawD20=rollDice(20);
-    const total=rawD20+e.atk;
-    const hit=rawD20>=h.ac;
-    await update(ref(db,`rooms/${roomId}/dice`),{
-      id:Date.now(),uid:'enemy',name:`${e.emoji} ${e.name}`,
-      label:`Атака по ${target.name}`,
-      value:rawD20,modifier:e.atk,total,dc:h.ac,
-      verdict:hit?'ПОПАДАНИЕ':'ПРОМАХ',good:hit,
-      sub:`d20 (${rawD20}) + ${e.atk} против AC ${h.ac}`,
-      ts:Date.now(),enemy:true
-    });
-    if(hit){
-      const dmg=rollDamage(1,6,e.atk);
-      const nh=Math.max(0,(target.hp??h.hp)-dmg);
-      await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
-      await addLog(`👹 ${e.name} бьёт ${target.name}: ${dmg} урона (${nh} HP)`);
-      if(nh<=0)await addLog(`💀 ${target.name} падает без сознания!`);
-    }else{
-      await addLog(`👹 ${e.name} промахнулся по ${target.name}`);
-    }
-    await forceAdvanceAfterEnemy();
-  }catch(err){console.error('enemy turn error',err);enemyTurnLock=false;}
-}
-async function forceAdvanceAfterEnemy(){
-  try{
-    const snap=await get(ref(db,`rooms/${roomId}`));
-    const data=snap.val();
-    roomData=data;
-    if(!data?.turn?.order?.length){enemyTurnLock=false;return;}
-    await endTurnAndMaybeEnemy();
-  }catch(e){console.error(e);}
-  finally{enemyTurnLock=false;}
-}
-
-/* ---------- Бой ---------- */
-async function startCombat(enemyType,count,returnScene){
-  const enemies={};
-  for(let i=0;i<count;i++){
-    const t=enemyTypes[enemyType]||enemyTypes.goblin;
-    const eid='e'+Date.now().toString(36)+i;
-    enemies[eid]={id:eid,type:enemyType,name:t.name+(count>1?' #'+(i+1):''),emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,dead:false};
-  }
-  const playerOrder=[];
-  for(const pl of Object.values(roomData.players||{})){
-    if(!pl.heroId)continue;
-    const h=heroes.find(x=>x.id===pl.heroId);
-    playerOrder.push({uid:pl.uid,init:rollDice(20)+h.atk});
-  }
-  if(!playerOrder.length){await addLog('Нет игроков с персонажами — бой невозможен.');return;}
-  playerOrder.sort((a,b)=>b.init-a.init);
-  const enemyOrder=Object.values(enemies).map(e=>({eid:e.id,init:rollDice(20)+e.atk}));
-  enemyOrder.sort((a,b)=>b.init-a.init);
-  const combined=[
-    ...playerOrder.map(o=>({key:o.uid,init:o.init,kind:'player'})),
-    ...enemyOrder.map(o=>({key:'enemy:'+o.eid,init:o.init,kind:'enemy'}))
-  ].sort((a,b)=>b.init-a.init);
-  const order=combined.map(o=>o.key);
-  await update(ref(db,`rooms/${roomId}`),{
-    'combat/active':true,'combat/round':1,'combat/enemies':enemies,
-    'combat/returnScene':returnScene||roomData.game.scene,
-    'turn/order':order,'turn/turnIndex':0,'turn/phase':'combat','turn/round':1
-  });
-  if(roomData){
-    roomData.combat={active:true,round:1,enemies,returnScene:returnScene||roomData.game.scene};
-    roomData.turn={order,turnIndex:0,phase:'combat',round:1};
-  }
-  await addLog(`⚔️ Бой! Врагов: ${count} (${enemyTypes[enemyType].name})`);
-  await addLog('Инициатива: '+combined.map(o=>{
-    if(o.kind==='player')return `${roomData.players[o.key].name}(${o.init})`;
-    const eid=o.key.slice(6);
-    return `${enemies[eid].name}(${o.init})`;
-  }).join(', '));
-  renderTurnBanner();renderScene();renderCombat();renderPlayers();
-  if(String(order[0]).startsWith('enemy:'))await runEnemyTurn();
-}
-function renderCombat(){
-  const c=roomData?.combat;
-  if(!c?.active){$('combatContainer').innerHTML='<div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>';return;}
-  const t=roomData.turn;
-  const cur=currentTurnEntry();
-  const mine=isMyTurn();
-  const enemyTurn=isEnemyTurn();
-  const myPlayer=roomData.players?.[uid];
-  const myHero=heroes.find(x=>x.id===myPlayer?.heroId);
-  const combatants=[];
-  for(const pl of Object.values(roomData.players||{})){
-    if(!pl.heroId)continue;
-    const h=heroes.find(x=>x.id===pl.heroId);
-    const mx=pl.maxHp||h.hp;const hp=pl.hp??mx;
-    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===cur,dead:hp<=0});
-  }
-  for(const e of Object.values(c.enemies||{})){
-    const key='enemy:'+e.id;
-    combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:key===cur,dead:e.dead});
-  }
-  const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
-  const html=`
-    <div class="combat active">
-      <div class="combat-round">⚔️ Раунд ${t?.round||1} · Ход: ${esc(currentTurnName())}</div>
-      <div>
-        ${combatants.map(x=>{
-          if(x.kind==='player'){
-            const pct=Math.max(0,(x.hp/x.maxHp)*100);
-            const conds=(x.data.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
-            return `<div class="combatant ${x.isTurn?'turn':''} ${x.dead?'dead':''}">
-              <span class="emoji">${x.hero.emoji}</span>
-              <div class="info"><div class="name">${esc(x.data.name)}${x.data.uid===roomData.masterUid?' <span class="tag">МАСТЕР</span>':''}${conds}</div>
-              <div class="hpbar"><i style="width:${pct}%;background:linear-gradient(90deg,var(--emerald),var(--emerald-bright))"></i></div>
-              <div class="hp-text">${x.hp}/${x.maxHp} HP · ${x.hero.role}</div></div>
-            </div>`;
-          }else{
-            const pct=Math.max(0,(x.hp/x.maxHp)*100);
-            const sel=selectedTarget===x.data.id?'selected':'';
-            return `<div class="combatant ${x.isTurn?'enemy-turn':''} ${x.dead?'dead':''}">
-              <span class="emoji">${x.data.emoji}</span>
-              <div class="info"><div class="name">${esc(x.data.name)}</div>
-              <div class="hpbar"><i style="width:${pct}%;background:linear-gradient(90deg,var(--blood),var(--blood-bright))"></i></div>
-              <div class="hp-text">${x.hp}/${x.maxHp} HP · ⚔️+${x.data.atk} · 🛡️${x.data.ac}${x.dead?' · повержен':''}</div></div>
-              ${!x.dead&&mine?`<button class="target-btn ${sel}" data-target="${x.data.id}">${sel?'✔ выбран':'выбрать'}</button>`:''}
-            </div>`;
-          }
-        }).join('')}
-      </div>
-      ${mine&&!isMaster?`
-        <div class="combat-actions">
-          <button id="atkBtn" ${enemyList.length&&selectedTarget?'':'disabled'}>⚔️ Атака${selectedTarget?' → '+esc(c.enemies[selectedTarget]?.name||''):''}</button>
-          <button id="defBtn" class="secondary">🛡️ Защита (+2 HP)</button>
-          <button id="potionBtn" class="secondary" ${(myPlayer?.inventory||[]).some(i=>i.includes('Зелье'))?'':'disabled'}>🧪 Зелье (+6 HP)</button>
-          <button id="endTurnBtn" class="secondary">⏭️ Конец хода</button>
-          ${myHero.abilities.map(a=>{
-            const cd=myPlayer?.cooldowns?.[a.id]||0;
-            return `<button class="ability" data-ab="${a.id}" ${cd>0?'disabled':''}><b>${a.name} ${cd>0?'(⏳'+cd+')':''}</b><span class="cd">${a.desc}</span></button>`;
-          }).join('')}
-        </div>
-      `:`<p class="muted small" style="margin-top:12px;text-align:center;font-style:italic">${
-        enemyTurn?'👹 Ход врага — он атакует…'
-        :isMaster?'Вы — мастер. Игроки и враги ходят по очереди.'
-        :'Ожидаем хода '+esc(currentTurnName())+'…'
-      }</p>`}
-    </div>`;
-  $('combatContainer').innerHTML=html;
-
-  document.querySelectorAll('[data-target]').forEach(b=>b.onclick=()=>{selectedTarget=b.dataset.target;renderCombat();});
-  const atk=$('atkBtn');if(atk)atk.onclick=()=>doAttack();
-  const def=$('defBtn');if(def)def.onclick=()=>doDefend();
-  const pot=$('potionBtn');if(pot)pot.onclick=()=>doPotion();
-  const et=$('endTurnBtn');if(et)et.onclick=()=>endTurnAndMaybeEnemy();
-  document.querySelectorAll('[data-ab]').forEach(b=>b.onclick=()=>useAbility(b.dataset.ab));
-}
-
-async function doAttack(){
-  if(isMaster)return status('Мастер не участвует в бою.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const c=roomData.combat;
-  if(!selectedTarget)return status('Выберите цель.');
-  const e=c.enemies[selectedTarget];
-  if(!e||e.dead)return status('Цель повержена.');
-  const p=roomData.players[uid];
-  const h=heroes.find(x=>x.id===p.heroId);
-  const d20=rollDice(20);
-  const total=d20+h.atk;
-  const hit=d20===20||(d20!==1&&total>=e.ac);
-  if(hit){
-    let dmg=rollDamage(1,6,h.atk);
-    if(d20===20)dmg*=2;
-    const nh=Math.max(0,e.hp-dmg);
-    await showDice({label:`Атака: ${e.name}`,sub:`d20 (${d20}) + ${h.atk} против AC ${e.ac}`,value:d20,modifier:h.atk,total,dc:e.ac,verdict:d20===20?'КРИТ!':`ПОПАДАНИЕ −${dmg} HP`,good:true,name:p.name});
-    await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
-    await addLog(`⚔️ ${p.name} атакует ${e.name}: ${dmg} урона!${d20===20?' КРИТ!':''}`,p.name);
-    if(nh<=0){
-      await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`,p.name);
-      await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
-      await checkLevelUp(uid,(p.xp||0)+e.xp);
-      selectedTarget=null;
-      await checkCombatEnd();
-    }
-  }else{
-    await showDice({label:`Атака: ${e.name}`,sub:`d20 (${d20}) + ${h.atk} против AC ${e.ac}`,value:d20,modifier:h.atk,total,dc:e.ac,verdict:'ПРОМАХ',good:false,name:p.name});
-    await addLog(`⚔️ ${p.name} атакует ${e.name}: промах.`,p.name);
-  }
-  await endTurnAndMaybeEnemy();
-}
-async function doDefend(){
-  if(isMaster)return status('Мастер не участвует в бою.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const p=roomData.players[uid];
-  const h=heroes.find(x=>x.id===p.heroId);
-  const mx=p.maxHp||h.hp;
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+2)});
-  await addLog(`🛡️ ${p.name} встаёт в защиту (+2 HP)`,p.name);
-  await endTurnAndMaybeEnemy();
-}
-async function doPotion(){
-  if(isMaster)return status('Мастер не участвует в бою.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const p=roomData.players[uid];
-  const inv=p.inventory||[];
-  const idx=inv.findIndex(i=>i.includes('Зелье'));
-  if(idx<0)return;
-  const h=heroes.find(x=>x.id===p.heroId);
-  const mx=p.maxHp||h.hp;
-  const newInv=[...inv];newInv.splice(idx,1);
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
-  await addLog(`🧪 ${p.name} выпивает зелье: +6 HP`,p.name);
-  await endTurnAndMaybeEnemy();
-}
-async function useAbility(aid){
-  if(isMaster)return status('Мастер не участвует в бою.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const c=roomData.combat;
-  if(!c?.active)return;
-  const p=roomData.players[uid];
-  const h=heroes.find(x=>x.id===p.heroId);
-  const ab=h.abilities.find(a=>a.id===aid);
-  if(!ab)return;
-  const cd=p.cooldowns?.[aid]||0;
-  if(cd>0)return status('Кулдаун.');
-  const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
-  if(!enemyList.length)return status('Нет врагов.');
-
-  if(ab.type==='heal'){
-    const mx=p.maxHp||h.hp;
-    const heal=rollDamage(1,8,0);
-    await showDice({label:ab.name,sub:'Лечение 1d8',value:heal,modifier:0,total:heal,dc:0,verdict:`+${heal} HP`,good:true,name:p.name});
-    await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+heal)});
-    await addLog(`✨ ${p.name} использует ${ab.name}: +${heal} HP`,p.name);
-  }else if(ab.type==='buff'){
-    const mx=p.maxHp||h.hp;
-    await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+3)});
-    await addLog(`🛡️ ${p.name}: ${ab.name} (+3 HP)`,p.name);
-  }else if(ab.type==='multi'){
-    const targets=enemyList.slice(0,2);
-    for(const t of targets){
-      const d20=rollDice(20)+h.atk;
-      if(d20>=t.ac){
-        const dmg=rollDamage(1,6,h.atk);
-        const nh=Math.max(0,t.hp-dmg);
-        await update(ref(db,`rooms/${roomId}/combat/enemies/${t.id}`),{hp:nh,dead:nh<=0});
-        await addLog(`🏹 ${p.name} → ${t.name}: ${dmg} урона (${nh}/${t.maxHp})`,p.name);
-        if(nh<=0)await onKill(t);
-      }else{
-        await addLog(`🏹 ${p.name} промахнулся по ${t.name}`,p.name);
-      }
-    }
-    await showDice({label:ab.name,sub:'Две стрелы',value:20,modifier:0,total:0,dc:0,verdict:'ГРАД СТРЕЛ',good:true,name:p.name});
-  }else{
-    if(!selectedTarget)return status('Выберите цель.');
-    const e=c.enemies[selectedTarget];
-    if(!e||e.dead)return status('Цель повержена.');
-    let dmg=0;
-    if(aid==='fireball'||aid==='power'||aid==='sneak')dmg=rollDamage(2,6,h.atk);
-    else if(aid==='poison')dmg=rollDamage(1,6,h.atk);
-    const nh=Math.max(0,e.hp-dmg);
-    await showDice({label:`${ab.name}: ${e.name}`,sub:`Урон ${dmg}`,value:dmg,modifier:0,total:dmg,dc:0,verdict:`−${dmg} HP`,good:true,name:p.name});
-    await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
-    await addLog(`✨ ${p.name} → ${e.name}: ${ab.name}, ${dmg} урона`,p.name);
-    if(aid==='poison')await addLog(`☠️ ${e.name} отравлен!`);
-    if(aid==='stun')await addLog(`💫 ${e.name} оглушён!`);
-    if(nh<=0){await onKill(e);selectedTarget=null;}
-  }
-  await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[aid]:ab.cd});
-  await checkCombatEnd();
-  await endTurnAndMaybeEnemy();
-}
-async function onKill(e){
-  const p=roomData.players[uid];
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
-  await checkLevelUp(uid,(p.xp||0)+e.xp);
-}
-async function checkCombatEnd(){
-  const c=roomData.combat;
-  const alive=Object.values(c.enemies||{}).filter(e=>!e.dead);
-  if(!alive.length){
-    await addLog('🏆 Все враги повержены! Бой окончен.');
-    const ret=c.returnScene||roomData.game.scene;
-    const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}`),{
-      'combat/active':false,'combat/enemies':{},'combat/round':0,
-      'turn/order':order,'turn/phase':'explore','turn/turnIndex':0,'turn/round':1
-    });
-    if(roomData){
-      roomData.combat={active:false,enemies:{},round:0,returnScene:ret};
-      roomData.turn={order,turnIndex:0,phase:'explore',round:1};
-    }
-    if(ret&&scenes[ret]){
-      await update(ref(db,`rooms/${roomId}/game`),{scene:ret,sceneText:scenes[ret].text});
-      if(roomData)roomData.game={scene:ret,sceneText:scenes[ret].text};
-    }
-    renderTurnBanner();renderScene();renderCombat();renderPlayers();
-  }
-}
-async function checkLevelUp(playerUid,xp){
-  const p=roomData.players[playerUid];
-  const h=heroes.find(x=>x.id===p.heroId);if(!h)return;
-  let lvl=p.level||1;
-  while(xp>=xpForLevel(lvl))lvl++;
-  if(lvl>p.level){
-    const newMax=(p.maxHp||h.hp)+3;
-    await update(ref(db,`rooms/${roomId}/players/${playerUid}`),{level:lvl,maxHp:newMax,hp:newMax});
-    await addLog(`⬆️ ${p.name} достиг уровня ${lvl}! Макс. HP: ${newMax}`);
-  }
-}
-
-/* ---------- Слушатели ---------- */
+/* ---------- СЛУШАТЕЛИ ---------- */
 function startListeners(){
   for(const u of [unsubRoom,unsubLog])if(u)u();
   unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
     roomData=snap.val();
     if(!roomData){status('Комната удалена.');setConnected(false);return;}
     isMaster=roomData.masterUid===uid;
+    // Автоочистка мастера из очереди
     if(roomData.turn?.order?.includes(roomData.masterUid)){
       const cleaned=roomData.turn.order.filter(u=>u!==roomData.masterUid);
       update(ref(db,`rooms/${roomId}/turn`),{order:cleaned});
@@ -1639,34 +632,243 @@ function startListeners(){
     $('roomInfo').classList.remove('hidden');
     $('roomLabel').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
-    const heroPanel=$('heroPanel');
-    if(heroPanel)heroPanel.style.display=isMaster?'none':'';
-    const masterHint=$('masterHint');
-    if(masterHint)masterHint.classList.toggle('hidden',!isMaster);
-    renderPlayers();renderTurnBanner();renderScene();renderCombat();setConnected(true);
+    renderAll();
+    setConnected(true);
     status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
-    const dice=roomData.dice;
-    if(dice?.id && dice.id!==lastDiceKey && dice.uid!==uid){
-      lastDiceKey=dice.id;
-      showDice({
-        label:dice.label||'Бросок',sub:dice.sub||'',
-        value:dice.value,modifier:dice.modifier,total:dice.total,dc:dice.dc,
-        verdict:dice.verdict||'',good:dice.good!==false,name:dice.name||'Игрок',
-        enemy:!!dice.enemy
-      });
-    }
-    if(isMaster && roomData.combat?.active && isEnemyTurn() && !enemyTurnLock){
-      setTimeout(()=>{runEnemyTurn();},700);
-    }
   },err=>status('Ошибка чтения: '+err.message));
   unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{
     const v=snap.val()||{};
     renderFeed(Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,70));
   });
 }
-async function addLog(text,name){if(!roomId||!uid)return;await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});}
+async function addLog(text,name){
+  if(!roomId||!uid)return;
+  await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});
+}
 
-/* ---------- Комнаты ---------- */
+/* ---------- РЕНДЕР ---------- */
+function renderAll(){
+  renderRoom();
+  renderScenario();
+  renderMasterPanel();
+  renderTurnBanner();
+  renderMyChar();
+  renderTable();
+  renderVote();
+}
+function renderRoom(){
+  const ps=roomData?.players||{};
+  const list=Object.values(ps);
+  $('playerCount').textContent=list.length;
+  $('players').innerHTML=list.map(p=>{
+    const h=p.character;
+    const isTurn=roomData.turn?.order?.[roomData.turn?.turnIndex]===p.uid;
+    return `<div class="player-card ${isTurn?'turn':''} ${p.ejected?'ejected':''}">
+      <div class="player-name">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}${isTurn?' <span class="tag">▶ ХОД</span>':''}</div>
+      <div class="muted small">${p.isMaster?'ведущий':(h?h.profession.emoji+' '+esc(h.profession.name):'персонаж не выдан')}${p.ejected?' · ИЗГНАН':''}</div>
+    </div>`;
+  }).join('')||'<span class="muted">Пока никого нет</span>';
+}
+function renderScenario(){
+  const players=Object.values(roomData?.players||{}).filter(p=>!p.isMaster);
+  const n=players.length||5;
+  const capacity=Math.max(1,n-2);
+  const inGame=roomData.turn?.phase!=='lobby';
+  $('scenarioContainer').innerHTML=`
+    <div class="scenario">
+      <div class="scenario-title">☢ Ядерная война</div>
+      <div class="scenario-text">После ядерной войны остался бункер. В нём хватит места только для <b>${capacity}</b> человек, а претендентов — <b>${n}</b>. ${inGame?`Раунд ${roomData.turn.round} из 7.`:'Игра ещё не начата.'}
+
+Каждый должен доказать свою полезность. Слабые — останутся снаружи, где радиация убьёт их за неделю.
+
+Голосуйте. Договаривайтесь. Выживайте.</div>
+      <div class="scenario-stats">
+        <div class="scenario-stat"><b>${capacity}</b><span class="muted small">мест в бункере</span></div>
+        <div class="scenario-stat"><b>${n}</b><span class="muted small">претендентов</span></div>
+        <div class="scenario-stat"><b>10 лет</b><span class="muted small">изоляция</span></div>
+      </div>
+    </div>`;
+}
+function renderMasterPanel(){
+  const mp=$('masterPanel');
+  if(isMaster){
+    mp.classList.remove('hidden');
+    const t=roomData.turn;
+    const cur=t?.order?.[t.turnIndex];
+    const curName=cur?roomData.players?.[cur]?.name:'—';
+    const phase=t?.phase||'lobby';
+    const phaseText={
+      'lobby':'Лобби — ждём начала',
+      'reveal':`Раунд ${t.round} — раскрытие характеристик (${t.revealIndex+1}/7)`,
+      'vote':`Раунд ${t.round} — голосование`,
+      'finished':'Игра окончена'
+    }[phase]||phase;
+    $('masterTurnInfo').innerHTML=`Фаза: <b style="color:var(--gold-bright)">${phaseText}</b>${cur?' · Ход: '+esc(curName):''}`;
+  }else{
+    mp.classList.add('hidden');
+  }
+}
+function renderTurnBanner(){
+  const el=$('turnBanner');
+  const t=roomData?.turn;
+  if(!t||t.phase==='lobby'){
+    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isMaster?'Нажмите «Начать игру», когда все подключатся.':'Ждём мастера…'}</div></div>`;
+    return;
+  }
+  if(t.phase==='finished'){
+    el.innerHTML=`<div class="turn-banner"><div class="crown">🏆</div><div class="who">Игра окончена</div><div class="hint">Выжившие определены.</div></div>`;
+    return;
+  }
+  if(isMaster){
+    const cur=t.order?.[t.turnIndex];
+    const curName=cur?roomData.players?.[cur]?.name:'—';
+    el.innerHTML=`<div class="turn-banner"><div class="crown">🎬</div><div class="who">Режим мастера</div><div class="hint">Раунд ${t.round} · сейчас ход: <b style="color:var(--gold-bright)">${esc(curName)}</b></div></div>`;
+    return;
+  }
+  const cur=t.order?.[t.turnIndex];
+  const isMyTurn=cur===uid;
+  const curName=cur?roomData.players?.[cur]?.name:'—';
+  el.innerHTML=`<div class="turn-banner ${isMyTurn?'my-turn':''}"><div class="crown">👑</div><div class="who">${isMyTurn?'Ваш ход':'Ход: '+esc(curName)}</div><div class="hint">${isMyTurn?'Откройте характеристику или проголосуйте':'Ждите своей очереди…'} · Раунд ${t.round}</div></div>`;
+}
+function renderMyChar(){
+  const mc=$('myChar');
+  const me=roomData?.players?.[uid];
+  if(!me||me.isMaster){
+    mc.innerHTML='<div class="status muted">Мастер не играет — только ведёт игру.</div>';
+    $('revealBtn').disabled=true;
+    $('rerollBtn').disabled=true;
+    return;
+  }
+  if(!me.character){
+    mc.innerHTML='<div class="status muted">Персонаж будет выдан при старте игры.</div>';
+    $('revealBtn').disabled=true;
+    $('rerollBtn').disabled=true;
+    return;
+  }
+  const ch=me.character;
+  const r=ch.revealed||{};
+  const trait=(key,label,val)=>{
+    const open=r[key];
+    return `<div class="trait ${open?'revealed':'hidden-trait'}">
+      <div class="trait-label">${label}</div>
+      <div class="trait-value">${open?esc(val):'???'}</div>
+    </div>`;
+  };
+  const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
+  mc.innerHTML=`
+    <div class="character-card">
+      <div class="char-header">
+        <span class="char-avatar">${ch.profession.emoji}</span>
+        <div class="char-name">${esc(me.name)}</div>
+        <div class="muted small">${esc(ch.profession.name)} · ${esc(ch.biology.text)}</div>
+      </div>
+      <div class="traits">
+        ${trait('profession','Профессия',ch.profession.name+' ('+ch.profession.bonus+')')}
+        ${trait('biology','Биология',ch.biology.text)}
+        ${trait('health','Здоровье',ch.health.text)}
+        ${trait('hobby','Хобби',ch.hobby.text)}
+        ${trait('phobia','Фобия',ch.phobia.text)}
+        ${trait('inventory','Инвентарь',invText)}
+        ${trait('special','Спецусловие',ch.special.text)}
+      </div>
+    </div>`;
+  const myTurn=(roomData.turn?.order?.[roomData.turn?.turnIndex]===uid);
+  const phase=roomData.turn?.phase;
+  const canReveal=myTurn&&phase==='reveal'&&!me.ejected;
+  $('revealBtn').disabled=!canReveal;
+  // перекат только если игра ещё не началась
+  $('rerollBtn').disabled=roomData.turn?.phase!=='lobby'||me.rerolled;
+}
+function renderTable(){
+  const ps=Object.values(roomData?.players||{}).filter(p=>!p.isMaster);
+  const t=roomData?.turn;
+  if(t?.phase==='lobby'){
+    $('tableInfo').textContent=`В лобби: ${ps.length} игроков. Мест в бункере будет: ${Math.max(1,ps.length-2)}.`;
+  } else if(t?.phase==='finished'){
+    $('tableInfo').textContent='Игра окончена. Выжившие определены.';
+  } else {
+    $('tableInfo').textContent=`Раунд ${t.round}. Раскрыто характеристик: ${t.revealIndex}/7. Игроков за столом: ${ps.filter(p=>!p.ejected).length}.`;
+  }
+  $('tablePlayers').innerHTML=ps.map(p=>{
+    const ch=p.character;
+    const isTurn=t?.order?.[t?.turnIndex]===p.uid;
+    const showAll=p.ejected||t?.phase==='finished';
+    const r=ch?.revealed||{};
+    const row=(label,val,key)=>{
+      const open=showAll||r[key];
+      return `<span>${label}: <b>${open?esc(val):'—'}</b></span>`;
+    };
+    if(!ch)return `<div class="player-card ${isTurn?'turn':''} ${p.ejected?'ejected':''}"><div class="player-name">${esc(p.name)}</div><div class="muted small">Персонаж не выдан</div></div>`;
+    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
+    return `<div class="player-card ${isTurn?'turn':''} ${p.ejected?'ejected':''}">
+      <div class="player-name">${esc(p.name)}${isTurn?' <span class="tag">▶ ХОД</span>':''}</div>
+      <div class="player-traits">
+        ${row('Профессия',ch.profession.name,'profession')}
+        ${row('Биология',ch.biology.text,'biology')}
+        ${row('Здоровье',ch.health.text,'health')}
+        ${row('Хобби',ch.hobby.text,'hobby')}
+        ${row('Фобия',ch.phobia.text,'phobia')}
+        ${row('Инвентарь',invText,'inventory')}
+        ${row('Спец',ch.special.text,'special')}
+      </div>
+    </div>`;
+  }).join('')||'<span class="muted">Пока никого нет</span>';
+}
+function renderVote(){
+  const v=roomData?.votes;
+  const vc=$('voteContainer');
+  const me=roomData?.players?.[uid];
+  const canVote=!isMaster&&me&&!me.ejected&&v?.active;
+  if(!v?.active){
+    if(v?.finished&&v.result){
+      const r=v.result;
+      vc.innerHTML=`<div class="status ${r.ejected?'bad':'good'}">
+        <b>Итог голосования:</b> ${r.ejected?`изгнан ${esc(r.ejectedName)} (${r.maxVotes} голосов)`:'ничья — никто не изгнан'}
+      </div>`;
+    } else {
+      vc.innerHTML='<div class="status muted">Голосование не начато.</div>';
+    }
+    return;
+  }
+  const ps=Object.values(roomData?.players||{}).filter(p=>!p.isMaster&&!p.ejected);
+  const votes=v.votes||{};
+  const counts={};
+  for(const target of Object.values(votes)) counts[target]=(counts[target]||0)+1;
+  const votedCount=Object.keys(votes).length;
+  vc.innerHTML=`
+    <div class="status">Голосование идёт. Проголосовало: ${votedCount}/${ps.length}${me&&!me.ejected?` · ваш голос: ${myVote?esc(roomData.players?.[myVote]?.name||'—'):'не отдан'}`:''}</div>
+    <div class="vote-grid">
+      ${ps.map(p=>{
+        const cnt=counts[p.uid]||0;
+        const chosen=myVote===p.uid;
+        return `<button class="vote-btn ${chosen?'chosen':''}" data-vote="${p.uid}" ${(!canVote||p.uid===uid)?'disabled':''}>
+          <span>${esc(p.name)}${p.uid===uid?' (вы)':''}</span>
+          <span class="vote-count">${cnt>0?'⚑ '+cnt:''}</span>
+        </button>`;
+      }).join('')}
+    </div>`;
+  document.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>doVote(b.dataset.vote));
+}
+function renderFeed(items){
+  $('feed').innerHTML=items.map(e=>`<div class="entry"><span class="muted">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <b>${esc(e.name||'Система')}:</b> ${esc(e.text)}</div>`).join('')||'<div class="muted">Журнал пуст.</div>';
+}
+function status(s,good=false){$('connection').innerHTML=`<span class="${good?'good':'bad'}">${esc(s)}</span>`;}
+function setConnected(on){
+  ['sendChat','exportLog'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
+  $('createRoom').disabled=on;
+  $('joinRoom').disabled=on;
+}
+
+/* ---------- КОМНАТЫ ---------- */
+async function createRoom(){
+  if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
+  const name=$('playerName').value.trim().slice(0,24)||'Мастер';
+  roomId=Math.random().toString(36).slice(2,9).toUpperCase();
+  await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
+  history.replaceState(null,'',`?room=${roomId}`);
+  startListeners();
+  await addLog('создал комнату. Ждём игроков…',name);
+}
 async function connectRoom(code){
   if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
   roomId=code.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
@@ -1675,67 +877,81 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена.');
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
+
   if(room.masterUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();
-    await addLog('мастер вернулся в комнату',name);
+    await addLog('мастер вернулся',name);
     return;
   }
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now(),isMaster:false});
+
+  // обычный игрок
+  const players=room.players||{};
+  const playerCount=Object.values(players).filter(p=>!p.isMaster).length;
+  if(playerCount>=12){throw new Error('В комнате уже 12 игроков.');}
+
+  // генерируем персонажа
+  const character=generateCharacter(uid);
+
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+    uid,name,joinedAt:Date.now(),isMaster:false,ejected:false,
+    character,rerolled:false
+  });
+  // добавляем в очередь
   const order=room.turn?.order||[];
   if(!order.includes(uid)){
-    await update(ref(db,`rooms/${roomId}/turn`),{order:[...order,uid],phase:'explore'});
+    await update(ref(db,`rooms/${roomId}/turn`),{order:[...order,uid]});
   }
   history.replaceState(null,'',`?room=${roomId}`);
-  startListeners();await addLog('подключился',name);
-}
-async function createRoom(){
-  if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
-  const name=$('playerName').value.trim().slice(0,24)||'Мастер';
-  roomId=Math.random().toString(36).slice(2,9).toUpperCase();
-  const room=defaultRoom(uid,name);
-  await set(ref(db,`rooms/${roomId}`),room);
-  history.replaceState(null,'',`?room=${roomId}`);
-  startListeners();await addLog('создал комнату как мастер. Ожидаем игроков…',name);
+  startListeners();
+  await addLog('подключился и получил персонажа',name);
 }
 $('createRoom').onclick=()=>createRoom().catch(e=>status(e.message));
 $('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>status(e.message));
 
-/* ---------- Кнопки ---------- */
-$('pickHero').onclick=async()=>{
-  if(isMaster)return status('Мастер не выбирает персонажа.');
-  if(!roomId||!uid)return;
-  const name=$('playerName').value.trim().slice(0,24)||myPlayer?.name||'Игрок';
-  const p=roomData.players||{};
-  if(Object.values(p).some(x=>x.uid!==uid&&x.heroId===selected.id)){status('Герой занят.');return;}
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,heroId:selected.id,hp:selected.hp,maxHp:selected.hp,xp:0,level:1,gold:0,inventory:['🧪 Зелье лечения'],conditions:[],cooldowns:{}});
-  await addLog(`выбрал ${selected.name}`,name);
+/* ---------- КНОПКИ ИГРОКА ---------- */
+$('rerollBtn').onclick=async()=>{
+  const me=roomData?.players?.[uid];
+  if(!me||me.isMaster||me.rerolled)return;
+  if(roomData.turn?.phase!=='lobby')return status('Перекат возможен только в лобби.');
+  const character=generateCharacter(uid);
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{character,rerolled:true});
+  await addLog('перебросил персонажа',me.name);
 };
-$('heal').onclick=async()=>{
-  if(isMaster)return;
-  const p=roomData?.players?.[uid];if(!p?.heroId)return status('Сначала выберите персонажа.');
-  const h=heroes.find(x=>x.id===p.heroId);const mx=p.maxHp||h.hp;
-  if((p.hp??mx)>=mx)return status('Уже полное HP.');
-  const inv=p.inventory||[];const idx=inv.findIndex(i=>i.includes('Зелье'));
-  if(idx<0)return status('Нет зелий.');
-  const newInv=[...inv];newInv.splice(idx,1);
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
-  await addLog('использовал зелье (+6 HP)');
-};
-$('restBtn').onclick=async()=>{
-  if(!isMaster)return;
-  const ups={};
-  for(const p of Object.values(roomData.players||{})){
-    const h=heroes.find(x=>x.id===p.heroId);if(!h)continue;
-    ups[`players/${p.uid}/hp`]=p.maxHp||h.hp;
-    ups[`players/${p.uid}/conditions`]=[];
-    ups[`players/${p.uid}/cooldowns`]={};
+$('revealBtn').onclick=async()=>{
+  const t=roomData.turn;
+  if(t?.phase!=='reveal')return status('Сейчас не фаза раскрытия.');
+  if(t.order[t.turnIndex]!==uid)return status('Не ваш ход.');
+  const me=roomData.players?.[uid];
+  if(!me?.character)return;
+  const ch=me.character;
+  const r=ch.revealed||{};
+  // порядок характеристик
+  const order=['profession','biology','health','hobby','phobia','inventory','special'];
+  const key=order[t.revealIndex%7];
+  if(r[key])return status('Эта характеристика уже раскрыта.');
+  await update(ref(db,`rooms/${roomId}/players/${uid}/character/revealed/${key}`),true);
+  // сдвигаем ход
+  let nextIdx=(t.turnIndex+1)%t.order.length;
+  let nextReveal=t.revealIndex+1;
+  // если прошли всех — переход к голосованию
+  const aliveOrder=t.order.filter(u=>roomData.players?.[u]&&!roomData.players[u].ejected);
+  const currentAliveIndex=aliveOrder.indexOf(uid);
+  if(currentAliveIndex===aliveOrder.length-1||nextReveal>=7){
+    // последний игрок — конец фазы раскрытия
+    await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
+    await update(ref(db,`rooms/${roomId}/votes`),{active:true,votes:{},finished:false,result:null});
+    await addLog(`🗳️ Раунд ${t.round}: голосование началось!`);
+  } else {
+    // следующий живой
+    let idx=t.turnIndex;
+    for(let i=0;i<aliveOrder.length;i++){
+      idx=(idx+1)%t.order.length;
+      const next=roomData.players?.[t.order[idx]];
+      if(next&&!next.ejected)break;
+    }
+    await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,revealIndex:nextReveal});
   }
-  const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
-  ups['combat/active']=false;ups['combat/enemies']={};ups['combat/round']=0;
-  ups['turn/order']=order;ups['turn/phase']='explore';ups['turn/turnIndex']=0;ups['turn/round']=1;
-  await update(ref(db,`rooms/${roomId}`),ups);
-  await addLog('🔥 Мастер объявил долгий отдых');
 };
 $('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';await addLog(t);};
 $('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
@@ -1743,24 +959,161 @@ $('copyLink').onclick=async()=>{try{await navigator.clipboard.writeText($('invit
 $('exportLog').onclick=async()=>{
   const s=await get(ref(db,`rooms/${roomId}/log`));
   const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='dnd-zhurnal.txt';a.click();
-};
-$('clearRoom').onclick=async()=>{
-  if(!isMaster||!confirm('Сбросить приключение?'))return;
-  const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
-  await update(ref(db,`rooms/${roomId}`),{
-    'game/scene':'village','game/sceneText':scenes.village.text,
-    'combat/active':false,'combat/enemies':{},'combat/round':0,
-    'turn/order':order,'turn/phase':'explore','turn/turnIndex':0,'turn/round':1
-  });
-  await set(ref(db,`rooms/${roomId}/log`),null);
-  await addLog('Мастер начал приключение заново');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='bunker.txt';a.click();
 };
 
-/* ---------- Старт ---------- */
-selected=heroes[0];
-renderHeroes();
-renderTurnBanner();
+/* ---------- ГОЛОСОВАНИЕ ---------- */
+async function doVote(targetUid){
+  if(isMaster)return status('Мастер не голосует.');
+  const v=roomData?.votes;
+  if(!v?.active)return;
+  const me=roomData.players?.[uid];
+  if(!me||me.ejected)return status('Вы изгнаны.');
+  if(targetUid===uid)return status('Нельзя голосовать против себя.');
+  myVote=targetUid;
+  await update(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
+  await addLog(`голосует против ${roomData.players?.[targetUid]?.name||'—'}`,me.name);
+  // проверяем — все проголосовали?
+  const snap=await get(ref(db,`rooms/${roomId}/votes/votes`));
+  const votes=snap.val()||{};
+  const alivePlayers=Object.values(roomData.players||{}).filter(p=>!p.isMaster&&!p.ejected);
+  if(Object.keys(votes).length>=alivePlayers.length){
+    await finishVote();
+  }
+}
+async function finishVote(){
+  const snap=await get(ref(db,`rooms/${roomId}/votes/votes`));
+  const votes=snap.val()||{};
+  const counts={};
+  for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
+  // определяем максимум
+  let max=0,maxUid=null,tie=false;
+  for(const [u,c] of Object.entries(counts)){
+    if(c>max){max=c;maxUid=u;tie=false;}
+    else if(c===max){tie=true;}
+  }
+  const result={
+    ejected: maxUid&&!tie,
+    ejectedUid:maxUid,
+    ejectedName:maxUid?roomData.players?.[maxUid]?.name:'',
+    maxVotes:max,
+    tie
+  };
+  await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
+  if(result.ejected){
+    await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{ejected:true});
+    await addLog(`🚪 ${result.ejectedName} изгнан из бункера (${max} голосов)!`);
+  }else{
+    await addLog('🤝 Голосование завершилось ничьей — никто не изгнан.');
+  }
+  // проверяем — не пора ли закончить
+  const ps=Object.values(roomData.players||{}).filter(p=>!p.isMaster&&!p.ejected);
+  // изгоняем — те, кто остался без ejected
+  const snapAfter=await get(ref(db,`rooms/${roomId}/players`));
+  const allPlayers=snapAfter.val()||{};
+  const aliveAfter=Object.values(allPlayers).filter(p=>!p.isMaster&&!p.ejected);
+  const totalPlayers=Object.values(allPlayers).filter(p=>!p.isMaster).length;
+  const capacity=Math.max(1,totalPlayers-2);
+  if(aliveAfter.length<=capacity){
+    // финал
+    const winners=aliveAfter.map(p=>({uid:p.uid,name:p.name,profession:p.character?.profession?.name||'—'}));
+    await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:true,winners});
+    await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
+    await addLog(`🏆 Игра окончена! Выжившие: ${winners.map(w=>w.name).join(', ')}`);
+    return;
+  }
+  // следующий раунд
+  const order=Object.values(allPlayers).filter(p=>!p.isMaster&&!p.ejected).map(p=>p.uid);
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    order,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1,revealIndex:0
+  });
+  await update(ref(db,`rooms/${roomId}/votes`),{active:false,votes:{},finished:false,result});
+  // сбрасываем revealed для нового раунда? нет — они уже раскрыты один раз за игру
+  // (характеристики раскрываются один раз за игру, поэтому шаг идёт к 7)
+  await addLog(`⏭️ Раунд ${(roomData.turn?.round||0)+1} начинается. Раскрытие: ${['Профессия','Биология','Здоровье','Хобби','Фобия','Инвентарь','Спец'][roomData.turn?.revealIndex||0]}`);
+}
+// Принудительное завершение голосования мастером
+$('forceVoteBtn').onclick=async()=>{
+  if(!isMaster)return;
+  await finishVote();
+};
+
+/* ---------- МАСТЕР-ПАНЕЛЬ ---------- */
+$('startGameBtn').onclick=async()=>{
+  if(!isMaster)return;
+  const ps=Object.values(roomData.players||{}).filter(p=>!p.isMaster);
+  if(ps.length<5)return status('Нужно минимум 5 игроков.');
+  if(ps.length>12)return status('Максимум 12 игроков.');
+  // раздаём персонажей тем, у кого нет
+  const updates={};
+  for(const p of ps){
+    if(!p.character){
+      updates[`players/${p.uid}/character`]=generateCharacter(p.uid);
+      updates[`players/${p.uid}/rerolled`]=false;
+    }
+  }
+  if(Object.keys(updates).length){
+    await update(ref(db,`rooms/${roomId}`),updates);
+  }
+  const order=ps.map(p=>p.uid);
+  const capacity=Math.max(1,ps.length-2);
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    order,turnIndex:0,phase:'reveal',round:1,revealIndex:0
+  });
+  await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:false,winners:[]});
+  await addLog(`🎬 Игра началась! Игроков: ${ps.length}. Мест в бункере: ${capacity}. Раунд 1: Профессия.`);
+};
+$('nextPhaseBtn').onclick=async()=>{
+  if(!isMaster)return;
+  const t=roomData.turn;
+  if(t.phase==='lobby')return;
+  if(t.phase==='reveal'){
+    await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
+    await update(ref(db,`rooms/${roomId}/votes`),{active:true,votes:{},finished:false,result:null});
+    await addLog('🗳️ Мастер начал голосование.');
+  } else if(t.phase==='vote'){
+    await finishVote();
+  }
+};
+$('resetGameBtn').onclick=async()=>{
+  if(!isMaster||!confirm('Сбросить игру? Все персонажи будут разданы заново.'))return;
+  const players=Object.values(roomData.players||{});
+  const updates={};
+  for(const p of players){
+    if(p.isMaster)continue;
+    updates[`players/${p.uid}/ejected`]=false;
+    updates[`players/${p.uid}/character`]=generateCharacter(p.uid);
+    updates[`players/${p.uid}/rerolled`]=false;
+  }
+  const order=players.filter(p=>!p.isMaster).map(p=>p.uid);
+  updates['turn/order']=order;
+  updates['turn/turnIndex']=0;
+  updates['turn/phase']='lobby';
+  updates['turn/round']=0;
+  updates['turn/revealIndex']=0;
+  updates['bunker/started']=false;
+  updates['bunker/finished']=false;
+  updates['bunker/winners']=[];
+  updates['votes/active']=false;
+  updates['votes/votes']={};
+  updates['votes/finished']=false;
+  updates['votes/result']=null;
+  await update(ref(db,`rooms/${roomId}`),updates);
+  await set(ref(db,`rooms/${roomId}/log`),null);
+  await addLog('🔄 Мастер сбросил игру. Все получили новых персонажей.');
+};
+
+/* ---------- СТАРТ ---------- */
+$('scenarioContainer').innerHTML=`
+  <div class="scenario">
+    <div class="scenario-title">☢ Ядерная война</div>
+    <div class="scenario-text">После ядерной войны остался бункер. В нём хватит места только для нескольких человек, а претендентов — больше. Каждый должен доказать свою полезность. Слабые — останутся снаружи, где радиация убьёт их за неделю. Голосуйте. Договаривайтесь. Выживайте.</div>
+    <div class="scenario-stats">
+      <div class="scenario-stat"><b>?</b><span class="muted small">мест в бункере</span></div>
+      <div class="scenario-stat"><b>?</b><span class="muted small">претендентов</span></div>
+      <div class="scenario-stat"><b>10 лет</b><span class="muted small">изоляция</span></div>
+    </div>
+  </div>`;
 status('Введите имя и создайте комнату.');
 </script>
 </body>
