@@ -309,7 +309,20 @@ button.danger{
   0%,100%{box-shadow:0 0 0 0 rgba(212,169,74,.3), inset 0 0 20px rgba(212,169,74,.05)}
   50%{box-shadow:0 0 30px 4px rgba(212,169,74,.4), inset 0 0 30px rgba(212,169,74,.15)}
 }
+.turn-banner.enemy-turn{
+  border-color:var(--blood-bright);
+  background:
+    linear-gradient(90deg, transparent, rgba(195,74,74,.18), transparent),
+    linear-gradient(160deg, #2a1414, #1a0c0c);
+  animation:enemyGlow 1.5s infinite;
+}
+@keyframes enemyGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(195,74,74,.3), inset 0 0 20px rgba(195,74,74,.05)}
+  50%{box-shadow:0 0 30px 4px rgba(195,74,74,.5), inset 0 0 30px rgba(195,74,74,.2)}
+}
+.turn-banner.enemy-turn .who{color:var(--blood-bright)}
 .turn-banner .crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);color:var(--gold-bright);background:var(--bg-deep);padding:0 10px;font-size:18px;}
+.turn-banner.enemy-turn .crown{color:var(--blood-bright)}
 
 .dice-overlay{
   position:fixed;inset:0;
@@ -336,6 +349,8 @@ button.danger{
 .d20.crit .num{color:var(--emerald-bright);text-shadow:0 0 30px var(--emerald-bright)}
 .d20.fumble{filter:drop-shadow(0 0 60px var(--blood-bright))}
 .d20.fumble .num{color:var(--blood-bright);text-shadow:0 0 30px var(--blood-bright)}
+.d20.enemy-die{filter:drop-shadow(0 0 50px var(--blood-bright))}
+.d20.enemy-die .num{color:var(--blood-bright);text-shadow:0 0 30px var(--blood-bright)}
 .dice-label{font-family:'Cinzel', serif;color:var(--gold-bright);font-size:1.3rem;letter-spacing:3px;text-align:center;}
 .dice-sub{font-style:italic;color:var(--muted);text-align:center;max-width:500px;font-size:1rem;}
 .dice-verdict{font-family:'Cinzel', serif;font-size:1.6rem;letter-spacing:3px;text-align:center;margin-top:8px;}
@@ -362,10 +377,12 @@ button.danger{
   transition:.2s;
 }
 .combatant.turn{border-color:var(--gold-bright);background:linear-gradient(160deg, #3a2e18, var(--panel2));box-shadow:0 0 20px rgba(212,169,74,.3);}
+.combatant.enemy-turn{border-color:var(--blood-bright);background:linear-gradient(160deg, #3a1818, var(--panel2));box-shadow:0 0 20px rgba(195,74,74,.4);}
 .combatant.dead{opacity:.35;filter:grayscale(1)}
 .combatant .emoji{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(212,169,74,.4))}
 .combatant .info{flex:1;min-width:0}
 .combatant .name{font-family:'Cinzel', serif;font-weight:600;color:var(--gold-bright);font-size:.95rem;letter-spacing:1px;}
+.combatant.enemy-turn .name{color:var(--blood-bright)}
 .combatant .hpbar{height:8px;background:#0a0604;border-radius:3px;overflow:hidden;margin-top:6px;border:1px solid rgba(212,169,74,.2);}
 .combatant .hpbar i{display:block;height:100%;transition:.4s;box-shadow:inset 0 0 8px rgba(0,0,0,.6);}
 .combatant .hp-text{font-size:.82rem;color:var(--muted);margin-top:3px;font-style:italic}
@@ -571,7 +588,7 @@ footer{
     <h3>Открыть сцену</h3>
     <div class="scene-picker" id="scenePicker"></div>
     <div class="actions" style="margin-top:10px">
-      <button id="masterSkipTurn" class="secondary">⏭️ Пропустить ход игрока</button>
+      <button id="masterSkipTurn" class="secondary">⏭️ Пропустить ход</button>
       <button id="masterForceCombat" class="secondary">⚔️ Начать бой (goblin ×2)</button>
       <button id="restBtn" class="secondary">🔥 Долгий отдых</button>
     </div>
@@ -585,32 +602,6 @@ footer{
 <div id="combatContainer">
   <div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>
 </div>
-</section>
-
-<!-- СВОБОДНЫЙ БРОСОК -->
-<section class="panel">
-<h2>🎲 Свободный бросок</h2>
-<p class="muted small">Для проверок вне боя. В бою кубик появляется автоматически. Только в свой ход.</p>
-<div class="row">
-  <div><label for="dc">Сложность</label>
-    <select id="dc">
-      <option value="8">8 — легко</option>
-      <option value="11" selected>11 — обычно</option>
-      <option value="14">14 — сложно</option>
-      <option value="17">17 — героически</option>
-    </select>
-  </div>
-  <div><label for="rollMode">Режим</label>
-    <select id="rollMode">
-      <option value="normal">Обычный</option>
-      <option value="adv">Преимущество</option>
-      <option value="dis">Помеха</option>
-    </select>
-  </div>
-  <div><label for="bonusMod">Модификатор</label><input id="bonusMod" type="number" value="0" min="-5" max="10"></div>
-</div>
-<div class="actions"><button id="roll" disabled>Бросить d20</button></div>
-<div id="rollResult" class="status">Броски появятся здесь.</div>
 </section>
 
 <!-- ЖУРНАЛ -->
@@ -695,6 +686,7 @@ let selected=null,myPlayer=null,isMaster=false;
 let unsubRoom=null,unsubLog=null;
 let selectedTarget=null;
 let lastDiceKey=null;
+let enemyTurnLock=false; // защита от двойного запуска хода врага
 
 try{
   app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);
@@ -815,15 +807,13 @@ function status(s,good=false){$('connection').innerHTML=`<span class="${good?'go
 function setConnected(on){
   ['sendChat','exportLog'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
   ['clearRoom'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||!isMaster;});
-  // Кнопки персонажа активны только для игроков
   ['pickHero','heal'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||isMaster;});
-  const roll=$('roll');if(roll)roll.disabled=!on||isMaster||!isMyTurn();
 }
 function defaultRoom(masterUid,name){
   return {createdAt:Date.now(),masterUid,
     players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,maxHp:null,xp:0,level:1,gold:0,inventory:[],conditions:[],cooldowns:{},joinedAt:Date.now(),isMaster:true}},
     game:{scene:'village',sceneText:scenes.village.text},
-    /* очередь ходов только для игроков */
+    /* очередь: список uid игроков И врагов (в бою) */
     turn:{order:[],turnIndex:0,phase:'idle',round:1},
     combat:{active:false,round:0,enemies:{},returnScene:null},
     dice:{id:null,uid:null,name:null,label:null,value:0,modifier:0,total:0,dc:0,verdict:'',sub:'',ts:0}
@@ -840,10 +830,25 @@ function isMyTurn(){
   if(!me?.heroId)return false;
   return t.order[t.turnIndex]===uid;
 }
-function currentTurnName(){
+function currentTurnEntry(){
   const t=roomData?.turn;
-  if(!t?.order?.length)return '—';
-  return roomData.players?.[t.order[t.turnIndex]]?.name||'?';
+  if(!t?.order?.length)return null;
+  return t.order[t.turnIndex];
+}
+function isEnemyTurn(){
+  const cur=currentTurnEntry();
+  if(!cur)return false;
+  return String(cur).startsWith('enemy:');
+}
+function currentTurnName(){
+  const cur=currentTurnEntry();
+  if(!cur)return '—';
+  if(String(cur).startsWith('enemy:')){
+    const eid=String(cur).slice(6);
+    const e=roomData?.combat?.enemies?.[eid];
+    return e?`${e.emoji} ${e.name}`:'Враг';
+  }
+  return roomData.players?.[cur]?.name||'?';
 }
 
 /* ---------- Рендер ---------- */
@@ -866,14 +871,13 @@ function renderStats(){
 }
 function renderPlayers(){
   const ps=Object.values(roomData?.players||{});
-  const turn=roomData?.turn;
-  const currentUid=turn?.order?.[turn.turnIndex];
+  const cur=currentTurnEntry();
   $('players').innerHTML=ps.map(p=>{
     const h=heroes.find(x=>x.id===p.heroId);const lvl=p.level||1;
     const maxHp=p.maxHp||h?.hp||10;const hp=p.hp??maxHp;
     const pct=Math.max(0,Math.min(100,(hp/maxHp)*100));
     const conds=(p.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
-    const isTurn=p.uid===currentUid;
+    const isTurn=p.uid===cur;
     const masterTag=p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':'';
     return `<div class="player" style="${isTurn?'outline:2px solid var(--gold-bright);box-shadow:0 0 16px rgba(212,169,74,.4)':''}">${esc(p.name)}${masterTag}${isTurn?'<span class="tag">▶ ХОД</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):(p.uid===roomData.masterUid?'ведущий':'—')} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
   }).join('')||'<span class="muted">Пока никого нет</span>';
@@ -889,24 +893,33 @@ function renderTurnBanner(){
     el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание партии</div><div class="hint">${isMaster?'Ждём, пока игроки подключатся и выберут персонажей.':'Ожидаем других игроков и мастера…'}</div></div>`;
     return;
   }
+  const cur=currentTurnEntry();
+  const enemyTurn=isEnemyTurn();
   if(isMaster){
-    const cur=currentTurnName();
     const phase=t.phase==='combat'?`Бой, раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
     el.innerHTML=`
-      <div class="turn-banner">
-        <div class="crown">🎬</div>
+      <div class="turn-banner ${enemyTurn?'enemy-turn':''}">
+        <div class="crown">${enemyTurn?'👹':'🎬'}</div>
         <div class="who">Режим мастера</div>
-        <div class="hint">Ход игрока: <b style="color:var(--gold-bright)">${esc(cur)}</b> · ${phase} · вы не ходите</div>
+        <div class="hint">Сейчас: <b style="color:${enemyTurn?'var(--blood-bright)':'var(--gold-bright)'}">${esc(currentTurnName())}</b> · ${phase} · вы не ходите</div>
+      </div>`;
+    return;
+  }
+  if(enemyTurn){
+    el.innerHTML=`
+      <div class="turn-banner enemy-turn">
+        <div class="crown">👹</div>
+        <div class="who">Ход врага: ${esc(currentTurnName())}</div>
+        <div class="hint">Враг атакует…</div>
       </div>`;
     return;
   }
   const mine=isMyTurn();
-  const cur=currentTurnName();
   const phase=t.phase==='combat'?`Раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
   el.innerHTML=`
     <div class="turn-banner ${mine?'my-turn':''}">
       <div class="crown">👑</div>
-      <div class="who">Ход: ${esc(cur)}</div>
+      <div class="who">Ход: ${esc(currentTurnName())}</div>
       <div class="hint">${mine?'Ваш ход — выбирайте действие':'Ждите своей очереди…'} · ${phase}</div>
     </div>`;
 }
@@ -935,9 +948,8 @@ function renderScene(){
     $('masterScene').classList.remove('hidden');
     $('scenePicker').innerHTML=Object.entries(scenes).map(([id,s])=>`<button class="secondary" data-scene="${id}">${s.title}</button>`).join('');
     document.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>setScene(b.dataset.scene));
-    const cur=roomData.players?.[roomData.turn?.order?.[roomData.turn?.turnIndex]];
     const info=$('masterTurnInfo');
-    if(info)info.innerHTML=cur?`Сейчас ход: <b style="color:var(--gold-bright)">${esc(cur.name)}</b>`:'Игроки ещё не начали.';
+    if(info)info.innerHTML=`Сейчас: <b style="color:var(--gold-bright)">${esc(currentTurnName())}</b>`;
     const skip=$('masterSkipTurn');if(skip)skip.onclick=()=>endTurn();
     const fc=$('masterForceCombat');if(fc)fc.onclick=()=>startCombat('goblin',2,roomData.game.scene);
   }else{
@@ -950,7 +962,7 @@ async function setScene(sceneId){
   await addLog(`🎬 Мастер открыл сцену: ${scenes[sceneId].title}`);
 }
 
-/* ---------- Выбор варианта (только игрок в свой ход) ---------- */
+/* ---------- Выбор варианта ---------- */
 async function chooseOption(idx){
   if(isMaster)return status('Вы — мастер. Игровые решения принимают игроки.');
   if(!isMyTurn())return status('Не ваш ход.');
@@ -994,18 +1006,18 @@ async function chooseOption(idx){
       if(choice.fail)await addLog(choice.fail);
       if(choice.failCombat){
         await startCombat(choice.failCombat, choice.count||1, choice.next||sceneId);
-      }else{
-        if(choice.damageAll){
-          for(const pl of Object.values(roomData.players||{})){
-            if(!pl.heroId)continue;
-            const ph=heroes.find(x=>x.id===pl.heroId);
-            const mx=pl.maxHp||ph.hp;
-            await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
-          }
-          await addLog(`💥 Все получают ${choice.damageAll} урона!`);
-        }
-        if(choice.next)await setScene(choice.next);
+        return;
       }
+      if(choice.damageAll){
+        for(const pl of Object.values(roomData.players||{})){
+          if(!pl.heroId)continue;
+          const ph=heroes.find(x=>x.id===pl.heroId);
+          const mx=pl.maxHp||ph.hp;
+          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
+        }
+        await addLog(`💥 Все получают ${choice.damageAll} урона!`);
+      }
+      if(choice.next)await setScene(choice.next);
     }
     await endTurn();
     return;
@@ -1026,15 +1038,18 @@ async function chooseOption(idx){
 }
 
 /* ---------- Кубик ---------- */
-async function showDice({label,sub,value,modifier,total,dc,verdict,good,name}){
+async function showDice({label,sub,value,modifier,total,dc,verdict,good,name,enemy=false}){
   $('diceLabel').textContent=label;
   $('diceSub').textContent=sub;
   $('diceVerdict').textContent=verdict;
   $('diceVerdict').className='dice-verdict '+(good?'good':'bad');
   const d20=$('d20');
-  d20.classList.remove('crit','fumble');
-  if(value===20)d20.classList.add('crit');
-  if(value===1)d20.classList.add('fumble');
+  d20.classList.remove('crit','fumble','enemy-die');
+  if(enemy)d20.classList.add('enemy-die');
+  else{
+    if(value===20)d20.classList.add('crit');
+    if(value===1)d20.classList.add('fumble');
+  }
   $('d20num').textContent='?';
   $('diceOverlay').classList.add('show');
   d20.classList.add('rolling');
@@ -1044,7 +1059,7 @@ async function showDice({label,sub,value,modifier,total,dc,verdict,good,name}){
   d20.classList.remove('rolling');
   $('d20num').textContent=value;
   $('diceContinue').classList.remove('hidden');
-  await addLog(`🎲 ${name}: ${label} — d20(${value})+${modifier}=${total} vs ${dc} — ${verdict}`);
+  if(!enemy)await addLog(`🎲 ${name}: ${label} — d20(${value})+${modifier}=${total} vs ${dc} — ${verdict}`);
 }
 function hideDice(){
   $('diceOverlay').classList.remove('show');
@@ -1053,25 +1068,105 @@ function hideDice(){
 $('diceContinue').onclick=()=>hideDice();
 
 /* ---------- Очередь: смена хода ---------- */
+/* Возвращает true, если ход перешёл врагу (значит, надо запустить его атаку) */
 async function endTurn(){
   const t=roomData?.turn;
-  if(!t?.order?.length)return;
-  // Убираем из очереди тех, кто без персонажа
-  const alive=t.order.filter(u=>roomData.players?.[u]?.heroId);
-  if(!alive.length)return;
+  if(!t?.order?.length)return false;
   let idx=(t.turnIndex+1)%t.order.length;
   let round=t.round||1;
+  if(idx===0)round++;
+  // пропускаем мёртвых/без персонажа (до 20 попыток)
   let guard=0;
-  while(!roomData.players?.[t.order[idx]]?.heroId && guard<20){
+  while(guard<30){
+    const entry=t.order[idx];
+    if(String(entry).startsWith('enemy:')){
+      const eid=String(entry).slice(6);
+      const e=roomData.combat?.enemies?.[eid];
+      if(e&&!e.dead)break;
+    }else{
+      const p=roomData.players?.[entry];
+      if(p?.heroId&&(p.hp??1)>0)break;
+    }
     idx=(idx+1)%t.order.length;
     if(idx===0)round++;
     guard++;
   }
-  if(idx===0)round++;
-  const nextUid=t.order[idx];
   await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,round});
-  await addLog(`⏭️ Ход → ${roomData.players?.[nextUid]?.name||'?'} (раунд ${round})`);
-  if(roomData.combat?.active)await enemiesTurn();
+  const nextEntry=t.order[idx];
+  const isEnemy=String(nextEntry).startsWith('enemy:');
+  await addLog(`⏭️ Ход → ${isEnemy?'👹 ':''}${currentTurnNameByIdx(idx)} (раунд ${round})`);
+  return isEnemy;
+}
+function currentTurnNameByIdx(idx){
+  const t=roomData?.turn;
+  if(!t?.order?.[idx])return '?';
+  const entry=t.order[idx];
+  if(String(entry).startsWith('enemy:')){
+    const eid=String(entry).slice(6);
+    const e=roomData.combat?.enemies?.[eid];
+    return e?`${e.emoji} ${e.name}`:'Враг';
+  }
+  return roomData.players?.[entry]?.name||'?';
+}
+async function endTurnAndMaybeEnemy(){
+  const nextIsEnemy=await endTurn();
+  if(nextIsEnemy)await runEnemyTurn();
+}
+/* Ход врага — автоматически */
+async function runEnemyTurn(){
+  if(enemyTurnLock)return;
+  enemyTurnLock=true;
+  try{
+    // ждём немного, чтобы UI успел обновиться
+    await new Promise(r=>setTimeout(r,500));
+    // перечитываем актуальные данные
+    const snap=await get(ref(db,`rooms/${roomId}`));
+    const data=snap.val();
+    if(!data?.combat?.active){enemyTurnLock=false;return;}
+    const t=data.turn;
+    const entry=t?.order?.[t.turnIndex];
+    if(!entry||!String(entry).startsWith('enemy:')){enemyTurnLock=false;return;}
+    const eid=String(entry).slice(6);
+    const e=data.combat.enemies?.[eid];
+    if(!e||e.dead){
+      // враг мёртв — сразу передаём ход дальше
+      enemyTurnLock=false;
+      await endTurnAndMaybeEnemy();
+      return;
+    }
+    // выбираем случайного живого игрока
+    const alive=Object.values(data.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
+    if(!alive.length){enemyTurnLock=false;return;}
+    const target=alive[Math.floor(Math.random()*alive.length)];
+    const h=heroes.find(x=>x.id===target.heroId);
+    if(!h){enemyTurnLock=false;return;}
+    const d20=rollDice(20)+e.atk;
+    const hit=d20>=h.ac;
+    // Показываем кубик от имени врага всем
+    await update(ref(db,`rooms/${roomId}/dice`),{
+      id:Date.now(),uid:'enemy',name:`${e.emoji} ${e.name}`,
+      label:`Атака по ${target.name}`,
+      value:d20-e.atk,modifier:e.atk,total:d20,dc:h.ac,
+      verdict:hit?'ПОПАДАНИЕ':'ПРОМАХ',good:hit,
+      sub:`d20 + ${e.atk} против AC ${h.ac}`,
+      ts:Date.now(),enemy:true
+    });
+    if(hit){
+      const dmg=rollDamage(1,6,e.atk);
+      const nh=Math.max(0,(target.hp??h.hp)-dmg);
+      await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
+      await addLog(`👹 ${e.name} бьёт ${target.name}: ${dmg} урона (${nh} HP)`);
+      if(nh<=0)await addLog(`💀 ${target.name} падает без сознания!`);
+    }else{
+      await addLog(`👹 ${e.name} промахнулся по ${target.name}`);
+    }
+    // после хода врага — передаём дальше
+    enemyTurnLock=false;
+    await endTurnAndMaybeEnemy();
+  }catch(err){
+    console.error('enemy turn error',err);
+    enemyTurnLock=false;
+  }
 }
 
 /* ---------- Бой ---------- */
@@ -1082,21 +1177,37 @@ async function startCombat(enemyType,count,returnScene){
     const eid='e'+Date.now().toString(36)+i;
     enemies[eid]={id:eid,type:enemyType,name:t.name+(count>1?' #'+(i+1):''),emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,dead:false};
   }
-  const order=[];
+  // Инициатива игроков
+  const playerOrder=[];
   for(const pl of Object.values(roomData.players||{})){
     if(!pl.heroId)continue;
     const h=heroes.find(x=>x.id===pl.heroId);
-    order.push({uid:pl.uid,init:rollDice(20)+h.atk});
+    playerOrder.push({uid:pl.uid,init:rollDice(20)+h.atk});
   }
-  if(!order.length){
+  if(!playerOrder.length){
     await addLog('Нет игроков с персонажами — бой невозможен.');
     return;
   }
-  order.sort((a,b)=>b.init-a.init);
+  playerOrder.sort((a,b)=>b.init-a.init);
+  // Инициатива врагов (просто d20)
+  const enemyOrder=Object.values(enemies).map(e=>({eid:e.id,init:rollDice(20)+e.atk}));
+  enemyOrder.sort((a,b)=>b.init-a.init);
+  // Общий порядок: смешиваем по убыванию инициативы
+  const combined=[
+    ...playerOrder.map(o=>({key:o.uid,init:o.init,kind:'player'})),
+    ...enemyOrder.map(o=>({key:'enemy:'+o.eid,init:o.init,kind:'enemy'}))
+  ].sort((a,b)=>b.init-a.init);
+  const order=combined.map(o=>o.key);
   await update(ref(db,`rooms/${roomId}/combat`),{active:true,round:1,enemies,returnScene:returnScene||roomData.game.scene});
-  await update(ref(db,`rooms/${roomId}/turn`),{order:order.map(o=>o.uid),turnIndex:0,phase:'combat',round:1});
+  await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'combat',round:1});
   await addLog(`⚔️ Бой! Врагов: ${count} (${enemyTypes[enemyType].name})`);
-  await addLog('Инициатива: '+order.map(o=>roomData.players[o.uid].name+'('+o.init+')').join(', '));
+  await addLog('Инициатива: '+combined.map(o=>{
+    if(o.kind==='player')return `${roomData.players[o.key].name}(${o.init})`;
+    const eid=o.key.slice(6);
+    return `${enemies[eid].name}(${o.init})`;
+  }).join(', '));
+  // если первый ход — враг, запускаем его
+  if(String(order[0]).startsWith('enemy:'))await runEnemyTurn();
 }
 function renderCombat(){
   const c=roomData?.combat;
@@ -1105,8 +1216,9 @@ function renderCombat(){
     return;
   }
   const t=roomData.turn;
-  const currentUid=t?.order?.[t.turnIndex];
+  const cur=currentTurnEntry();
   const mine=isMyTurn();
+  const enemyTurn=isEnemyTurn();
   const myPlayer=roomData.players?.[uid];
   const myHero=heroes.find(x=>x.id===myPlayer?.heroId);
 
@@ -1115,16 +1227,17 @@ function renderCombat(){
     if(!pl.heroId)continue;
     const h=heroes.find(x=>x.id===pl.heroId);
     const mx=pl.maxHp||h.hp;const hp=pl.hp??mx;
-    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===currentUid,dead:hp<=0});
+    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===cur,dead:hp<=0});
   }
   for(const e of Object.values(c.enemies||{})){
-    combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:false,dead:e.dead});
+    const key='enemy:'+e.id;
+    combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:key===cur,dead:e.dead});
   }
   const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
 
   const html=`
     <div class="combat active">
-      <div class="combat-round">⚔️ Раунд ${t?.round||1} · Ход: ${esc(roomData.players?.[currentUid]?.name||'?')}</div>
+      <div class="combat-round">⚔️ Раунд ${t?.round||1} · Ход: ${esc(currentTurnName())}</div>
       <div>
         ${combatants.map(x=>{
           if(x.kind==='player'){
@@ -1139,7 +1252,7 @@ function renderCombat(){
           }else{
             const pct=Math.max(0,(x.hp/x.maxHp)*100);
             const sel=selectedTarget===x.data.id?'selected':'';
-            return `<div class="combatant ${x.dead?'dead':''}">
+            return `<div class="combatant ${x.isTurn?'enemy-turn':''} ${x.dead?'dead':''}">
               <span class="emoji">${x.data.emoji}</span>
               <div class="info"><div class="name">${esc(x.data.name)}</div>
               <div class="hpbar"><i style="width:${pct}%;background:linear-gradient(90deg,var(--blood),var(--blood-bright))"></i></div>
@@ -1160,7 +1273,11 @@ function renderCombat(){
             return `<button class="ability" data-ab="${a.id}" ${cd>0?'disabled':''}><b>${a.name} ${cd>0?'(⏳'+cd+')':''}</b><span class="cd">${a.desc}</span></button>`;
           }).join('')}
         </div>
-      `:`<p class="muted small" style="margin-top:12px;text-align:center;font-style:italic">${isMaster?'Вы — мастер. Игроки ходят по очереди.':'Ожидаем хода '+esc(roomData.players?.[currentUid]?.name||'?')+'…'}</p>`}
+      `:`<p class="muted small" style="margin-top:12px;text-align:center;font-style:italic">${
+        enemyTurn?'👹 Ход врага — он атакует…'
+        :isMaster?'Вы — мастер. Игроки и враги ходят по очереди.'
+        :'Ожидаем хода '+esc(currentTurnName())+'…'
+      }</p>`}
     </div>`;
   $('combatContainer').innerHTML=html;
 
@@ -1168,7 +1285,7 @@ function renderCombat(){
   const atk=$('atkBtn');if(atk)atk.onclick=()=>doAttack();
   const def=$('defBtn');if(def)def.onclick=()=>doDefend();
   const pot=$('potionBtn');if(pot)pot.onclick=()=>doPotion();
-  const et=$('endTurnBtn');if(et)et.onclick=()=>endTurn();
+  const et=$('endTurnBtn');if(et)et.onclick=()=>endTurnAndMaybeEnemy();
   document.querySelectorAll('[data-ab]').forEach(b=>b.onclick=()=>useAbility(b.dataset.ab));
 }
 
@@ -1202,7 +1319,7 @@ async function doAttack(){
     await showDice({label:`Атака: ${e.name}`,sub:`d20 (${d20}) + ${h.atk} против AC ${e.ac}`,value:d20,modifier:h.atk,total,dc:e.ac,verdict:'ПРОМАХ',good:false,name:p.name});
     await addLog(`⚔️ ${p.name} атакует ${e.name}: промах.`,p.name);
   }
-  await endTurn();
+  await endTurnAndMaybeEnemy();
 }
 async function doDefend(){
   if(isMaster)return status('Мастер не участвует в бою.');
@@ -1212,7 +1329,7 @@ async function doDefend(){
   const mx=p.maxHp||h.hp;
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+2)});
   await addLog(`🛡️ ${p.name} встаёт в защиту (+2 HP)`,p.name);
-  await endTurn();
+  await endTurnAndMaybeEnemy();
 }
 async function doPotion(){
   if(isMaster)return status('Мастер не участвует в бою.');
@@ -1226,7 +1343,7 @@ async function doPotion(){
   const newInv=[...inv];newInv.splice(idx,1);
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
   await addLog(`🧪 ${p.name} выпивает зелье: +6 HP`,p.name);
-  await endTurn();
+  await endTurnAndMaybeEnemy();
 }
 async function useAbility(aid){
   if(isMaster)return status('Мастер не участвует в бою.');
@@ -1284,7 +1401,7 @@ async function useAbility(aid){
   }
   await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[aid]:ab.cd});
   await checkCombatEnd();
-  await endTurn();
+  await endTurnAndMaybeEnemy();
 }
 async function onKill(e){
   const p=roomData.players[uid];
@@ -1298,30 +1415,10 @@ async function checkCombatEnd(){
     await addLog('🏆 Все враги повержены! Бой окончен.');
     const ret=c.returnScene||roomData.game.scene;
     await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
-    await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
+    // Оставляем в очереди только игроков
+    const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
+    await update(ref(db,`rooms/${roomId}/turn`),{order,phase:'explore',turnIndex:0,round:1});
     if(ret)await setScene(ret);
-  }
-}
-async function enemiesTurn(){
-  const c=roomData.combat;
-  if(!c?.active)return;
-  const alive=Object.values(roomData.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
-  if(!alive.length)return;
-  for(const e of Object.values(c.enemies||{})){
-    if(e.dead)continue;
-    const target=alive[Math.floor(Math.random()*alive.length)];
-    const h=heroes.find(x=>x.id===target.heroId);
-    if(!h)continue;
-    const d20=rollDice(20)+e.atk;
-    if(d20>=h.ac){
-      const dmg=rollDamage(1,6,e.atk);
-      const nh=Math.max(0,(target.hp??h.hp)-dmg);
-      await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
-      await addLog(`👹 ${e.name} бьёт ${target.name}: ${dmg} урона (${nh} HP)`);
-      if(nh<=0)await addLog(`💀 ${target.name} падает без сознания!`);
-    }else{
-      await addLog(`👹 ${e.name} промахнулся по ${target.name}`);
-    }
   }
 }
 async function checkLevelUp(playerUid,xp){
@@ -1354,7 +1451,6 @@ function startListeners(){
     $('roomLabel').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
 
-    // Скрываем панель персонажа у мастера
     const heroPanel=$('heroPanel');
     if(heroPanel)heroPanel.style.display=isMaster?'none':'';
     const masterHint=$('masterHint');
@@ -1363,7 +1459,7 @@ function startListeners(){
     renderPlayers();renderTurnBanner();renderScene();renderCombat();setConnected(true);
     status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
 
-    // Показываем кубик от других игроков
+    // Показываем кубик от других участников
     const dice=roomData.dice;
     if(dice?.id && dice.id!==lastDiceKey && dice.uid!==uid){
       lastDiceKey=dice.id;
@@ -1371,8 +1467,16 @@ function startListeners(){
         label:dice.label||'Бросок',
         sub:dice.sub||'',
         value:dice.value,modifier:dice.modifier,total:dice.total,dc:dice.dc,
-        verdict:dice.verdict||'',good:dice.good!==false,name:dice.name||'Игрок'
+        verdict:dice.verdict||'',good:dice.good!==false,name:dice.name||'Игрок',
+        enemy:!!dice.enemy
       });
+    }
+
+    // Автозапуск хода врага — если сейчас ход врага, запускает мастер-клиент
+    // (чтобы не было двойного запуска у всех клиентов)
+    if(isMaster && roomData.combat?.active && isEnemyTurn() && !enemyTurnLock){
+      // небольшая задержка, чтобы UI отрисовался
+      setTimeout(()=>{runEnemyTurn();},700);
     }
   },err=>status('Ошибка чтения: '+err.message));
   unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{
@@ -1392,7 +1496,6 @@ async function connectRoom(code){
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
 
-  // Мастер — просто подключается, в очередь не встаёт
   if(room.masterUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();
@@ -1400,8 +1503,8 @@ async function connectRoom(code){
     return;
   }
 
-  // Обычный игрок
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now(),isMaster:false});
+  // добавляем только если ещё нет
   const order=room.turn?.order||[];
   if(!order.includes(uid)){
     await update(ref(db,`rooms/${roomId}/turn`),{order:[...order,uid],phase:'explore'});
@@ -1414,7 +1517,6 @@ async function createRoom(){
   const name=$('playerName').value.trim().slice(0,24)||'Мастер';
   roomId=Math.random().toString(36).slice(2,9).toUpperCase();
   const room=defaultRoom(uid,name);
-  // Мастера НЕ добавляем в очередь — он ведущий
   await set(ref(db,`rooms/${roomId}`),room);
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();await addLog('создал комнату как мастер. Ожидаем игроков…',name);
@@ -1452,26 +1554,9 @@ $('restBtn').onclick=async()=>{
   }
   if(Object.keys(ups).length)await update(ref(db,`rooms/${roomId}/players`),ups);
   await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
-  await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
+  const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
+  await update(ref(db,`rooms/${roomId}/turn`),{order,phase:'explore',turnIndex:0,round:1});
   await addLog('🔥 Мастер объявил долгий отдых');
-};
-$('roll').onclick=async()=>{
-  if(isMaster)return status('Вы — мастер. Броски делают игроки.');
-  if(!isMyTurn())return status('Не ваш ход.');
-  const p=roomData?.players?.[uid];const h=heroes.find(x=>x.id===p?.heroId)||selected||heroes[0];
-  const mode=$('rollMode').value;const rolls=[rollDice(20)];
-  if(mode!=='normal')rolls.push(rollDice(20));
-  const d20=mode==='adv'?Math.max(...rolls):mode==='dis'?Math.min(...rolls):rolls[0];
-  const bonus=h.atk+(Number($('bonusMod').value)||0);
-  const dc=Number($('dc').value),total=d20+bonus;
-  const success=d20===20||(d20!==1&&total>=dc);
-  const verdict=d20===20?'КРИТИЧЕСКИЙ УСПЕХ':d20===1?'КРИТИЧЕСКИЙ ПРОВАЛ':success?'УСПЕХ':'ПРОВАЛ';
-  await showDice({label:'Свободный бросок',sub:`d20 (${d20}) + ${bonus} vs ${dc}`,value:d20,modifier:bonus,total,dc,verdict,good:success,name:p?.name||'Игрок'});
-  await update(ref(db,`rooms/${roomId}/dice`),{
-    id:Date.now(),uid,name:p?.name||'Игрок',label:'Свободный бросок',value:d20,modifier:bonus,total,dc,verdict,sub:`d20 (${d20}) + ${bonus} vs ${dc}`,ts:Date.now(),good:success
-  });
-  await addLog(`🎲 d20(${d20})+${bonus}=${total} vs ${dc} — ${verdict}`,p?.name);
-  await endTurn();
 };
 $('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';await addLog(t);};
 $('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
@@ -1485,7 +1570,8 @@ $('clearRoom').onclick=async()=>{
   if(!isMaster||!confirm('Сбросить приключение?'))return;
   await update(ref(db,`rooms/${roomId}/game`),{scene:'village',sceneText:scenes.village.text});
   await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
-  await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
+  const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
+  await update(ref(db,`rooms/${roomId}/turn`),{order,phase:'explore',turnIndex:0,round:1});
   await set(ref(db,`rooms/${roomId}/log`),null);
   await addLog('Мастер начал приключение заново');
 };
