@@ -175,11 +175,13 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
   gap:8px;
   cursor:pointer;
   transition:.15s;
+  font-family:inherit;
 }
 .reveal-btn:hover:not(:disabled){
   border-color:var(--gold);
   background:linear-gradient(160deg,rgba(240,184,74,.1),var(--bg2));
   transform:translateY(-2px);
+  filter:none;
 }
 .reveal-btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;}
 .reveal-btn.already{
@@ -234,9 +236,9 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
   background:var(--card2);border:1px solid var(--border2);border-radius:10px;
   padding:12px 14px;display:flex;justify-content:space-between;align-items:center;
   color:var(--text);font-weight:500;font-size:.92rem;text-transform:none;letter-spacing:0;
-  transition:.15s;cursor:pointer;
+  transition:.15s;cursor:pointer;font-family:inherit;width:100%;
 }
-.vote-btn:hover:not(:disabled){border-color:var(--red);background:rgba(248,113,113,.06);}
+.vote-btn:hover:not(:disabled){border-color:var(--red);background:rgba(248,113,113,.06);filter:none;transform:none;}
 .vote-btn.chosen{border-color:var(--red);background:rgba(248,113,113,.1);}
 .vote-btn.self{opacity:.5;cursor:not-allowed;}
 .vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.9rem;}
@@ -256,26 +258,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .turn-banner .who{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:4px;}
 .turn-banner.my-turn .who{color:var(--gold);}
 .turn-banner .hint{color:var(--muted);font-size:.85rem;}
-
-#feed{
-  height:220px;overflow-y:auto;background:var(--bg2);
-  border:1px solid var(--border2);border-radius:10px;padding:12px;font-size:.88rem;
-}
-#feed::-webkit-scrollbar{width:8px;}
-#feed::-webkit-scrollbar-track{background:var(--bg2);}
-#feed::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
-.entry{padding:7px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere;line-height:1.5;}
-.entry:last-child{border-bottom:0;}
-.entry .time{color:var(--dim);font-size:.75rem;margin-right:6px;font-family:'JetBrains Mono',monospace;}
-.entry .who{color:var(--blue);font-weight:600;}
-.entry .system{color:var(--gold);font-weight:700;}
-
-.win-panel{background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(74,222,128,.03));border:1px solid rgba(74,222,128,.4);border-radius:12px;padding:20px;text-align:center;}
-.win-panel h3{margin:0 0 14px;color:var(--green);font-size:1.2rem;letter-spacing:1px;}
-.win-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-.win-item{background:rgba(0,0,0,.3);border:1px solid rgba(74,222,128,.3);border-radius:9px;padding:10px 14px;min-width:150px;text-align:left;}
-.win-item b{display:block;color:var(--green);font-size:.95rem;}
-.win-item small{color:var(--muted);font-size:.78rem;}
 
 hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 
@@ -403,20 +385,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
 </section>
 
-<section class="card">
-  <div class="card-header">
-    <h2>📜 Хроника</h2>
-  </div>
-  <div id="feed"></div>
-  <div class="row" style="margin-top:10px;">
-    <input id="chatText" maxlength="300" placeholder="Слово за столом…" autocomplete="off">
-    <button id="sendChat" class="secondary" style="flex:0 0 auto;">→</button>
-  </div>
-  <div class="actions">
-    <button id="exportLog" class="ghost">Скачать журнал</button>
-  </div>
-</section>
-
 </main>
 
 <script type="module">
@@ -449,7 +417,7 @@ const auth=getAuth(app1);
 const db=getDatabase(app1);
 
 let uid=null,roomId=null,roomData=null;
-let isHost=false,unsubRoom=null,unsubLog=null;
+let isHost=false,unsubRoom=null;
 let myVote=null,myPickedProfession=null;
 
 signInAnonymously(auth).catch(e=>setStatus('Ошибка входа: '+e.code,false));
@@ -557,13 +525,8 @@ const specials = [
 const pick = a => a[Math.floor(Math.random()*a.length)];
 const REVEAL_KEYS=['profession','biology','health','hobby','phobia','inventory','special'];
 const REVEAL_LABELS={
-  profession:'Профессия',
-  biology:'Биология',
-  health:'Здоровье',
-  hobby:'Хобби',
-  phobia:'Фобия',
-  inventory:'Багаж',
-  special:'Спецусловие'
+  profession:'Профессия',biology:'Биология',health:'Здоровье',
+  hobby:'Хобби',phobia:'Фобия',inventory:'Багаж',special:'Спецусловие'
 };
 const REVEAL_ICONS={
   profession:'💼',biology:'🧬',health:'❤️',hobby:'🎯',phobia:'😱',inventory:'🎒',special:'⭐'
@@ -625,7 +588,6 @@ function defaultRoom(hostUid,name){
         pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
       }
     },
-    /* turn.revealIndex больше не используется — игрок сам выбирает */
     turn:{order:[],turnIndex:0,phase:'lobby',round:0},
     bunker:{capacity:0,started:false,finished:false,winners:[]},
     votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false}
@@ -634,7 +596,7 @@ function defaultRoom(hostUid,name){
 
 /* ---------- СЛУШАТЕЛИ ---------- */
 function startListeners(){
-  for(const u of [unsubRoom,unsubLog])if(u)u();
+  if(unsubRoom)unsubRoom();
   unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
     roomData=snap.val();
     if(!roomData){setStatus('Комната удалена',false);return;}
@@ -650,15 +612,11 @@ function startListeners(){
     renderAll();
     setStatus('Подключено · '+roomId,true);
   },err=>setStatus('Ошибка: '+err.message,false));
-  unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{
-    const v=snap.val()||{};
-    renderFeed(Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,60));
-  });
 }
-async function addLog(text,name){
-  if(!roomId||!uid)return;
-  await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});
-}
+
+/* addLog — пустышка, чтобы остальные функции не падали */
+async function addLog(){}
+
 function setStatus(t,ok=true){
   $('statusText').textContent=t;
   $('dot').className='dot '+(ok?'green':'red');
@@ -674,6 +632,29 @@ function renderAll(){
   renderTurnBanner();
   renderPlayers();
   renderVote();
+
+  // сброс локального голоса
+  const v=roomData?.votes;
+  if(!v?.active)myVote=null;
+  if(v?.active&&v?.votes&&uid&&!v.votes[uid])myVote=null;
+
+  // страховка навешивания обработчиков
+  document.querySelectorAll('.reveal-btn').forEach(b=>{
+    if(b._bound)return; b._bound=true;
+    b.addEventListener('click',ev=>{
+      ev.preventDefault();
+      if(b.disabled)return;
+      doReveal(b.dataset.key);
+    });
+  });
+  document.querySelectorAll('.vote-btn').forEach(b=>{
+    if(b._bound)return; b._bound=true;
+    b.addEventListener('click',ev=>{
+      ev.preventDefault();
+      if(b.disabled)return;
+      doVote(b.dataset.vote);
+    });
+  });
 }
 function renderLobby(){
   const ps=Object.values(roomData?.players||{});
@@ -749,6 +730,27 @@ function renderMyChar(){
       <div class="trait-value">${esc(values[k])}</div>
     </div>`;
   }).join('');
+
+  const t=roomData.turn;
+  const myTurn=t?.order?.[t?.turnIndex]===uid;
+  const phase=t?.phase;
+  const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
+
+  let hint;
+  if(phase!=='reveal')hint='Сейчас не фаза раскрытия';
+  else if(!myTurn)hint='Ждите своего хода';
+  else hint='Выберите характеристику для вскрытия';
+
+  const buttons=REVEAL_KEYS.map(k=>{
+    const open=!!revealed[k];
+    const disabled=!canReveal||open;
+    return `<button type="button" class="reveal-btn ${open?'already':''}" data-key="${k}" ${disabled?'disabled':''}>
+      <span class="icon">${REVEAL_ICONS[k]}</span>
+      <span class="label">${REVEAL_LABELS[k]}</span>
+      ${open?'<span class="open-mark">✓</span>':''}
+    </button>`;
+  }).join('');
+
   $('myChar').innerHTML=`
     <div class="char-header">
       <div class="char-avatar">${ch.profession.emoji}</div>
@@ -758,48 +760,16 @@ function renderMyChar(){
       </div>
     </div>
     <div class="traits">${traits}</div>
+    <div class="small muted" style="margin-top:14px;text-align:center;">${hint}</div>
+    <div class="reveal-grid" id="revealGrid">${buttons}</div>
   `;
 
-  // === Кнопки вскрытия ===
-  const t=roomData.turn;
-  const myTurn=t?.order?.[t?.turnIndex]===uid;
-  const phase=t?.phase;
-  const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
-
-  const oldActions=document.getElementById('myActions');
-  if(oldActions)oldActions.remove();
-
-  const actionsDiv=document.createElement('div');
-  actionsDiv.className='actions';
-  actionsDiv.id='myActions';
-  actionsDiv.style.display='block';
-
-  let hint;
-  if(phase!=='reveal')hint='Сейчас не фаза раскрытия';
-  else if(!myTurn)hint='Ждите своего хода';
-  else hint='Выберите характеристику для вскрытия';
-
-  actionsDiv.innerHTML=`
-    <div class="small muted" style="margin-bottom:8px;text-align:center;">${hint}</div>
-    <div class="reveal-grid" id="revealGrid"></div>
-  `;
-  card.appendChild(actionsDiv);
-
-  const grid=$('revealGrid');
-  grid.innerHTML=REVEAL_KEYS.map(k=>{
-    const open=!!revealed[k];
-    const disabled=!canReveal||open;
-    return `<button class="reveal-btn ${open?'already':''}" data-key="${k}" ${disabled?'disabled':''}>
-      <span class="icon">${REVEAL_ICONS[k]}</span>
-      <span class="label">${REVEAL_LABELS[k]}</span>
-      ${open?'<span class="open-mark">✓</span>':''}
-    </button>`;
-  }).join('');
-  grid.querySelectorAll('.reveal-btn').forEach(b=>{
-    b.onclick=()=>{
+  document.querySelectorAll('#revealGrid .reveal-btn').forEach(b=>{
+    b.addEventListener('click',ev=>{
+      ev.preventDefault();
       if(b.disabled)return;
       doReveal(b.dataset.key);
-    };
+    });
   });
 }
 function renderScenario(){
@@ -917,7 +887,7 @@ function renderVote(){
     }
     return;
   }
-  const candidates=v.candidates||[];
+  const candidates=Array.isArray(v.candidates)?v.candidates:[];
   const votes=v.votes||{};
   const counts={};
   for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
@@ -927,14 +897,14 @@ function renderVote(){
       <h3>${v.kick?'🚪 Изгнание игрока':'🎯 '+esc(v.label||'Голосование')}</h3>
       <p>${v.kick?'Кто покинет бункер навсегда?':'Кто будет исполнять это действие?'}</p>
     </div>
-    <div class="vote-list">
+    <div class="vote-list" id="voteList">
       ${candidates.map(c=>{
         const p=roomData.players?.[c];
         if(!p)return '';
         const cnt=counts[c]||0;
         const chosen=myVote===c;
         const self=c===uid;
-        return `<button class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${(!canVote||self)?'disabled':''}>
+        return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${(!canVote||self)?'disabled':''}>
           <span>${esc(p.name)}${self?' (вы)':''}</span>
           <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
         </button>`;
@@ -942,10 +912,13 @@ function renderVote(){
     </div>
     <div class="small muted" style="margin-top:10px;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length}${myVote?' · ваш голос отдан':''}</div>
   `;
-  document.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>doVote(b.dataset.vote));
-}
-function renderFeed(items){
-  $('feed').innerHTML=items.map(e=>`<div class="entry"><span class="time">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <span class="${e.uid==='system'?'system':'who'}">${esc(e.name||'Система')}:</span> ${esc(e.text)}</div>`).join('')||'<p class="muted small">Журнал пуст.</p>';
+  document.querySelectorAll('#voteList .vote-btn').forEach(b=>{
+    b.addEventListener('click',ev=>{
+      ev.preventDefault();
+      if(b.disabled)return;
+      doVote(b.dataset.vote);
+    });
+  });
 }
 
 /* ---------- СОЗДАНИЕ / ВХОД ---------- */
@@ -956,7 +929,6 @@ async function createRoom(){
   await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();
-  await addLog('создал комнату. Ждём игроков…',name);
 }
 async function connectRoom(code){
   if(!auth.currentUser)throw new Error('Подождите авторизацию');
@@ -984,7 +956,6 @@ async function connectRoom(code){
   }
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();
-  await addLog('подключился',name);
 }
 $('createRoom').onclick=()=>createRoom().catch(e=>setStatus(e.message,false));
 $('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>setStatus(e.message,false));
@@ -1007,7 +978,6 @@ $('confirmPick').onclick=async()=>{
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     character,pickedProfession:prof.name,revealed,pickOptions:null
   });
-  await addLog(`выбрал профессию «${prof.name}»`,me.name);
 };
 $('rerollPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
@@ -1016,43 +986,43 @@ $('rerollPick').onclick=async()=>{
   const opts=threeProfessions(taken.profession);
   myPickedProfession=null;
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts,rerolled:true});
-  await addLog('перебросил варианты профессий',me.name);
 };
 
-/* ---------- ВСКРЫТИЕ (любая характеристика) ---------- */
+/* ---------- ВСКРЫТИЕ ---------- */
 async function doReveal(key){
   if(!REVEAL_KEYS.includes(key))return;
-  const t=roomData.turn;
-  if(t?.phase!=='reveal')return setStatus('Не фаза раскрытия',false);
-  if(t.order[t.turnIndex]!==uid)return setStatus('Не ваш ход',false);
-  const me=roomData.players?.[uid];
+  const snap=await get(ref(db,`rooms/${roomId}`));
+  const fresh=snap.val();
+  if(!fresh){setStatus('Комната недоступна',false);return;}
+  roomData=fresh;
+  const t=fresh.turn;
+  if(t?.phase!=='reveal'){setStatus('Не фаза раскрытия',false);return;}
+  if(t.order[t.turnIndex]!==uid){setStatus('Не ваш ход',false);return;}
+  const me=fresh.players?.[uid];
   if(!me?.character)return;
-  if(me.revealed?.[key])return setStatus('Уже открыто',false);
+  if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
 
   await update(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
-  await addLog(`вскрывает: ${REVEAL_LABELS[key]}`,me.name);
 
-  // Проверка: все ли живые раскрыли все 7?
-  const aliveOrder=t.order.filter(u=>roomData.players?.[u]&&!roomData.players[u].kicked);
+  const aliveOrder=t.order.filter(u=>fresh.players?.[u]&&!fresh.players[u].kicked);
+  const snap2=await get(ref(db,`rooms/${roomId}/players`));
+  const playersNow=snap2.val()||{};
   const allRevealed=aliveOrder.every(u=>{
-    const r=roomData.players[u].revealed||{};
+    const r=playersNow[u]?.revealed||{};
     return REVEAL_KEYS.every(k=>r[k]);
   });
 
   if(allRevealed){
-    const candidates=aliveOrder;
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
     await update(ref(db,`rooms/${roomId}/votes`),{
       active:true,type:'action',label:'Проверка бункера',kick:false,
-      candidates,votes:{},finished:false,result:null
+      candidates:aliveOrder,votes:{},finished:false,result:null
     });
-    await addLog(`Все характеристики раскрыты! Голосование: кто проведёт проверку бункера?`,'system');
   } else {
-    // следующий живой игрок
     let idx=t.turnIndex;
     for(let i=0;i<aliveOrder.length;i++){
       idx=(idx+1)%t.order.length;
-      if(roomData.players?.[t.order[idx]]&&!roomData.players[t.order[idx]].kicked)break;
+      if(playersNow[t.order[idx]]&&!playersNow[t.order[idx]].kicked)break;
     }
     await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx});
   }
@@ -1060,18 +1030,21 @@ async function doReveal(key){
 
 /* ---------- ГОЛОСОВАНИЕ ---------- */
 async function doVote(targetUid){
-  if(isHost)return setStatus('Ведущий не голосует',false);
-  const v=roomData?.votes;
+  if(isHost){setStatus('Ведущий не голосует',false);return;}
+  const snap=await get(ref(db,`rooms/${roomId}`));
+  const fresh=snap.val();
+  if(!fresh){setStatus('Комната недоступна',false);return;}
+  roomData=fresh;
+  const v=fresh.votes;
   if(!v?.active)return;
-  const me=roomData.players?.[uid];
+  const me=fresh.players?.[uid];
   if(!me||me.kicked)return;
-  if(targetUid===uid)return setStatus('Нельзя голосовать за себя',false);
+  if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
   myVote=targetUid;
   await update(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
-  await addLog(`голосует против ${roomData.players[targetUid]?.name||'—'}`,me.name);
-  const snap=await get(ref(db,`rooms/${roomId}/votes/votes`));
-  const votes=snap.val()||{};
-  const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
+  const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
+  const votes=snap2.val()||{};
+  const alive=Object.values(fresh.players||{}).filter(p=>!p.isHost&&!p.kicked);
   if(Object.keys(votes).length>=alive.length)await finishVote();
 }
 async function finishVote(){
@@ -1089,15 +1062,8 @@ async function finishVote(){
   const chosenName=chosen?roomData.players?.[maxUid]?.name:'';
   const result={chosen,chosenUid:maxUid,chosenName,maxVotes:max,tie,label:v.label,kick:v.kick};
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
-  if(chosen){
-    if(v.kick){
-      await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
-      await addLog(`🚪 ${chosenName} изгнан из бункера (${max} голосов)`,'system');
-    } else {
-      await addLog(`✅ ${chosenName} выбран: ${v.label} (${max} голосов)`,'system');
-    }
-  } else {
-    await addLog('🤝 Ничья — никто не выбран','system');
+  if(chosen&&v.kick){
+    await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
   }
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
@@ -1108,11 +1074,9 @@ async function finishVote(){
     const winners=alive.map(p=>({uid:p.uid,name:p.name,profession:p.character?.profession?.name||'—'}));
     await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:true,winners});
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
-    await addLog(`🏆 Игра окончена! Выжившие: ${winners.map(w=>w.name).join(', ')}`,'system');
     return;
   }
   const newOrder=alive.map(p=>p.uid);
-  // следующий раунд — с тем же раскрытием (у кого ещё не всё открыто — продолжат)
   await update(ref(db,`rooms/${roomId}/turn`),{
     order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
   });
@@ -1132,7 +1096,6 @@ $('startGameBtn').onclick=async()=>{
     order,turnIndex:0,phase:'reveal',round:1
   });
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:false,winners:[]});
-  await addLog(`🎬 Игра началась! Мест: ${capacity}. Каждый ход — вскрытие любой характеристики.`,'system');
 };
 $('nextPhaseBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1145,7 +1108,6 @@ $('nextPhaseBtn').onclick=async()=>{
       active:true,type:'action',label:'Проверка бункера',kick:false,
       candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null
     });
-    await addLog('Голосование: кто проведёт проверку бункера?','system');
   } else if(t.phase==='vote'){
     await finishVote();
   }
@@ -1159,7 +1121,6 @@ $('startKickBtn').onclick=async()=>{
     active:true,type:'kick',label:'Изгнание',kick:true,
     candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null
   });
-  await addLog('🚪 Голосование за изгнание игрока!','system');
 };
 $('resetGameBtn').onclick=async()=>{
   if(!isHost||!confirm('Сбросить игру? Все вернутся в лобби.'))return;
@@ -1184,24 +1145,6 @@ $('resetGameBtn').onclick=async()=>{
   updates['votes/finished']=false;
   updates['votes/result']=null;
   await update(ref(db,`rooms/${roomId}`),updates);
-  await set(ref(db,`rooms/${roomId}/log`),null);
-  await addLog('🔄 Игра сброшена. Выбирайте профессии заново.','system');
-};
-
-/* ---------- ЧАТ ---------- */
-$('sendChat').onclick=async()=>{
-  const t=$('chatText').value.trim();
-  if(!t)return;
-  $('chatText').value='';
-  await addLog(t);
-};
-$('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
-$('exportLog').onclick=async()=>{
-  const s=await get(ref(db,`rooms/${roomId}/log`));
-  const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));
-  a.download='bunker.txt';a.click();
 };
 
 /* ---------- СТАРТ ---------- */
