@@ -3,112 +3,706 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>D&D Онлайн — Проклятие Чёрного дракона</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#11131b;--panel:#1c202c;--panel2:#252b3a;--gold:#e8b85d;--text:#f4f0e8;--muted:#b5bac8;--green:#80c69a;--red:#e47b76;--blue:#7bb0e4;--purple:#b48ce4}
+:root{
+  --ink:#1a1408;
+  --parchment:#e8d9b8;
+  --parchment-dark:#c9b48a;
+  --bg-deep:#0a0806;
+  --bg:#151109;
+  --bg2:#1e180e;
+  --panel:#241c10;
+  --panel2:#2e2515;
+  --gold:#d4a94a;
+  --gold-bright:#f0cd7a;
+  --gold-dim:#8a6f2e;
+  --blood:#8a2e2e;
+  --blood-bright:#c34a4a;
+  --emerald:#5a8a5a;
+  --emerald-bright:#7fb87f;
+  --shadow:#000;
+  --text:#e8dcc0;
+  --muted:#9a8b6a;
+  --purple:#9a7ac9;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#292538,#11131b 60%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-header{padding:24px 16px;text-align:center;border-bottom:1px solid #373242;background:#171923}
-h1{margin:0;color:var(--gold);font-size:clamp(1.6rem,5vw,2.6rem)}
-header p{color:var(--muted);margin:6px 0 0}
-main{max-width:1120px;margin:20px auto;padding:0 14px 35px;display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.panel{background:linear-gradient(145deg,var(--panel),#191c26);border:1px solid #373b4b;border-radius:15px;padding:17px;min-width:0}
-h2{font-size:1.13rem;color:var(--gold);margin:0 0 12px}
-h3{font-size:1rem;margin:14px 0 6px}
-label{display:block;color:var(--muted);font-size:.9rem;margin:8px 0 4px}
-input,select,button{font:inherit;border-radius:9px;border:1px solid #454b5d;padding:10px 11px}
-input,select{background:#121520;color:var(--text);width:100%}
-button{cursor:pointer;background:var(--gold);color:#211a10;font-weight:700;border:0}
-button:disabled{opacity:.4;cursor:not-allowed}
-button.secondary{background:var(--panel2);color:var(--text);border:1px solid #454b5d}
-button.danger{background:#5c2a2a;color:#ffd9d9;border:1px solid #7a3a3a}
-.row{display:flex;gap:8px;align-items:end}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 50% -10%, #3a2a15 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 110%, #2a1508 0%, transparent 60%),
+    var(--bg-deep);
+  color:var(--text);
+  font:16px/1.6 'Cormorant Garamond', Georgia, serif;
+  min-height:100vh;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(212,169,74,.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(212,169,74,.03) 0%, transparent 40%);
+  pointer-events:none;
+  z-index:0;
+}
+header{
+  padding:32px 16px 24px;
+  text-align:center;
+  position:relative;
+  z-index:1;
+  border-bottom:1px solid var(--gold-dim);
+  background:linear-gradient(180deg, rgba(212,169,74,.06), transparent);
+}
+header::after{
+  content:'❦';
+  position:absolute;
+  bottom:-13px;left:50%;transform:translateX(-50%);
+  color:var(--gold);
+  background:var(--bg-deep);
+  padding:0 12px;
+  font-size:18px;
+}
+h1{
+  margin:0;
+  font-family:'Uncial Antiqua', 'Cinzel', serif;
+  font-weight:400;
+  color:var(--gold-bright);
+  font-size:clamp(1.5rem,4.5vw,2.6rem);
+  letter-spacing:2px;
+  text-shadow:0 0 30px rgba(212,169,74,.35), 0 2px 4px var(--shadow);
+}
+header p{
+  color:var(--muted);
+  margin:8px 0 0;
+  font-style:italic;
+  letter-spacing:1px;
+}
+main{
+  max-width:1240px;
+  margin:24px auto;
+  padding:0 14px 40px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  position:relative;
+  z-index:1;
+}
+.panel{
+  background:
+    linear-gradient(160deg, var(--panel), var(--bg2));
+  border:1px solid var(--gold-dim);
+  border-radius:4px;
+  padding:20px;
+  min-width:0;
+  position:relative;
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,.6),
+    0 4px 20px rgba(0,0,0,.5);
+}
+.panel::before{
+  content:'';
+  position:absolute;inset:6px;
+  border:1px solid rgba(212,169,74,.15);
+  border-radius:2px;
+  pointer-events:none;
+}
+h2{
+  font-family:'Cinzel', serif;
+  font-size:1.1rem;
+  color:var(--gold-bright);
+  margin:0 0 14px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  border-bottom:1px solid var(--gold-dim);
+  padding-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+h3{
+  font-family:'Cinzel', serif;
+  font-size:.95rem;
+  color:var(--gold);
+  margin:16px 0 8px;
+  letter-spacing:1.5px;
+}
+label{
+  display:block;
+  color:var(--muted);
+  font-size:.85rem;
+  margin:10px 0 4px;
+  font-style:italic;
+  letter-spacing:.5px;
+}
+input,select,button{
+  font:inherit;
+  border-radius:3px;
+  border:1px solid var(--gold-dim);
+  padding:10px 12px;
+  font-family:'Cormorant Garamond', serif;
+}
+input,select{
+  background:#0d0a06;
+  color:var(--text);
+  width:100%;
+  font-size:1rem;
+}
+input:focus,select:focus{
+  outline:none;
+  border-color:var(--gold);
+  box-shadow:0 0 0 2px rgba(212,169,74,.2);
+}
+button{
+  cursor:pointer;
+  background:linear-gradient(180deg, var(--gold), var(--gold-dim));
+  color:var(--ink);
+  font-weight:600;
+  border:1px solid var(--gold-bright);
+  letter-spacing:.5px;
+  transition:.2s;
+  font-family:'Cinzel', serif;
+  font-size:.85rem;
+  text-transform:uppercase;
+}
+button:hover:not(:disabled){
+  background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+  box-shadow:0 0 20px rgba(212,169,74,.4);
+}
+button:disabled{opacity:.35;cursor:not-allowed}
+button.secondary{
+  background:linear-gradient(180deg, var(--panel2), var(--panel));
+  color:var(--text);
+  border:1px solid var(--gold-dim);
+}
+button.secondary:hover:not(:disabled){
+  border-color:var(--gold);
+  color:var(--gold-bright);
+  background:linear-gradient(180deg, var(--panel2), #1a1408);
+  box-shadow:0 0 12px rgba(212,169,74,.2);
+}
+button.danger{
+  background:linear-gradient(180deg, var(--blood-bright), var(--blood));
+  color:#ffe0e0;
+  border-color:var(--blood-bright);
+}
+.row{display:flex;gap:10px;align-items:end}
 .row>*{flex:1;min-width:0}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.actions button{flex:1;min-width:105px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.actions button{flex:1;min-width:110px}
 .muted{color:var(--muted)}
-.small{font-size:.84rem}
-.status{padding:9px 11px;border-radius:9px;background:#252b3a;margin:8px 0}
-.good{color:var(--green)}
-.bad{color:var(--red)}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hero{background:var(--panel2);border:1px solid #41485b;border-radius:10px;padding:10px;cursor:pointer;transition:.15s}
-.hero:hover{border-color:var(--gold)}
-.hero.active{border:2px solid var(--gold);padding:9px}
-.hero b{display:block;color:var(--gold)}
-.hero small{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
-.stat{text-align:center;background:var(--panel2);border-radius:9px;padding:8px}
-.stat b{display:block;color:var(--gold);font-size:1.2rem}
-#feed{height:220px;overflow:auto;background:#10131c;border-radius:9px;padding:10px}
-.entry{padding:6px 0;border-bottom:1px solid #282d3a;font-size:.9rem;overflow-wrap:anywhere}
-.entry b{color:var(--gold)}
-.player{padding:7px 9px;border-radius:8px;background:var(--panel2);margin:5px 0;overflow-wrap:anywhere}
-.tag{font-size:.75rem;color:var(--gold);margin-left:5px}
-.notice{background:#302b24;border:1px solid #685332;padding:10px;border-radius:9px;font-size:.9rem}
-.hidden{display:none!important}
-footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px}
+.small{font-size:.85rem}
+.status{
+  padding:10px 12px;
+  border-radius:3px;
+  background:rgba(212,169,74,.06);
+  border:1px solid var(--gold-dim);
+  margin:10px 0;
+  font-style:italic;
+}
+.good{color:var(--emerald-bright)}
+.bad{color:var(--blood-bright)}
 
 /* Диагностика */
-#diag{margin:12px auto 0;max-width:900px;text-align:left;background:#0d1018;border:1px solid #454b5d;border-radius:9px;padding:10px;font:13px/1.5 monospace}
+#diag{
+  margin:14px auto 0;
+  max-width:920px;
+  text-align:left;
+  background:#050402;
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:12px;
+  font:12px/1.6 'Courier New', monospace;
+  color:var(--muted);
+}
+#diag b{color:var(--gold)}
 
-/* Сюжетная сцена */
-.scene{background:linear-gradient(160deg,#1a1f2b,#131720);border:1px solid #3a4256;border-radius:12px;padding:16px;margin-bottom:12px}
-.scene-title{color:var(--gold);font-size:1.15rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.scene-text{color:var(--text);margin-bottom:12px;line-height:1.6;white-space:pre-wrap}
-.choices{display:flex;flex-direction:column;gap:8px}
-.choice{background:var(--panel2);border:1px solid #454b5d;border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;color:var(--text);font-weight:400;transition:.15s;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.choice:hover:not(:disabled){border-color:var(--gold);background:#2c3345}
-.choice:disabled{opacity:.5;cursor:not-allowed}
-.choice .check{font-size:.8rem;color:var(--purple);white-space:nowrap}
-.choice .arrow{color:var(--gold);font-size:1.1rem}
+/* Карточки героев */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero{
+  background:
+    linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:12px;
+  cursor:pointer;
+  transition:.2s;
+  position:relative;
+}
+.hero:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(212,169,74,.2)}
+.hero.active{
+  border:2px solid var(--gold-bright);
+  padding:11px;
+  background:linear-gradient(160deg, #3a2e18, var(--panel2));
+  box-shadow:0 0 24px rgba(212,169,74,.4), inset 0 0 20px rgba(212,169,74,.1);
+}
+.hero b{
+  display:block;
+  color:var(--gold-bright);
+  font-family:'Cinzel', serif;
+  font-size:.95rem;
+  letter-spacing:1px;
+}
+.hero small{color:var(--muted);font-size:.82rem}
 
-/* Бой (список вместо сетки) */
-.combat{border:1px solid #4a3a3a;border-radius:12px;padding:14px;background:linear-gradient(160deg,#1e1818,#151216);margin-bottom:12px}
-.combat.active{border-color:var(--gold);box-shadow:0 0 14px rgba(232,184,93,.15)}
-.combat-round{color:var(--gold);font-weight:700;margin-bottom:8px}
-.combatant{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;background:var(--panel2);margin:5px 0;border:1px solid #454b5d}
-.combatant.turn{outline:2px solid var(--gold);background:#2a2418}
-.combatant.dead{opacity:.4}
-.combatant .emoji{font-size:1.6rem}
+/* Статы */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat{
+  text-align:center;
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:10px 6px;
+}
+.stat b{
+  display:block;
+  color:var(--gold-bright);
+  font-size:1.3rem;
+  font-family:'Cinzel', serif;
+}
+
+/* Сюжетная сцена — как пергамент */
+.scene{
+  background:
+    linear-gradient(160deg, #2a2011 0%, #1a1409 100%);
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:22px;
+  margin-bottom:14px;
+  position:relative;
+  box-shadow:inset 0 0 40px rgba(0,0,0,.5);
+}
+.scene::before{
+  content:'❧';
+  position:absolute;
+  top:6px;left:10px;
+  color:var(--gold-dim);
+  font-size:14px;
+}
+.scene::after{
+  content:'❧';
+  position:absolute;
+  bottom:6px;right:10px;
+  color:var(--gold-dim);
+  font-size:14px;
+  transform:scaleX(-1);
+}
+.scene-title{
+  font-family:'Cinzel', serif;
+  color:var(--gold-bright);
+  font-size:1.15rem;
+  letter-spacing:2px;
+  margin-bottom:12px;
+  text-align:center;
+  border-bottom:1px solid var(--gold-dim);
+  padding-bottom:8px;
+}
+.scene-text{
+  color:var(--text);
+  line-height:1.7;
+  white-space:pre-wrap;
+  font-size:1.05rem;
+  font-style:italic;
+  margin-bottom:16px;
+}
+.choices{display:flex;flex-direction:column;gap:10px}
+.choice{
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:14px 16px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--text);
+  font-weight:400;
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.02rem;
+  transition:.2s;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  text-transform:none;
+  letter-spacing:0;
+}
+.choice:hover:not(:disabled){
+  border-color:var(--gold);
+  background:linear-gradient(160deg, #3a2e18, var(--panel2));
+  box-shadow:0 0 16px rgba(212,169,74,.25);
+}
+.choice:disabled{opacity:.4;cursor:not-allowed}
+.choice .check{
+  font-size:.8rem;
+  color:var(--purple);
+  white-space:nowrap;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
+}
+.choice .arrow{color:var(--gold);font-size:1.2rem}
+
+/* Очередь хода — большая плашка */
+.turn-banner{
+  background:
+    linear-gradient(90deg, transparent, rgba(212,169,74,.15), transparent),
+    linear-gradient(160deg, var(--panel2), var(--bg2));
+  border-top:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);
+  padding:14px 18px;
+  margin-bottom:14px;
+  text-align:center;
+  position:relative;
+}
+.turn-banner .who{
+  font-family:'Cinzel', serif;
+  color:var(--gold-bright);
+  font-size:1.1rem;
+  letter-spacing:2px;
+}
+.turn-banner .hint{
+  color:var(--muted);
+  font-style:italic;
+  font-size:.9rem;
+  margin-top:4px;
+}
+.turn-banner.my-turn{
+  animation:turnGlow 2s infinite;
+}
+@keyframes turnGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,169,74,.3), inset 0 0 20px rgba(212,169,74,.05)}
+  50%{box-shadow:0 0 30px 4px rgba(212,169,74,.4), inset 0 0 30px rgba(212,169,74,.15)}
+}
+.turn-banner .crown{
+  position:absolute;
+  top:-10px;left:50%;transform:translateX(-50%);
+  color:var(--gold-bright);
+  background:var(--bg-deep);
+  padding:0 10px;
+  font-size:18px;
+}
+
+/* КУБИК — большая визуализация d20 */
+.dice-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(5,4,2,.85);
+  backdrop-filter:blur(4px);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:24px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.dice-overlay.show{opacity:1;pointer-events:auto}
+.dice-stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:20px;
+}
+.d20{
+  width:180px;height:180px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  filter:drop-shadow(0 0 40px rgba(212,169,74,.6));
+}
+.d20 svg{width:100%;height:100%}
+.d20 .num{
+  position:absolute;
+  font-family:'Cinzel', serif;
+  font-size:3.5rem;
+  font-weight:700;
+  color:var(--gold-bright);
+  text-shadow:0 0 20px rgba(212,169,74,.8), 0 0 40px rgba(212,169,74,.4);
+}
+.d20.rolling{
+  animation:rollSpin .8s cubic-bezier(.3,.1,.3,1);
+}
+@keyframes rollSpin{
+  0%{transform:rotate(0deg) scale(1)}
+  25%{transform:rotate(180deg) scale(1.15)}
+  50%{transform:rotate(360deg) scale(.9)}
+  75%{transform:rotate(540deg) scale(1.1)}
+  100%{transform:rotate(720deg) scale(1)}
+}
+.d20.crit{filter:drop-shadow(0 0 60px var(--emerald-bright))}
+.d20.crit .num{color:var(--emerald-bright);text-shadow:0 0 30px var(--emerald-bright)}
+.d20.fumble{filter:drop-shadow(0 0 60px var(--blood-bright))}
+.d20.fumble .num{color:var(--blood-bright);text-shadow:0 0 30px var(--blood-bright)}
+
+.dice-label{
+  font-family:'Cinzel', serif;
+  color:var(--gold-bright);
+  font-size:1.3rem;
+  letter-spacing:3px;
+  text-align:center;
+}
+.dice-sub{
+  font-style:italic;
+  color:var(--muted);
+  text-align:center;
+  max-width:500px;
+  font-size:1rem;
+}
+.dice-verdict{
+  font-family:'Cinzel', serif;
+  font-size:1.6rem;
+  letter-spacing:3px;
+  text-align:center;
+  margin-top:8px;
+}
+.dice-verdict.good{color:var(--emerald-bright);text-shadow:0 0 30px rgba(127,184,127,.6)}
+.dice-verdict.bad{color:var(--blood-bright);text-shadow:0 0 30px rgba(195,74,74,.6)}
+.dice-continue{
+  margin-top:10px;
+  padding:12px 40px;
+  font-size:1rem;
+}
+
+/* Бой */
+.combat{
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:16px;
+  background:linear-gradient(160deg, #1e1410, #0e0a07);
+  margin-bottom:14px;
+}
+.combat.active{border-color:var(--blood-bright);box-shadow:0 0 24px rgba(138,46,46,.25)}
+.combat-round{
+  font-family:'Cinzel', serif;
+  color:var(--blood-bright);
+  letter-spacing:2px;
+  margin-bottom:12px;
+  text-align:center;
+  border-bottom:1px solid var(--blood);
+  padding-bottom:8px;
+  font-size:1.05rem;
+}
+.combatant{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:3px;
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  margin:6px 0;
+  border:1px solid var(--gold-dim);
+  transition:.2s;
+}
+.combatant.turn{
+  border-color:var(--gold-bright);
+  background:linear-gradient(160deg, #3a2e18, var(--panel2));
+  box-shadow:0 0 20px rgba(212,169,74,.3);
+}
+.combatant.dead{opacity:.35;filter:grayscale(1)}
+.combatant .emoji{font-size:1.8rem;filter:drop-shadow(0 0 8px rgba(212,169,74,.4))}
 .combatant .info{flex:1;min-width:0}
-.combatant .name{font-weight:700}
-.combatant .hpbar{height:6px;background:#0d1018;border-radius:4px;overflow:hidden;margin-top:4px}
-.combatant .hpbar i{display:block;height:100%;transition:.3s}
-.combatant .hp-text{font-size:.8rem;color:var(--muted);margin-top:2px}
-.combatant .target-btn{background:transparent;border:1px solid #454b5d;color:var(--text);padding:5px 9px;font-size:.85rem;border-radius:7px}
-.combatant .target-btn.selected{border-color:var(--gold);background:#2a2418}
+.combatant .name{
+  font-family:'Cinzel', serif;
+  font-weight:600;
+  color:var(--gold-bright);
+  font-size:.95rem;
+  letter-spacing:1px;
+}
+.combatant .hpbar{
+  height:8px;
+  background:#0a0604;
+  border-radius:3px;
+  overflow:hidden;
+  margin-top:6px;
+  border:1px solid rgba(212,169,74,.2);
+}
+.combatant .hpbar i{
+  display:block;
+  height:100%;
+  transition:.4s;
+  box-shadow:inset 0 0 8px rgba(0,0,0,.6);
+}
+.combatant .hp-text{font-size:.82rem;color:var(--muted);margin-top:3px;font-style:italic}
+.combatant .target-btn{
+  background:transparent;
+  border:1px solid var(--gold-dim);
+  color:var(--text);
+  padding:6px 12px;
+  font-size:.8rem;
+  border-radius:3px;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
+}
+.combatant .target-btn.selected{
+  border-color:var(--gold-bright);
+  background:rgba(212,169,74,.15);
+  color:var(--gold-bright);
+  box-shadow:0 0 12px rgba(212,169,74,.4);
+}
 
-/* Список действий в бою */
-.combat-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
-.combat-actions button{min-width:0;padding:10px}
-.ability{background:var(--panel2);border:1px solid #454b5d;border-radius:9px;padding:9px;cursor:pointer;text-align:left;color:var(--text);font-weight:400}
+.combat-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.combat-actions button{min-width:0;padding:12px 10px}
+.ability{
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--purple);
+  border-radius:3px;
+  padding:10px 12px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--text);
+  font-weight:400;
+  font-family:'Cormorant Garamond', serif;
+  text-transform:none;
+  letter-spacing:0;
+}
 .ability:disabled{opacity:.4;cursor:not-allowed}
-.ability b{color:var(--purple);display:block;font-size:.9rem}
-.ability .cd{color:var(--muted);font-size:.8rem}
+.ability:hover:not(:disabled){border-color:var(--gold);box-shadow:0 0 12px rgba(154,122,201,.4)}
+.ability b{
+  color:var(--purple);
+  display:block;
+  font-size:.9rem;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
+  margin-bottom:2px;
+}
+.ability .cd{color:var(--muted);font-size:.8rem;font-style:italic}
 
-/* Полосы XP/HP */
-.xpbar{height:8px;background:#0d1018;border-radius:5px;overflow:hidden;margin:4px 0}
-.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));transition:.3s}
-.hero-hp{height:6px;background:#0d1018;border-radius:4px;overflow:hidden;margin-top:3px}
-.hero-hp i{display:block;height:100%;background:var(--green);transition:.3s}
-.inv{display:flex;flex-wrap:wrap;gap:5px;min-height:24px}
-.inv span{background:var(--panel2);border:1px solid #454b5d;border-radius:6px;padding:3px 7px;font-size:.8rem}
-.cond{font-size:.72rem;padding:1px 5px;border-radius:4px;margin-left:3px;display:inline-block}
-.cond.poison{background:#3a2a4a;color:#c9a0ff}
-.cond.burn{background:#4a2a1a;color:#ff9e6b}
-.cond.stun{background:#4a4a1a;color:#ffe06b}
+/* XP/HP полосы */
+.xpbar{
+  height:10px;
+  background:#0a0604;
+  border-radius:3px;
+  overflow:hidden;
+  margin:6px 0;
+  border:1px solid rgba(212,169,74,.2);
+}
+.xpbar i{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg, var(--purple), var(--gold-bright));
+  transition:.4s;
+  box-shadow:inset 0 0 10px rgba(255,255,255,.2);
+}
+.hero-hp{
+  height:7px;
+  background:#0a0604;
+  border-radius:3px;
+  overflow:hidden;
+  margin-top:4px;
+}
+.hero-hp i{display:block;height:100%;background:linear-gradient(90deg, var(--emerald), var(--emerald-bright));transition:.4s}
 
-/* Кнопки выбора сюжета для мастера */
-.scene-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.scene-picker button{flex:1;min-width:120px;font-size:.85rem;padding:8px}
+/* Инвентарь */
+.inv{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
+.inv span{
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:4px 9px;
+  font-size:.82rem;
+  font-style:italic;
+}
 
-@media(max-width:760px){main{grid-template-columns:1fr}.row{align-items:stretch}.cards{grid-template-columns:1fr 1fr}.combat-actions{grid-template-columns:1fr}}
+/* Состояния */
+.cond{
+  font-size:.72rem;
+  padding:2px 7px;
+  border-radius:2px;
+  margin-left:4px;
+  display:inline-block;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.cond.poison{background:rgba(154,122,201,.2);color:#c9a0ff;border:1px solid var(--purple)}
+.cond.burn{background:rgba(195,74,74,.2);color:#ff9e6b;border:1px solid var(--blood-bright)}
+.cond.stun{background:rgba(212,169,74,.15);color:#ffe06b;border:1px solid var(--gold)}
+
+/* Журнал */
+#feed{
+  height:240px;
+  overflow:auto;
+  background:#0a0604;
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  padding:12px;
+  font-size:.92rem;
+}
+.entry{
+  padding:7px 0;
+  border-bottom:1px dashed rgba(212,169,74,.15);
+  overflow-wrap:anywhere;
+  line-height:1.5;
+}
+.entry b{color:var(--gold-bright);font-family:'Cinzel', serif;font-size:.85rem;letter-spacing:.5px}
+.entry .muted{font-size:.78rem}
+
+/* Игроки */
+.player{
+  padding:9px 11px;
+  border-radius:3px;
+  background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  border:1px solid var(--gold-dim);
+  margin:6px 0;
+  overflow-wrap:anywhere;
+}
+.tag{
+  font-size:.72rem;
+  color:var(--gold-bright);
+  margin-left:6px;
+  font-family:'Cinzel', serif;
+  letter-spacing:1px;
+}
+
+.notice{
+  background:rgba(212,169,74,.06);
+  border:1px solid var(--gold-dim);
+  border-left:3px solid var(--gold);
+  padding:12px 14px;
+  border-radius:3px;
+  font-size:.92rem;
+  font-style:italic;
+}
+.hidden{display:none!important}
+hr{border:0;border-top:1px solid var(--gold-dim);margin:18px 0;opacity:.4}
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:.85rem;
+  padding:0 12px 30px;
+  font-style:italic;
+  position:relative;
+  z-index:1;
+}
+
+.scene-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.scene-picker button{flex:1;min-width:130px;font-size:.78rem;padding:9px}
+
+/* Мастер-панель */
+.master-panel{
+  border:1px dashed var(--gold-dim);
+  border-radius:3px;
+  padding:12px;
+  margin-top:10px;
+  background:rgba(212,169,74,.03);
+}
+
+@media(max-width:800px){
+  main{grid-template-columns:1fr}
+  .row{align-items:stretch}
+  .cards{grid-template-columns:1fr 1fr}
+  .combat-actions{grid-template-columns:1fr}
+  .d20{width:140px;height:140px}
+  .d20 .num{font-size:2.8rem}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>🐉 D&D Онлайн: Проклятие Чёрного дракона</h1>
-  <p>Общая комната · живые обновления · сюжетные приключения</p>
+  <h1>🐉 Проклятие Чёрного дракона</h1>
+  <p>Настольное приключение в реальном времени</p>
   <div id="diag">
     <div>🔧 <b>Диагностика:</b></div>
     <div id="d1">⏳ Загрузка модулей Firebase…</div>
@@ -118,33 +712,46 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px
     <div id="d5">⏳ Готовность к комнате…</div>
   </div>
 </header>
-<main>
 
-<!-- Комната -->
+<main>
+<!-- КОМНАТА -->
 <section class="panel">
 <h2>🌐 Комната</h2>
-<div class="row"><div><label for="playerName">Ваше имя</label><input id="playerName" maxlength="24" placeholder="Например, Артём"></div><div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. DRAGON7"></div></div>
-<div class="actions"><button id="createRoom">Создать комнату (я мастер)</button><button id="joinRoom" class="secondary">Войти по коду</button></div>
-<div class="status" id="connection">Не подключено.</div>
+<div class="row">
+  <div><label for="playerName">Ваше имя</label><input id="playerName" maxlength="24" placeholder="Например, Артём"></div>
+  <div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. DRAGON7"></div>
+</div>
+<div class="actions">
+  <button id="createRoom">Создать комнату</button>
+  <button id="joinRoom" class="secondary">Войти по коду</button>
+</div>
+<div class="status" id="connection">Не подключено. Создайте комнату или введите код.</div>
 <div id="roomInfo" class="hidden">
-  <b>Комната: <span id="roomLabel"></span></b>
+  <b style="color:var(--gold-bright);font-family:'Cinzel',serif">Комната: <span id="roomLabel"></span></b>
   <p class="muted small">Отправьте друзьям ссылку ниже.</p>
   <div class="row"><input id="inviteLink" readonly><button id="copyLink" class="secondary">Копировать</button></div>
-  <h3>👥 Игроки в комнате</h3><div id="players"></div>
+  <h3>👥 Игроки</h3><div id="players"></div>
 </div>
-<hr style="border:0;border-top:1px solid #373b4b;margin:17px 0">
-<h2>🧙 Ваш персонаж</h2><div class="cards" id="heroes"></div>
+<hr>
+<h2>🧙 Ваш персонаж</h2>
+<div class="cards" id="heroes"></div>
 <div id="charStats" class="stats"></div>
 <div class="xpbar"><i id="xpFill" style="width:0%"></i></div>
 <p class="muted small" id="xpText">XP: 0 / 100 · Уровень 1</p>
-<div class="actions"><button id="pickHero" disabled>Выбрать персонажа</button><button id="heal" class="secondary" disabled>🧪 Зелье (+6 HP)</button><button id="restBtn" class="secondary" disabled>🔥 Долгий отдых (мастер)</button></div>
-<h3>🎒 Инвентарь и золото</h3><div class="inv" id="inventory"><span class="muted small">Пусто</span></div>
-<p class="small" style="margin-top:5px">💰 Золото: <b id="gold">0</b></p>
+<div class="actions">
+  <button id="pickHero" disabled>Выбрать персонажа</button>
+  <button id="heal" class="secondary" disabled>🧪 Зелье (+6 HP)</button>
+  <button id="restBtn" class="secondary" disabled>🔥 Долгий отдых (мастер)</button>
+</div>
+<h3>🎒 Инвентарь и золото</h3>
+<div class="inv" id="inventory"><span class="muted small">Пусто</span></div>
+<p class="small" style="margin-top:6px">💰 Золото: <b id="gold" style="color:var(--gold-bright)">0</b></p>
 </section>
 
-<!-- Сюжет -->
+<!-- ПРИКЛЮЧЕНИЕ -->
 <section class="panel">
 <h2>📖 Приключение</h2>
+<div id="turnBanner"></div>
 <div id="sceneContainer">
   <div class="scene">
     <div class="scene-title">🏘️ Серебряный Брод</div>
@@ -152,50 +759,99 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px
   </div>
 </div>
 <div id="masterScene" class="hidden">
-  <h3>🎬 Мастер: сцены</h3>
-  <p class="muted small">Выберите следующую сцену для партии.</p>
-  <div class="scene-picker" id="scenePicker"></div>
+  <div class="master-panel">
+    <h3>🎬 Мастер: сцены</h3>
+    <p class="muted small">Открыть сцену для партии.</p>
+    <div class="scene-picker" id="scenePicker"></div>
+  </div>
 </div>
 </section>
 
-<!-- Бой -->
+<!-- БОЙ -->
 <section class="panel">
 <h2>⚔️ Бой</h2>
 <div id="combatContainer">
-  <div class="status muted">Бой не начат. Мастер может начать бой из сцены.</div>
+  <div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>
 </div>
 </section>
 
-<!-- Броски -->
+<!-- БРОСКИ (ручные) -->
 <section class="panel">
-<h2>🎲 Броски</h2>
-<div class="row"><div><label for="checkType">Проверка</label><select id="checkType"><option value="skill">Проверка умения</option><option value="attack">Атака</option><option value="save">Спасбросок</option></select></div><div><label for="dc">Сложность</label><select id="dc"><option value="8">8 — легко</option><option value="11" selected>11 — обычно</option><option value="14">14 — сложно</option><option value="17">17 — героически</option></select></div></div>
-<div class="row" style="margin-top:6px"><div><label for="rollMode">Режим</label><select id="rollMode"><option value="normal">Обычный</option><option value="adv">Преимущество</option><option value="dis">Помеха</option></select></div><div><label for="bonusMod">Модификатор</label><input id="bonusMod" type="number" value="0" min="-5" max="10"></div></div>
-<div class="actions"><button id="roll" disabled>Бросить d20</button></div><div id="rollResult" class="status">Броски появятся здесь.</div>
+<h2>🎲 Свободный бросок</h2>
+<p class="muted small">Для проверок вне боя. В бою кубик появляется автоматически.</p>
+<div class="row">
+  <div><label for="dc">Сложность</label>
+    <select id="dc">
+      <option value="8">8 — легко</option>
+      <option value="11" selected>11 — обычно</option>
+      <option value="14">14 — сложно</option>
+      <option value="17">17 — героически</option>
+    </select>
+  </div>
+  <div><label for="rollMode">Режим</label>
+    <select id="rollMode">
+      <option value="normal">Обычный</option>
+      <option value="adv">Преимущество</option>
+      <option value="dis">Помеха</option>
+    </select>
+  </div>
+  <div><label for="bonusMod">Модификатор</label><input id="bonusMod" type="number" value="0" min="-5" max="10"></div>
+</div>
+<div class="actions"><button id="roll" disabled>Бросить d20</button></div>
+<div id="rollResult" class="status">Броски появятся здесь.</div>
 </section>
 
-<!-- Журнал -->
+<!-- ЖУРНАЛ -->
 <section class="panel">
-<h2>📜 Общий журнал</h2><div id="feed" aria-live="polite"></div>
-<div class="row" style="margin-top:9px"><input id="chatText" maxlength="300" placeholder="Сообщение партии…"><button id="sendChat" disabled>Отправить</button></div>
-<div class="actions"><button id="exportLog" class="secondary" disabled>Скачать журнал</button><button id="clearRoom" class="secondary danger" disabled>Сбросить (мастер)</button></div>
+<h2>📜 Журнал</h2>
+<div id="feed" aria-live="polite"></div>
+<div class="row" style="margin-top:10px">
+  <input id="chatText" maxlength="300" placeholder="Сообщение партии…">
+  <button id="sendChat" disabled>Отправить</button>
+</div>
+<div class="actions">
+  <button id="exportLog" class="secondary" disabled>Скачать журнал</button>
+  <button id="clearRoom" class="secondary danger" disabled>Сбросить (мастер)</button>
+</div>
 </section>
 
-<!-- Шпаргалка -->
+<!-- ШПАРГАЛКА -->
 <section class="panel">
-<h2>📖 Шпаргалка мастера</h2>
-<p>В деревне Серебряный Брод пропадают жители, а вода в реке становится чёрной. Мэр обещает награду героям, которые выяснят, что происходит.</p>
-<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Мастер описывает последствия и выбирает следующую сцену.</div>
+<h2>📖 Свиток мастера</h2>
+<p style="font-style:italic">В деревне Серебряный Брод пропадают жители, а вода в реке чернеет. Мэр обещает награду тому, кто раскроет тайну.</p>
+<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Мастер описывает последствия.</div>
 <h3>Ветки сюжета</h3>
-<ul class="small">
+<ul class="small" style="line-height:1.8">
 <li><b>Расследование:</b> таверна → допрос → следы на севере.</li>
-<li><b>Шепчущий лес:</b> гоблины, пленник, выбор: спасти или выпытать.</li>
+<li><b>Шепчущий лес:</b> гоблины, пленник, выбор.</li>
 <li><b>Старый храм:</b> загадка трёх символов.</li>
 <li><b>Логово дракона:</b> финал — сразиться или снять ошейник.</li>
 </ul>
 </section>
 </main>
 <footer>Firebase + localhost или HTTPS. Панель диагностики сверху покажет проблемы.</footer>
+
+<!-- ОВЕРЛЕЙ КУБИКА -->
+<div class="dice-overlay" id="diceOverlay">
+  <div class="dice-stage">
+    <div class="dice-label" id="diceLabel">Бросок</div>
+    <div class="d20" id="d20">
+      <svg viewBox="0 0 100 100">
+        <polygon points="50,3 95,27 95,73 50,97 5,73 5,27" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
+        <polygon points="50,3 95,27 50,50 5,27" fill="rgba(212,169,74,.08)" stroke="#d4a94a" stroke-width="1"/>
+        <polygon points="95,27 95,73 50,50" fill="rgba(212,169,74,.05)" stroke="#d4a94a" stroke-width="1"/>
+        <polygon points="95,73 50,97 50,50" fill="rgba(212,169,74,.03)" stroke="#d4a94a" stroke-width="1"/>
+        <polygon points="50,97 5,73 50,50" fill="rgba(212,169,74,.05)" stroke="#d4a94a" stroke-width="1"/>
+        <polygon points="5,73 5,27 50,50" fill="rgba(212,169,74,.08)" stroke="#d4a94a" stroke-width="1"/>
+        <polygon points="5,27 50,3 50,50" fill="rgba(212,169,74,.1)" stroke="#d4a94a" stroke-width="1"/>
+      </svg>
+      <div class="num" id="d20num">?</div>
+    </div>
+    <div class="dice-sub" id="diceSub"></div>
+    <div class="dice-verdict" id="diceVerdict"></div>
+    <button class="dice-continue hidden" id="diceContinue">Продолжить</button>
+  </div>
+</div>
 
 <script type="module">
 const d = id => document.getElementById(id);
@@ -204,11 +860,11 @@ const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 
 /* ---------- Firebase ---------- */
 let initializeApp, getAuth, signInAnonymously, onAuthStateChanged;
-let getDatabase, ref, set, get, update, push, onValue;
+let getDatabase, ref, set, get, update, push, onValue, runTransaction;
 try{
   ({initializeApp}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"));
   ({getAuth,signInAnonymously,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
-  ({getDatabase,ref,set,get,update,push,onValue}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
+  ({getDatabase,ref,set,get,update,push,onValue,runTransaction}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
   d('d1').innerHTML='✅ Модули Firebase загружены';
 }catch(e){d('d1').innerHTML='❌ '+e.message;throw e;}
 
@@ -226,6 +882,7 @@ let app,auth,db,uid=null,roomId=null,roomData=null;
 let selected=null,myPlayer=null,isMaster=false;
 let unsubRoom=null,unsubLog=null;
 let selectedTarget=null;
+let lastDiceKey=null;
 
 try{
   app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);
@@ -263,51 +920,50 @@ const enemyTypes = {
   dragon:{name:'Чёрный дракон',emoji:'🐉',hp:50,atk:6,ac:16,xp:300,gold:250}
 };
 
-/* ---------- Сюжетные сцены ---------- */
-/* Каждая сцена: id, title, text, choices[{text, check?, dc?, success, fail, next?, combat?, reward?, master?}] */
+/* ---------- Сцены ---------- */
 const scenes = {
   village: {
     title:'🏘️ Серебряный Брод',
     text:'В деревне пропадают люди. Вода в реке чернеет. Мэр встречает вас у ратуши:\n\n«Герои, помогите! Три дня назад ушли трое — и не вернулись. Следы ведут к лесу. Если найдёте — награжу щедро.»',
     choices:[
-      {text:'Расспросить мэра о пропавших', check:'skill', dc:10, success:'Мэр рассказал: пропали дровосек, его дочь и старый охотник. Все уходили на север.', fail:'Мэр путается в показаниях, но вы вытянули хотя бы имена.', next:'tavern'},
-      {text:'Осмотреть берег реки', check:'skill', dc:12, success:'На берегу — чёрные чешуйки и след огромной лапы, ведущий к лесу.', fail:'Река мутная, ничего не видно. Но вы замечаете обрывок ткани.', next:'tavern'},
-      {text:'Сразу идти в лес', next:'forest', master:true}
+      {text:'Расспросить мэра о пропавших', check:'skill', dc:10, success:'Мэр рассказал: пропали дровосек, его дочь и старый охотник.', fail:'Мэр путается в показаниях.', next:'tavern'},
+      {text:'Осмотреть берег реки', check:'skill', dc:12, success:'На берегу — чёрные чешуйки и след огромной лапы.', fail:'Река мутная, ничего не видно.', next:'tavern'},
+      {text:'Сразу идти в лес', next:'forest'}
     ]
   },
   tavern: {
     title:'🍺 Таверна «Пьяный Гоблин»',
-    text:'Тавернщик Гаррик протирает кружки и мрачно смотрит на вас:\n\n«Дровосек был должен мне. И охотник… Странные дела. А ночью у леса кто-то шепчет. Слышите? Даже сейчас.»',
+    text:'Тавернщик Гаррик протирает кружки:\n\n«Дровосек был должен мне. А ночью у леса кто-то шепчет. Слышите?»',
     choices:[
-      {text:'Угостить тавернщика и разговорить', check:'skill', dc:11, success:'За кружкой Гаррик признался: видел человека в чёрном плаще, шедшего к лесу. На плаще — символ дракона.', fail:'Гаррик замкнулся: «Нечего мне сказать».', next:'forest'},
-      {text:'Обыскать комнату охотника', check:'skill', dc:13, success:'Под кроватью — карта с отметкой у старого храма и записка: «Ошейник снять нельзя, только разбить».', fail:'Хозяин комнаты забрал свои вещи.', next:'forest'},
+      {text:'Угостить тавернщика и разговорить', check:'skill', dc:11, success:'Гаррик видел человека в чёрном плаще с символом дракона.', fail:'Гаррик замкнулся.', next:'forest'},
+      {text:'Обыскать комнату охотника', check:'skill', dc:13, success:'Найдена карта с отметкой у храма и записка: «Ошейник снять нельзя, только разбить».', fail:'Хозяин забрал вещи.', next:'forest'},
       {text:'Идти в лес', next:'forest'}
     ]
   },
   forest: {
     title:'🌲 Шепчущий лес',
-    text:'Тропа уходит вглубь. Среди деревьев — разбитая телега. Из кустов слышен шёпот: «Отдайте кристалл — и пленник останется жив». На поляне — три гоблина и связанный следопыт у дерева.',
+    text:'Среди деревьев — разбитая телега. Шёпот: «Отдайте кристалл — пленник останется жив». На поляне — три гоблина и связанный следопыт.',
     choices:[
       {text:'Атаковать гоблинов!', combat:'goblin', count:3, next:'forest_after'},
-      {text:'Попробовать договориться', check:'skill', dc:14, success:'Гоблины дрогнули: «Кристалл у дракона. Мы лишь слуги.» Они отпустили пленника и убежали.', fail:'Переговоры провалились — гоблины хватают оружие!', failCombat:'goblin', count:3, next:'forest_after'},
-      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы обошли гоблинов и нашли тайную тропу к храму. Пленник позже сбежал сам.', fail:'Ветка хрустнула — гоблины заметили вас!', failCombat:'goblin', count:3, next:'forest_after'}
+      {text:'Попробовать договориться', check:'skill', dc:14, success:'Гоблины дрогнули и отпустили пленника.', fail:'Переговоры провалились!', failCombat:'goblin', count:3, next:'forest_after'},
+      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы нашли тайную тропу к храму.', fail:'Ветка хрустнула — гоблины заметили вас!', failCombat:'goblin', count:3, next:'forest_after'}
     ]
   },
   forest_after: {
     title:'🌲 После боя в лесу',
-    text:'Пленник — старый следопыт Эдрик — тяжело дышит:\n\n«Дракон не виноват. На нём ошейник, проклятие чёрного мага. Снимите ошейник — и дракон станет собой. В храме есть подсказка.»',
+    text:'Пленник — старый следопыт Эдрик:\n\n«Дракон не виноват. На нём ошейник, проклятие чёрного мага. Снимите ошейник — и дракон станет собой. В храме есть подсказка.»',
     choices:[
       {text:'Идти к старому храму', next:'temple'},
-      {text:'Вернуться в деревню и доложить', next:'village'}
+      {text:'Вернуться в деревню', next:'village'}
     ]
   },
   temple: {
     title:'🏚️ Старый храм',
     text:'На каменной двери три символа: ☀️ солнце, 👁️ глаз, 🦅 коготь. Рядом высечено: «Свет видит, глаз знает, коготь берёт».',
     choices:[
-      {text:'Солнце → глаз → коготь', check:'skill', dc:10, success:'Дверь открылась. Внутри — древний свиток с ритуалом снятия ошейника.', fail:'Порядок неверный, дверь не поддалась. Попробуйте ещё.', next:'temple', retry:true},
-      {text:'Глаз → солнце → коготь', fail:'Из стены вырвалась тьма — все получают 3 урона.', damageAll:3, next:'temple'},
-      {text:'Коготь → глаз → солнце', fail:'Пол задрожал, из трещин пошли тени. Готовьтесь к бою.', failCombat:'wolf', count:2, next:'temple_after'}
+      {text:'Солнце → глаз → коготь', check:'skill', dc:10, success:'Дверь открылась. Внутри — свиток с ритуалом.', next:'temple_after'},
+      {text:'Глаз → солнце → коготь', fail:'Из стены вырвалась тьма!', damageAll:3, next:'temple'},
+      {text:'Коготь → глаз → солнце', fail:'Из трещин пошли тени!', failCombat:'wolf', count:2, next:'temple_after'}
     ]
   },
   temple_after: {
@@ -315,48 +971,48 @@ const scenes = {
     text:'В свитке сказано: чтобы снять ошейник, нужно произнести истинное имя дракона — «Ашар-Нор» — и коснуться ошейника серебром.',
     choices:[
       {text:'Идти к логову дракона', next:'lair'},
-      {text:'Вернуться в деревню за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал и благословение.', fail:'Кузнец отказал: «Это семейная реликвия».', next:'lair'}
+      {text:'Вернуться за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал.', fail:'Кузнец отказал: «Это реликвия».', next:'lair'}
     ]
   },
   lair: {
     title:'🐉 Логово дракона',
-    text:'Чёрный дракон лежит над тёмным озером. На шее — магический ошейник, из которого сочится тьма. Дракон поднимает голову:\n\n«Убейте… меня… или снимите это…»',
+    text:'Чёрный дракон лежит над тёмным озером. На шее — магический ошейник. Дракон поднимает голову:\n\n«Убейте… меня… или снимите это…»',
     choices:[
-      {text:'Произнести истинное имя: Ашар-Нор', check:'skill', dc:13, success:'Ошейник треснул. Дракон вздохнул свободно и поклонился вам. Проклятие снято!', next:'epilogue_good'},
+      {text:'Произнести имя: Ашар-Нор', check:'skill', dc:13, success:'Ошейник треснул. Проклятие снято!', next:'epilogue_good'},
       {text:'Сразиться с драконом', combat:'dragon', count:1, next:'epilogue_battle'},
-      {text:'Отступить и позвать подмогу', next:'village'}
+      {text:'Отступить', next:'village'}
     ]
   },
   epilogue_good: {
     title:'✨ Финал: Свобода',
-    text:'Дракон Ашар-Нор свободен. Он улетает, оставив вам сокровище из своего логова как благодарность. Деревня спасена, проклятие снято.\n\n🏆 ПОБЕДА!',
-    choices:[
-      {text:'Начать новое приключение', next:'village', master:true}
-    ]
+    text:'Дракон Ашар-Нор свободен. Он улетает, оставив вам сокровище. Деревня спасена.\n\n🏆 ПОБЕДА!',
+    choices:[{text:'Начать новое приключение', next:'village'}]
   },
   epilogue_battle: {
     title:'⚔️ Финал: Цена победы',
-    text:'Дракон повержен, но тьма ошейника рассеялась в воздухе. Вы победили, но чувствуете, что где-то есть тот, кто надел ошейник — и он ещё жив.\n\n🏆 ПОБЕДА (но не конец).',
-    choices:[
-      {text:'Начать новое приключение', next:'village', master:true}
-    ]
+    text:'Дракон повержен, но тьма ошейника рассеялась. Вы победили, но тот, кто надел ошейник, ещё жив.\n\n🏆 ПОБЕДА (но не конец).',
+    choices:[{text:'Начать новое приключение', next:'village'}]
   }
 };
 
-/* ---------- Вспомогательные ---------- */
+/* ---------- Утилиты ---------- */
 const xpForLevel = lvl => 100+(lvl-1)*150;
 const rollDice = s => Math.floor(Math.random()*s)+1;
 const rollDamage = (c,s,b)=>{let t=0;for(let i=0;i<c;i++)t+=rollDice(s);return t+(b||0);};
 function status(s,good=false){$('connection').innerHTML=`<span class="${good?'good':'bad'}">${esc(s)}</span>`;}
 function setConnected(on){
-  ['roll','explore','sendChat','exportLog','pickHero','heal'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
+  ['roll','sendChat','exportLog','pickHero','heal'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
   ['restBtn','clearRoom'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||!isMaster;});
 }
 function defaultRoom(masterUid,name){
   return {createdAt:Date.now(),masterUid,
     players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,maxHp:null,xp:0,level:1,gold:0,inventory:[],conditions:[],cooldowns:{},joinedAt:Date.now()}},
     game:{scene:'village',sceneText:scenes.village.text},
-    combat:{active:false,round:0,turnIndex:0,order:[],enemies:{},log:''}
+    /* очередь ходов: order — список uid, turnIndex — чей сейчас ход, phase — 'explore'|'combat' */
+    turn:{order:[],turnIndex:0,phase:'idle',round:1},
+    combat:{active:false,round:0,enemies:{},returnScene:null},
+    /* сюда пишется последний бросок — все игроки видят кубик */
+    dice:{id:null,uid:null,name:null,label:null,value:0,modifier:0,total:0,dc:0,verdict:'',sub:'',ts:0}
   };
 }
 
@@ -380,13 +1036,15 @@ function renderStats(){
 }
 function renderPlayers(){
   const ps=Object.values(roomData?.players||{});
+  const turn=roomData?.turn;
+  const currentUid=turn?.order?.[turn.turnIndex];
   $('players').innerHTML=ps.map(p=>{
     const h=heroes.find(x=>x.id===p.heroId);const lvl=p.level||1;
     const maxHp=p.maxHp||h?.hp||10;const hp=p.hp??maxHp;
     const pct=Math.max(0,Math.min(100,(hp/maxHp)*100));
     const conds=(p.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
-    const isTurn=roomData?.combat?.active&&roomData.combat.order?.[roomData.combat.turnIndex]===p.uid;
-    return `<div class="player" style="${isTurn?'outline:2px solid var(--gold)':''}">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}${isTurn?'<span class="tag">▶ ХОД</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):'—'} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
+    const isTurn=p.uid===currentUid;
+    return `<div class="player" style="${isTurn?'outline:2px solid var(--gold-bright);box-shadow:0 0 16px rgba(212,169,74,.4)':''}">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}${isTurn?'<span class="tag">▶ ХОД</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):'—'} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
   }).join('')||'<span class="muted">Пока никого нет</span>';
   renderStats();
 }
@@ -394,30 +1052,56 @@ function renderFeed(items){
   $('feed').innerHTML=items.map(e=>`<div class="entry"><span class="muted">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <b>${esc(e.name||'Система')}:</b> ${esc(e.text)}</div>`).join('')||'<div class="muted">Журнал пуст.</div>';
 }
 
-/* ---------- Сюжетная сцена ---------- */
+/* ---------- Очередь хода ---------- */
+function isMyTurn(){
+  const t=roomData?.turn;
+  if(!t?.order?.length)return false;
+  return t.order[t.turnIndex]===uid;
+}
+function currentTurnName(){
+  const t=roomData?.turn;
+  if(!t?.order?.length)return '—';
+  return roomData.players?.[t.order[t.turnIndex]]?.name||'?';
+}
+function renderTurnBanner(){
+  const t=roomData?.turn;
+  const el=$('turnBanner');
+  if(!t?.order?.length){
+    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание партии</div><div class="hint">Мастер начинает приключение, когда все выберут персонажа.</div></div>`;
+    return;
+  }
+  const mine=isMyTurn();
+  const cur=currentTurnName();
+  const phase=t.phase==='combat'?`Раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
+  el.innerHTML=`
+    <div class="turn-banner ${mine?'my-turn':''}">
+      <div class="crown">👑</div>
+      <div class="who">Ход: ${esc(cur)}</div>
+      <div class="hint">${mine?'Ваш ход — выбирайте действие':'Ждите своей очереди…'} · ${phase}</div>
+    </div>`;
+}
+
+/* ---------- Сцена ---------- */
 function renderScene(){
   const sceneId=roomData?.game?.scene||'village';
   const sc=scenes[sceneId]||scenes.village;
-  const p=roomData?.players?.[uid];
-  const myTurn=!roomData?.combat?.active;
+  const mine=isMyTurn();
   const html=`
     <div class="scene">
       <div class="scene-title">${sc.title}</div>
       <div class="scene-text">${esc(sc.text)}</div>
       <div class="choices">
         ${sc.choices.map((c,i)=>{
-          const locked=!myTurn;
           const check=c.check?`<span class="check">${c.check==='skill'?'🎯 проверка':c.check==='attack'?'⚔️ атака':'🛡️ спасбросок'} СЛ ${c.dc||11}</span>`:'';
-          return `<button class="choice" data-idx="${i}" ${locked?'disabled':''}>
+          return `<button class="choice" data-idx="${i}" ${mine?'':'disabled'}>
             <span>${esc(c.text)}</span>
-            <span style="display:flex;align-items:center;gap:8px">${check}<span class="arrow">→</span></span>
+            <span style="display:flex;align-items:center;gap:10px">${check}<span class="arrow">→</span></span>
           </button>`;
         }).join('')}
       </div>
     </div>`;
   $('sceneContainer').innerHTML=html;
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>chooseOption(Number(b.dataset.idx)));
-  // Панель мастера
   if(isMaster){
     $('masterScene').classList.remove('hidden');
     $('scenePicker').innerHTML=Object.entries(scenes).map(([id,s])=>`<button class="secondary" data-scene="${id}">${s.title}</button>`).join('');
@@ -432,8 +1116,9 @@ async function setScene(sceneId){
   await addLog(`🎬 Мастер открыл сцену: ${scenes[sceneId].title}`);
 }
 
-/* ---------- Выбор варианта ---------- */
+/* ---------- ВЫБОР ВАРИАНТА (по очереди) ---------- */
 async function chooseOption(idx){
+  if(!isMyTurn())return status('Не ваш ход.');
   const sceneId=roomData?.game?.scene||'village';
   const sc=scenes[sceneId];
   const choice=sc.choices[idx];
@@ -444,42 +1129,59 @@ async function chooseOption(idx){
 
   await addLog(`выбирает: «${choice.text}»`, p.name);
 
-  // Проверка характеристики
+  // Бой без проверки
+  if(choice.combat){
+    await startCombat(choice.combat, choice.count||1, choice.next||sceneId);
+    return;
+  }
+
+  // Проверка характеристики — кубик
   if(choice.check){
     const d20=rollDice(20);
     const bonus=h.atk;
     const total=d20+bonus;
     const dc=choice.dc||11;
     const success=d20===20||(d20!==1&&total>=dc);
-    const txt=`🎲 ${choice.text}: d20(${d20})+${bonus}=${total} vs ${dc} — ${success?'успех':'провал'}`;
-    await addLog(txt, p.name);
+    const verdict=d20===20?'КРИТИЧЕСКИЙ УСПЕХ':d20===1?'КРИТИЧЕСКИЙ ПРОВАЛ':success?'УСПЕХ':'ПРОВАЛ';
+    await showDice({
+      label:`Проверка: ${choice.text}`,
+      sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,
+      value:d20, modifier:bonus, total, dc,
+      verdict, good:success, name:p.name
+    });
+    // Пишем в БД для других игроков
+    await update(ref(db,`rooms/${roomId}/dice`),{
+      id:Date.now(),uid,name:p.name,label:choice.text,value:d20,modifier:bonus,total,dc,verdict,sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,ts:Date.now(),good:success
+    });
+
+    await addLog(`🎲 ${choice.text}: d20(${d20})+${bonus}=${total} vs ${dc} — ${success?'успех':'провал'}`, p.name);
 
     if(success){
       if(choice.success)await addLog(choice.success);
-      if(choice.reward){await giveReward(choice.reward);}
-      if(choice.next)return setScene(choice.next);
+      if(choice.next)await setScene(choice.next);
     }else{
       if(choice.fail)await addLog(choice.fail);
       if(choice.failCombat){
-        return startCombat(choice.failCombat, choice.count||1, choice.next||sceneId);
-      }
-      if(choice.damageAll){
-        for(const pl of Object.values(roomData.players||{})){
-          if(!pl.heroId)continue;
-          const ph=heroes.find(x=>x.id===pl.heroId);
-          const mx=pl.maxHp||ph.hp;
-          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
+        await startCombat(choice.failCombat, choice.count||1, choice.next||sceneId);
+      }else{
+        if(choice.damageAll){
+          for(const pl of Object.values(roomData.players||{})){
+            if(!pl.heroId)continue;
+            const ph=heroes.find(x=>x.id===pl.heroId);
+            const mx=pl.maxHp||ph.hp;
+            await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
+          }
+          await addLog(`💥 Все получают ${choice.damageAll} урона!`);
         }
-        await addLog(`💥 Все получают ${choice.damageAll} урона!`);
+        if(choice.next)await setScene(choice.next);
       }
-      if(choice.next)return setScene(choice.next);
     }
+    await endTurn();
     return;
   }
 
-  // Без проверки — просто переход
+  // Простой переход
   if(choice.success)await addLog(choice.success);
-  if(choice.combat)return startCombat(choice.combat, choice.count||1, choice.next||sceneId);
   if(choice.damageAll){
     for(const pl of Object.values(roomData.players||{})){
       if(!pl.heroId)continue;
@@ -489,60 +1191,121 @@ async function chooseOption(idx){
     }
     await addLog(`💥 Все получают ${choice.damageAll} урона!`);
   }
-  if(choice.next)return setScene(choice.next);
-}
-async function giveReward(r){
-  const p=roomData.players[uid];if(!p)return;
-  const up={};
-  if(r.gold)up.gold=(p.gold||0)+r.gold;
-  if(r.xp)up.xp=(p.xp||0)+r.xp;
-  if(r.item){up.inventory=[...(p.inventory||[]),r.item];}
-  if(Object.keys(up).length)await update(ref(db,`rooms/${roomId}/players/${uid}`),up);
-  await addLog(`🎁 Награда: ${r.gold?'+'+r.gold+'💰 ':''}${r.xp?'+'+r.xp+' XP ':''}${r.item?r.item:''}`);
+  if(choice.next)await setScene(choice.next);
+  await endTurn();
 }
 
-/* ---------- БОЙ (список, без сетки) ---------- */
+/* ---------- КУБИК ---------- */
+async function showDice({label,sub,value,modifier,total,dc,verdict,good,name}){
+  $('diceLabel').textContent=label;
+  $('diceSub').textContent=sub;
+  $('diceVerdict').textContent=verdict;
+  $('diceVerdict').className='dice-verdict '+(good?'good':'bad');
+  const d20=$('d20');
+  d20.classList.remove('crit','fumble');
+  if(value===20)d20.classList.add('crit');
+  if(value===1)d20.classList.add('fumble');
+  $('d20num').textContent='?';
+  $('diceOverlay').classList.add('show');
+  // Анимация
+  d20.classList.add('rolling');
+  let spin=0;
+  const spinInterval=setInterval(()=>{
+    $('d20num').textContent=rollDice(20);
+  },80);
+  await new Promise(r=>setTimeout(r,800));
+  clearInterval(spinInterval);
+  d20.classList.remove('rolling');
+  $('d20num').textContent=value;
+  $('diceContinue').classList.remove('hidden');
+  await addLog(`🎲 ${name}: ${label} — d20(${value})+${modifier}=${total} vs ${dc} — ${verdict}`);
+}
+function hideDice(){
+  $('diceOverlay').classList.remove('show');
+  $('diceContinue').classList.add('hidden');
+}
+$('diceContinue').onclick=()=>hideDice();
+
+/* ---------- Очередь: смена хода ---------- */
+async function endTurn(){
+  const t=roomData?.turn;
+  if(!t?.order?.length)return;
+  let idx=(t.turnIndex+1)%t.order.length;
+  let round=t.round||1;
+  if(idx===0)round++;
+  const nextUid=t.order[idx];
+  await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,round});
+  await addLog(`⏭️ Ход → ${roomData.players?.[nextUid]?.name||'?'} (раунд ${round})`);
+  // Если бой активен — враги атакуют
+  if(roomData.combat?.active)await enemiesTurn();
+}
+async function skipDeadInTurn(){
+  const t=roomData?.turn;
+  if(!t?.order?.length)return;
+  const order=t.order;
+  const alive=order.filter(uid=>{
+    const p=roomData.players?.[uid];
+    return p&&(p.hp??1)>0;
+  });
+  if(alive.length===0)return;
+  if(!alive.includes(order[t.turnIndex])){
+    await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:order.indexOf(alive[0])});
+  }
+}
+
+/* ---------- БОЙ ---------- */
 async function startCombat(enemyType,count,returnScene){
-  if(!roomData.players||!Object.keys(roomData.players).length)return;
   const enemies={};
   for(let i=0;i<count;i++){
     const t=enemyTypes[enemyType]||enemyTypes.goblin;
     const eid='e'+Date.now().toString(36)+i;
     enemies[eid]={id:eid,type:enemyType,name:t.name+(count>1?' #'+(i+1):''),emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,dead:false};
   }
-  // Инициатива
+  // Инициатива: бросаем всем игрокам
   const order=[];
-  for(const pl of Object.values(roomData.players)){
+  for(const pl of Object.values(roomData.players||{})){
     if(!pl.heroId)continue;
     const h=heroes.find(x=>x.id===pl.heroId);
     order.push({uid:pl.uid,init:rollDice(20)+h.atk});
   }
   order.sort((a,b)=>b.init-a.init);
   await update(ref(db,`rooms/${roomId}/combat`),{
-    active:true,round:1,turnIndex:0,order:order.map(o=>o.uid),enemies,returnScene:returnScene||roomData.game.scene
+    active:true,round:1,enemies,returnScene:returnScene||roomData.game.scene
   });
-  await addLog(`⚔️ Бой начался! Врагов: ${count} (${enemyTypes[enemyType].name})`);
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    order:order.map(o=>o.uid),turnIndex:0,phase:'combat',round:1
+  });
+  await addLog(`⚔️ Бой! Врагов: ${count} (${enemyTypes[enemyType].name})`);
   await addLog('Инициатива: '+order.map(o=>roomData.players[o.uid].name+'('+o.init+')').join(', '));
+  // Показать кубик инициативы
+  const myInit=order.find(o=>o.uid===uid);
+  if(myInit){
+    await showDice({
+      label:'Инициатива', sub:`d20 + бонус атаки`,
+      value:myInit.init-(heroes.find(x=>x.id===roomData.players[uid]?.heroId)?.atk||0),
+      modifier:heroes.find(x=>x.id===roomData.players[uid]?.heroId)?.atk||0,
+      total:myInit.init, dc:0, verdict:'БОЙ НАЧАЛСЯ', good:true, name:roomData.players[uid].name
+    });
+  }
 }
 function renderCombat(){
   const c=roomData?.combat;
   if(!c?.active){
-    $('combatContainer').innerHTML='<div class="status muted">Бой не начат.</div>';
+    $('combatContainer').innerHTML='<div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>';
     return;
   }
-  const order=c.order||[];
-  const turnUid=order[c.turnIndex];
-  const isMyTurn=turnUid===uid;
+  const t=roomData.turn;
+  const currentUid=t?.order?.[t.turnIndex];
+  const mine=currentUid===uid;
   const myPlayer=roomData.players?.[uid];
   const myHero=heroes.find(x=>x.id===myPlayer?.heroId);
 
-  // Список всех участников
   const combatants=[];
   for(const pl of Object.values(roomData.players||{})){
     if(!pl.heroId)continue;
     const h=heroes.find(x=>x.id===pl.heroId);
     const mx=pl.maxHp||h.hp;const hp=pl.hp??mx;
-    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===turnUid,dead:hp<=0});
+    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===currentUid,dead:hp<=0});
   }
   for(const e of Object.values(c.enemies||{})){
     combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:false,dead:e.dead});
@@ -552,8 +1315,8 @@ function renderCombat(){
 
   const html=`
     <div class="combat active">
-      <div class="combat-round">Раунд ${c.round} · Ход: ${esc(roomData.players[turnUid]?.name||'?')} ${isMyTurn?'<span class="good">← ваш ход</span>':''}</div>
-      <div id="combatants">
+      <div class="combat-round">⚔️ Раунд ${t?.round||1} · Ход: ${esc(roomData.players?.[currentUid]?.name||'?')}</div>
+      <div>
         ${combatants.map(x=>{
           if(x.kind==='player'){
             const pct=Math.max(0,(x.hp/x.maxHp)*100);
@@ -561,7 +1324,7 @@ function renderCombat(){
             return `<div class="combatant ${x.isTurn?'turn':''} ${x.dead?'dead':''}">
               <span class="emoji">${x.hero.emoji}</span>
               <div class="info"><div class="name">${esc(x.data.name)}${x.data.uid===roomData.masterUid?' <span class="tag">МАСТЕР</span>':''}${conds}</div>
-              <div class="hpbar"><i style="width:${pct}%;background:var(--green)"></i></div>
+              <div class="hpbar"><i style="width:${pct}%;background:linear-gradient(90deg,var(--emerald),var(--emerald-bright))"></i></div>
               <div class="hp-text">${x.hp}/${x.maxHp} HP · ${x.hero.role}</div></div>
             </div>`;
           }else{
@@ -570,17 +1333,17 @@ function renderCombat(){
             return `<div class="combatant ${x.dead?'dead':''}">
               <span class="emoji">${x.data.emoji}</span>
               <div class="info"><div class="name">${esc(x.data.name)}</div>
-              <div class="hpbar"><i style="width:${pct}%;background:var(--red)"></i></div>
+              <div class="hpbar"><i style="width:${pct}%;background:linear-gradient(90deg,var(--blood),var(--blood-bright))"></i></div>
               <div class="hp-text">${x.hp}/${x.maxHp} HP · ⚔️+${x.data.atk} · 🛡️${x.data.ac}${x.dead?' · повержен':''}</div></div>
-              ${!x.dead?`<button class="target-btn ${sel}" data-target="${x.data.id}">${sel?'✔ выбран':'выбрать'}</button>`:''}
+              ${!x.dead&&mine?`<button class="target-btn ${sel}" data-target="${x.data.id}">${sel?'✔ выбран':'выбрать'}</button>`:''}
             </div>`;
           }
         }).join('')}
       </div>
-      ${isMyTurn?`
+      ${mine?`
         <div class="combat-actions">
-          <button id="atkBtn" ${enemyList.length?'':'disabled'}>⚔️ Атака${selectedTarget?' → '+esc(c.enemies[selectedTarget]?.name||''):''}</button>
-          <button id="defBtn" class="secondary">🛡️ Защита (+2 AC)</button>
+          <button id="atkBtn" ${enemyList.length&&selectedTarget?'':'disabled'}>⚔️ Атака${selectedTarget?' → '+esc(c.enemies[selectedTarget]?.name||''):''}</button>
+          <button id="defBtn" class="secondary">🛡️ Защита (+2 HP)</button>
           <button id="potionBtn" class="secondary" ${(myPlayer?.inventory||[]).some(i=>i.includes('Зелье'))?'':'disabled'}>🧪 Зелье (+6 HP)</button>
           <button id="endTurnBtn" class="secondary">⏭️ Конец хода</button>
           ${myHero.abilities.map(a=>{
@@ -588,7 +1351,7 @@ function renderCombat(){
             return `<button class="ability" data-ab="${a.id}" ${cd>0?'disabled':''}><b>${a.name} ${cd>0?'(⏳'+cd+')':''}</b><span class="cd">${a.desc}</span></button>`;
           }).join('')}
         </div>
-      `:`<p class="muted small" style="margin-top:8px">Ждём хода ${esc(roomData.players[turnUid]?.name||'?')}…</p>`}
+      `:`<p class="muted small" style="margin-top:12px;text-align:center;font-style:italic">Ожидаем хода ${esc(roomData.players?.[currentUid]?.name||'?')}…</p>`}
     </div>`;
   $('combatContainer').innerHTML=html;
 
@@ -601,42 +1364,57 @@ function renderCombat(){
 }
 
 async function doAttack(){
+  if(!isMyTurn())return status('Не ваш ход.');
   const c=roomData.combat;
-  const turnUid=c.order[c.turnIndex];
-  if(turnUid!==uid)return status('Не ваш ход.');
   if(!selectedTarget)return status('Выберите цель.');
   const e=c.enemies[selectedTarget];
   if(!e||e.dead)return status('Цель повержена.');
   const p=roomData.players[uid];
   const h=heroes.find(x=>x.id===p.heroId);
-  const d=rollDice(20)+h.atk;
-  if(d>=e.ac){
+  const d20=rollDice(20);
+  const total=d20+h.atk;
+  const hit=d20===20||(d20!==1&&total>=e.ac);
+  if(hit){
     let dmg=rollDamage(1,6,h.atk);
-    if(d===20){dmg*=2;}
+    if(d20===20)dmg*=2;
     const nh=Math.max(0,e.hp-dmg);
+    await showDice({
+      label:`Атака: ${e.name}`,
+      sub:`d20 (${d20}) + ${h.atk} против AC ${e.ac}`,
+      value:d20, modifier:h.atk, total, dc:e.ac,
+      verdict:d20===20?'КРИТ!':`ПОПАДАНИЕ −${dmg} HP`,
+      good:true, name:p.name
+    });
     await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
-    await addLog(`⚔️ ${p.name} атакует ${e.name}: d20(${d})+${h.atk}=${d+h.atk} vs AC${e.ac} — попадание, ${dmg} урона!${d===20?' КРИТ!':''}`);
+    await addLog(`⚔️ ${p.name} атакует ${e.name}: ${dmg} урона!${d20===20?' КРИТ!':''}`,p.name);
     if(nh<=0){
-      await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`);
+      await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`,p.name);
       await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
       await checkLevelUp(uid,(p.xp||0)+e.xp);
       selectedTarget=null;
       await checkCombatEnd();
     }
   }else{
-    await addLog(`⚔️ ${p.name} атакует ${e.name}: d20(${d})+${h.atk}=${d+h.atk} vs AC${e.ac} — промах.`);
+    await showDice({
+      label:`Атака: ${e.name}`,
+      sub:`d20 (${d20}) + ${h.atk} против AC ${e.ac}`,
+      value:d20, modifier:h.atk, total, dc:e.ac,
+      verdict:'ПРОМАХ', good:false, name:p.name
+    });
+    await addLog(`⚔️ ${p.name} атакует ${e.name}: промах.`,p.name);
   }
 }
 async function doDefend(){
+  if(!isMyTurn())return status('Не ваш ход.');
   const p=roomData.players[uid];
-  if(!p?.heroId)return;
-  await addLog(`🛡️ ${p.name} встаёт в защиту (+2 AC до конца раунда).`);
-  // Упрощённо: лечим 2 HP как «подготовка»
   const h=heroes.find(x=>x.id===p.heroId);
   const mx=p.maxHp||h.hp;
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+2)});
+  await addLog(`🛡️ ${p.name} встаёт в защиту (+2 HP)`,p.name);
+  await endTurn();
 }
 async function doPotion(){
+  if(!isMyTurn())return status('Не ваш ход.');
   const p=roomData.players[uid];
   const inv=p.inventory||[];
   const idx=inv.findIndex(i=>i.includes('Зелье'));
@@ -645,13 +1423,13 @@ async function doPotion(){
   const mx=p.maxHp||h.hp;
   const newInv=[...inv];newInv.splice(idx,1);
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
-  await addLog(`🧪 ${p.name} выпивает зелье: +6 HP`);
+  await addLog(`🧪 ${p.name} выпивает зелье: +6 HP`,p.name);
+  await endTurn();
 }
 async function useAbility(aid){
+  if(!isMyTurn())return status('Не ваш ход.');
   const c=roomData.combat;
   if(!c?.active)return;
-  const turnUid=c.order[c.turnIndex];
-  if(turnUid!==uid)return status('Не ваш ход.');
   const p=roomData.players[uid];
   const h=heroes.find(x=>x.id===p.heroId);
   const ab=h.abilities.find(a=>a.id===aid);
@@ -664,48 +1442,50 @@ async function useAbility(aid){
   if(ab.type==='heal'){
     const mx=p.maxHp||h.hp;
     const heal=rollDamage(1,8,0);
+    await showDice({label:`${ab.name}`,sub:`Лечение 1d8`,value:heal,modifier:0,total:heal,dc:0,verdict:`+${heal} HP`,good:true,name:p.name});
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+heal)});
-    await addLog(`✨ ${p.name} использует ${ab.name}: +${heal} HP`);
+    await addLog(`✨ ${p.name} использует ${ab.name}: +${heal} HP`,p.name);
   }else if(ab.type==='buff'){
     const mx=p.maxHp||h.hp;
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+3)});
-    await addLog(`🛡️ ${p.name}: ${ab.name} (+3 HP)`);
+    await addLog(`🛡️ ${p.name}: ${ab.name} (+3 HP)`,p.name);
   }else if(ab.type==='multi'){
     const targets=enemyList.slice(0,2);
     for(const t of targets){
-      const d=rollDice(20)+h.atk;
-      if(d>=t.ac){
+      const d20=rollDice(20)+h.atk;
+      if(d20>=t.ac){
         const dmg=rollDamage(1,6,h.atk);
         const nh=Math.max(0,t.hp-dmg);
         await update(ref(db,`rooms/${roomId}/combat/enemies/${t.id}`),{hp:nh,dead:nh<=0});
-        await addLog(`🏹 ${p.name} → ${t.name}: ${dmg} урона (${nh}/${t.maxHp})`);
+        await addLog(`🏹 ${p.name} → ${t.name}: ${dmg} урона (${nh}/${t.maxHp})`,p.name);
         if(nh<=0)await onKill(t);
       }else{
-        await addLog(`🏹 ${p.name} промахнулся по ${t.name}`);
+        await addLog(`🏹 ${p.name} промахнулся по ${t.name}`,p.name);
       }
     }
+    await showDice({label:ab.name,sub:'Две стрелы',value:20,modifier:0,total:0,dc:0,verdict:'ГРАД СТРЕЛ',good:true,name:p.name});
   }else{
-    // attack / poison / stun — нужна цель
     if(!selectedTarget)return status('Выберите цель.');
     const e=c.enemies[selectedTarget];
     if(!e||e.dead)return status('Цель повержена.');
-    let dmg=0,label=ab.name;
+    let dmg=0;
     if(aid==='fireball'||aid==='power'||aid==='sneak')dmg=rollDamage(2,6,h.atk);
     else if(aid==='poison')dmg=rollDamage(1,6,h.atk);
     const nh=Math.max(0,e.hp-dmg);
+    await showDice({label:`${ab.name}: ${e.name}`,sub:`Урон ${dmg}`,value:dmg,modifier:0,total:dmg,dc:0,verdict:`−${dmg} HP`,good:true,name:p.name});
     await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
-    await addLog(`✨ ${p.name} → ${e.name}: ${ab.name}, ${dmg} урона (${nh}/${e.maxHp})`);
+    await addLog(`✨ ${p.name} → ${e.name}: ${ab.name}, ${dmg} урона`,p.name);
     if(aid==='poison')await addLog(`☠️ ${e.name} отравлен!`);
     if(aid==='stun')await addLog(`💫 ${e.name} оглушён!`);
     if(nh<=0){await onKill(e);selectedTarget=null;}
   }
   await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[aid]:ab.cd});
   await checkCombatEnd();
+  await endTurn();
 }
 async function onKill(e){
   const p=roomData.players[uid];
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
-  await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`);
   await checkLevelUp(uid,(p.xp||0)+e.xp);
 }
 async function checkCombatEnd(){
@@ -714,22 +1494,10 @@ async function checkCombatEnd(){
   if(!alive.length){
     await addLog('🏆 Все враги повержены! Бой окончен.');
     const ret=c.returnScene||roomData.game.scene;
-    await update(ref(db,`rooms/${roomId}/combat`),{active:false,turnIndex:0,order:[],enemies:{},round:0});
+    await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
+    await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
     if(ret)await setScene(ret);
   }
-}
-async function endTurn(){
-  const c=roomData.combat;
-  if(!c?.active)return;
-  const turnUid=c.order[c.turnIndex];
-  if(turnUid!==uid&&!isMaster)return status('Не ваш ход.');
-  let idx=(c.turnIndex+1)%c.order.length;
-  let round=c.round;
-  if(idx===0)round++;
-  await update(ref(db,`rooms/${roomId}/combat`),{turnIndex:idx,round});
-  await addLog(`⏭️ Ход → ${roomData.players[c.order[idx]]?.name||'?'} (раунд ${round})`);
-  // Враги атакуют
-  await enemiesTurn();
 }
 async function enemiesTurn(){
   const c=roomData.combat;
@@ -741,8 +1509,8 @@ async function enemiesTurn(){
     const target=alive[Math.floor(Math.random()*alive.length)];
     const h=heroes.find(x=>x.id===target.heroId);
     if(!h)continue;
-    const d=rollDice(20)+e.atk;
-    if(d>=h.ac){
+    const d20=rollDice(20)+e.atk;
+    if(d20>=h.ac){
       const dmg=rollDamage(1,6,e.atk);
       const nh=Math.max(0,(target.hp??h.hp)-dmg);
       await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
@@ -775,8 +1543,19 @@ function startListeners(){
     $('roomInfo').classList.remove('hidden');
     $('roomLabel').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
-    renderPlayers();renderScene();renderCombat();setConnected(true);
+    renderPlayers();renderTurnBanner();renderScene();renderCombat();setConnected(true);
     status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
+    // Показываем кубик, если он новый
+    const dice=roomData.dice;
+    if(dice?.id && dice.id!==lastDiceKey && dice.uid!==uid){
+      lastDiceKey=dice.id;
+      showDice({
+        label:dice.label||'Бросок',
+        sub:dice.sub||'',
+        value:dice.value,modifier:dice.modifier,total:dice.total,dc:dice.dc,
+        verdict:dice.verdict||'',good:dice.good!==false,name:dice.name||'Игрок'
+      });
+    }
   },err=>status('Ошибка чтения: '+err.message));
   unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{
     const v=snap.val()||{};
@@ -794,6 +1573,12 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена.');
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now()});
+  // Добавляем в очередь хода, если ещё нет
+  const room=snap.val();
+  const order=room.turn?.order||[];
+  if(!order.includes(uid)){
+    await update(ref(db,`rooms/${roomId}/turn`),{order:[...order,uid]});
+  }
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();await addLog('подключился',name);
 }
@@ -801,14 +1586,17 @@ async function createRoom(){
   if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
   const name=$('playerName').value.trim().slice(0,24)||'Мастер';
   roomId=Math.random().toString(36).slice(2,9).toUpperCase();
-  await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
+  const room=defaultRoom(uid,name);
+  room.turn.order=[uid];
+  room.turn.phase='explore';
+  await set(ref(db,`rooms/${roomId}`),room);
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();await addLog('создал комнату. Приключение начинается!',name);
 }
 $('createRoom').onclick=()=>createRoom().catch(e=>status(e.message));
 $('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>status(e.message));
 
-/* ---------- Кнопки персонажа ---------- */
+/* ---------- Кнопки ---------- */
 $('pickHero').onclick=async()=>{
   if(!roomId||!uid)return;
   const name=$('playerName').value.trim().slice(0,24)||myPlayer?.name||'Игрок';
@@ -835,25 +1623,27 @@ $('restBtn').onclick=async()=>{
     ups[`${p.uid}/hp`]=p.maxHp||h.hp;ups[`${p.uid}/conditions`]=[];ups[`${p.uid}/cooldowns`]={};
   }
   if(Object.keys(ups).length)await update(ref(db,`rooms/${roomId}/players`),ups);
-  await update(ref(db,`rooms/${roomId}/combat`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
+  await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
   await addLog('🔥 Мастер объявил долгий отдых');
 };
-
-/* ---------- Броски ---------- */
 $('roll').onclick=async()=>{
+  if(!isMyTurn())return status('Не ваш ход.');
   const p=roomData?.players?.[uid];const h=heroes.find(x=>x.id===p?.heroId)||selected||heroes[0];
   const mode=$('rollMode').value;const rolls=[rollDice(20)];
   if(mode!=='normal')rolls.push(rollDice(20));
-  const d=mode==='adv'?Math.max(...rolls):mode==='dis'?Math.min(...rolls):rolls[0];
-  const baseBonus=$('checkType').value==='attack'?h.atk:Math.max(0,h.atk-1);
-  const bonus=baseBonus+(Number($('bonusMod').value)||0);
-  const dc=Number($('dc').value),total=d+bonus;
-  const outcome=d===20?'Крит!':d===1?'Натуральная 1!':total>=dc?'Успех!':'Неудача.';
-  const txt=`🎲 ${$('checkType').selectedOptions[0].text}: d20(${rolls.join('/')}→${d}) + ${bonus} = ${total} vs ${dc}. ${outcome}`;
-  $('rollResult').textContent=txt;await addLog(txt);
+  const d20=mode==='adv'?Math.max(...rolls):mode==='dis'?Math.min(...rolls):rolls[0];
+  const bonus=h.atk+(Number($('bonusMod').value)||0);
+  const dc=Number($('dc').value),total=d20+bonus;
+  const success=d20===20||(d20!==1&&total>=dc);
+  const verdict=d20===20?'КРИТИЧЕСКИЙ УСПЕХ':d20===1?'КРИТИЧЕСКИЙ ПРОВАЛ':success?'УСПЕХ':'ПРОВАЛ';
+  await showDice({label:'Свободный бросок',sub:`d20 (${d20}) + ${bonus} vs ${dc}`,value:d20,modifier:bonus,total,dc,verdict,good:success,name:p?.name||'Игрок'});
+  await update(ref(db,`rooms/${roomId}/dice`),{
+    id:Date.now(),uid,name:p?.name||'Игрок',label:'Свободный бросок',value:d20,modifier:bonus,total,dc,verdict,sub:`d20 (${d20}) + ${bonus} vs ${dc}`,ts:Date.now(),good:success
+  });
+  await addLog(`🎲 d20(${d20})+${bonus}=${total} vs ${dc} — ${verdict}`,p?.name);
+  await endTurn();
 };
-
-/* ---------- Чат / утилиты ---------- */
 $('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';await addLog(t);};
 $('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
 $('copyLink').onclick=async()=>{try{await navigator.clipboard.writeText($('inviteLink').value);status('Скопировано.',true);}catch{$('inviteLink').select();}};
@@ -865,7 +1655,8 @@ $('exportLog').onclick=async()=>{
 $('clearRoom').onclick=async()=>{
   if(!isMaster||!confirm('Сбросить приключение?'))return;
   await update(ref(db,`rooms/${roomId}/game`),{scene:'village',sceneText:scenes.village.text});
-  await update(ref(db,`rooms/${roomId}/combat`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await update(ref(db,`rooms/${roomId}/combat`),{active:false,enemies:{},round:0});
+  await update(ref(db,`rooms/${roomId}/turn`),{phase:'explore',turnIndex:0,round:1});
   await set(ref(db,`rooms/${roomId}/log`),null);
   await addLog('Мастер начал приключение заново');
 };
@@ -873,6 +1664,7 @@ $('clearRoom').onclick=async()=>{
 /* ---------- Старт ---------- */
 selected=heroes[0];
 renderHeroes();
+renderTurnBanner();
 status('Введите имя и создайте комнату.');
 </script>
 </body>
