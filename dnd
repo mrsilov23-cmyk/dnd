@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>D&D Онлайн — Проклятие Чёрного дракона</title>
+<style>
+:root{--bg:#11131b;--panel:#1c202c;--panel2:#252b3a;--gold:#e8b85d;--text:#f4f0e8;--muted:#b5bac8;--green:#80c69a;--red:#e47b76}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#292538,#11131b 60%);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:24px 16px;text-align:center;border-bottom:1px solid #373242;background:#171923}h1{margin:0;color:var(--gold);font-size:clamp(1.6rem,5vw,2.6rem)}header p{color:var(--muted);margin:6px 0 0}
+main{max-width:1120px;margin:20px auto;padding:0 14px 35px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel{background:linear-gradient(145deg,var(--panel),#191c26);border:1px solid #373b4b;border-radius:15px;padding:17px;min-width:0}
+h2{font-size:1.13rem;color:var(--gold);margin:0 0 12px}h3{font-size:1rem;margin:14px 0 6px}label{display:block;color:var(--muted);font-size:.9rem;margin:8px 0 4px}
+input,select,button{font:inherit;border-radius:9px;border:1px solid #454b5d;padding:10px 11px}input,select{background:#121520;color:var(--text);width:100%}button{cursor:pointer;background:var(--gold);color:#211a10;font-weight:700;border:0}button:disabled{opacity:.4;cursor:not-allowed}button.secondary{background:var(--panel2);color:var(--text);border:1px solid #454b5d}
+.row{display:flex;gap:8px;align-items:end}.row>*{flex:1;min-width:0}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.actions button{flex:1;min-width:105px}.muted{color:var(--muted)}.small{font-size:.84rem}.status{padding:9px 11px;border-radius:9px;background:#252b3a;margin:8px 0}.good{color:var(--green)}.bad{color:var(--red)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hero{background:var(--panel2);border:1px solid #41485b;border-radius:10px;padding:10px;cursor:pointer}.hero.active{border:2px solid var(--gold);padding:9px}.hero b{display:block;color:var(--gold)}.hero small{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}.stat{text-align:center;background:var(--panel2);border-radius:9px;padding:8px}.stat b{display:block;color:var(--gold);font-size:1.2rem}
+.map{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.tile{padding:10px;border-radius:9px;background:#253c34;border:1px solid #3e6152}.tile.locked{opacity:.4;background:#272a34;border-color:#414451}.tile.current{outline:2px solid var(--gold)}.tile span{font-size:1.2rem;margin-right:5px}
+#feed{height:190px;overflow:auto;background:#10131c;border-radius:9px;padding:10px}.entry{padding:6px 0;border-bottom:1px solid #282d3a;font-size:.9rem;overflow-wrap:anywhere}.player{padding:7px 9px;border-radius:8px;background:var(--panel2);margin:5px 0;overflow-wrap:anywhere}.tag{font-size:.75rem;color:var(--gold);margin-left:5px}
+.notice{background:#302b24;border:1px solid #685332;padding:10px;border-radius:9px;font-size:.9rem}.hidden{display:none!important}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px}
+@media(max-width:760px){main{grid-template-columns:1fr}.row{align-items:stretch}.cards{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><h1>🐉 D&D Онлайн: Проклятие Чёрного дракона</h1><p>Общая комната · живые обновления · мастер управляет приключением</p></header>
+<main>
+<section class="panel">
+<h2>🌐 Подключение к комнате</h2>
+<div id="configNotice" class="notice hidden">Сначала добавьте конфигурацию Firebase в файл <code>index.html</code>. Инструкция — в README.</div>
+<div class="row"><div><label for="playerName">Ваше имя</label><input id="playerName" maxlength="24" placeholder="Например, Артём"></div><div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. DRAGON7"></div></div>
+<div class="actions"><button id="createRoom">Создать комнату (я мастер)</button><button id="joinRoom" class="secondary">Войти по коду</button></div>
+<div class="status" id="connection">Не подключено. Создайте комнату или введите код друга.</div>
+<div id="roomInfo" class="hidden"><b>Комната: <span id="roomLabel"></span></b><p class="muted small">Отправьте друзьям ссылку ниже. Комната и игровые события синхронизируются между устройствами.</p><div class="row"><input id="inviteLink" readonly><button id="copyLink" class="secondary">Копировать</button></div><h3>👥 Игроки в комнате</h3><div id="players"></div></div>
+<hr style="border:0;border-top:1px solid #373b4b;margin:17px 0">
+<h2>🧙 Ваш персонаж</h2><div class="cards" id="heroes"></div>
+<div id="charStats" class="stats"></div>
+<div class="actions"><button id="pickHero" disabled>Выбрать персонажа</button><button id="heal" class="secondary" disabled>Зелье лечения (+4)</button></div>
+<p class="muted small">У каждого игрока должен быть свой персонаж. Выбор сохраняется в общей комнате.</p>
+</section>
+<section class="panel">
+<h2>🗺️ Приключение</h2><div class="map" id="map"></div>
+<h3 id="locationTitle">Серебряный Брод</h3><p id="locationText" class="muted">Создайте комнату или подключитесь, чтобы увидеть состояние партии.</p>
+<div class="actions"><button id="explore" disabled>Исследовать локацию</button><button id="nextLocation" disabled>Открыть следующую →</button></div>
+<p class="muted small">Только мастер может открыть следующую локацию. Все участники могут исследовать и бросать кубики.</p>
+<hr style="border:0;border-top:1px solid #373b4b;margin:17px 0">
+<h2>🎲 Общие броски</h2><div class="row"><div><label for="checkType">Проверка</label><select id="checkType"><option value="skill">Проверка умения</option><option value="attack">Атака</option><option value="save">Спасбросок</option></select></div><div><label for="dc">Сложность / защита</label><select id="dc"><option value="8">8 — легко</option><option value="11" selected>11 — обычно</option><option value="14">14 — сложно</option><option value="17">17 — героически</option></select></div></div>
+<div class="actions"><button id="roll" disabled>Бросить d20</button></div><div id="rollResult" class="status">Броски появятся здесь и в общем журнале.</div>
+</section>
+<section class="panel">
+<h2>📜 Общий журнал</h2><div id="feed" aria-live="polite"></div>
+<div class="row" style="margin-top:9px"><input id="chatText" maxlength="300" placeholder="Сообщение партии…"><button id="sendChat" disabled>Отправить</button></div>
+<div class="actions"><button id="exportLog" class="secondary" disabled>Скачать журнал</button><button id="clearRoom" class="secondary" disabled>Сбросить приключение (мастер)</button></div>
+</section>
+<section class="panel">
+<h2>📖 Завязка для мастера</h2>
+<p>В деревне Серебряный Брод пропадают жители, а вода в реке становится чёрной. Мэр обещает награду героям, которые выяснят, что происходит.</p>
+<h3>Локации</h3>
+<ol><li><b>Серебряный Брод:</b> расспросите мэра и тавернщика. Следы ведут на север.</li><li><b>Шепчущий лес:</b> разбитая телега, гоблины и пленённый следопыт. Проверка убеждения — сложность 11.</li><li><b>Старый храм:</b> загадка трёх символов. Правильный порядок: солнце, глаз, коготь.</li><li><b>Логово дракона:</b> на шее дракона магический ошейник. Можно сразиться или попытаться снять проклятие.</li></ol>
+<div class="notice"><b>Правило:</b> бросьте d20 и прибавьте бонус персонажа. Если итог не меньше сложности — успех. Натуральная 20 — критический успех, 1 — осложнение. Мастер описывает последствия.</div>
+</section>
+</main><footer>Для игры с друзьями нужен проект Firebase и опубликованный HTTPS-сайт. Подробные шаги — в README.</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getDatabase, ref, set, get, update, push, onValue, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+// TODO: Replace values with your Firebase project's Web App config (README explains how).
+const firebaseConfig = {
+  apiKey: "PASTE_API_KEY_HERE",
+  authDomain: "PASTE_PROJECT_ID_HERE.firebaseapp.com",
+  databaseURL: "https://PASTE_PROJECT_ID_HERE-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "PASTE_PROJECT_ID_HERE",
+  appId: "PASTE_APP_ID_HERE"
+};
+const configured = !Object.values(firebaseConfig).some(v => String(v).includes("PASTE_"));
+const $ = id => document.getElementById(id);
+const heroes = [
+ {id:'warrior',role:'Воин',name:'Борин Железный Щит',emoji:'🛡️',desc:'Защищает друзей',hp:12,atk:3,ac:13},
+ {id:'mage',role:'Маг',name:'Лира Искророждённая',emoji:'🔮',desc:'Магия и древние руны',hp:8,atk:4,ac:11},
+ {id:'ranger',role:'Следопыт',name:'Тарен Лесной След',emoji:'🏹',desc:'Ловушки и стрельба',hp:10,atk:3,ac:12},
+ {id:'rogue',role:'Разбойница',name:'Мира Тихий Шаг',emoji:'🗡️',desc:'Скрытность и ловкость',hp:9,atk:4,ac:12}
+];
+const places = [
+ {name:'Серебряный Брод',icon:'🏘️',text:'В деревне пропадают жители. Мэр обещает награду за разгадку тайны.'},
+ {name:'Шепчущий лес',icon:'🌲',text:'На тропе разбитая телега. Из кустов доносится шёпот: «Отдайте кристалл — и пленник останется жив». '},
+ {name:'Старый храм',icon:'🏚️',text:'На каменной двери три символа: солнце, глаз и коготь. Правильный порядок: солнце, глаз, коготь.'},
+ {name:'Логово дракона',icon:'🐉',text:'Чёрный дракон лежит над тёмным озером. На его шее виден магический ошейник.'}
+];
+let app, auth, db, uid=null, roomId=null, roomData=null, selected=heroes[0], myPlayer=null, unsubRoom=null, unsubPlayers=null, unsubLog=null, isMaster=false;
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function status(s, good=false){$('connection').innerHTML=`<span class="${good?'good':'bad'}">${esc(s)}</span>`;}
+function setConnected(on){['roll','explore','sendChat','exportLog','pickHero','heal'].forEach(id=>$(id).disabled=!on);$('nextLocation').disabled=!on||!isMaster;$('clearRoom').disabled=!on||!isMaster;}
+function defaultRoom(masterUid, name){return {createdAt:Date.now(),masterUid,players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,joinedAt:Date.now()}},game:{location:0,notes:'Приключение начинается в Серебряном Броде.'}};}
+function renderHeroes(){
+ $('heroes').innerHTML=heroes.map(h=>`<div class="hero ${selected.id===h.id?'active':''}" data-id="${h.id}"><b>${h.emoji} ${h.role}</b><small>${h.name}<br>❤️ ${h.hp} · ⚔️ +${h.atk}</small></div>`).join('');
+ document.querySelectorAll('.hero').forEach(el=>el.onclick=()=>{selected=heroes.find(h=>h.id===el.dataset.id);renderHeroes();});
+ renderStats();
+}
+function renderStats(){const p=roomData?.players?.[uid];const h=heroes.find(x=>x.id===(p?.heroId||selected.id))||selected;$('charStats').innerHTML=`<div class="stat">❤️ HP<b>${p?.hp??h.hp}/${h.hp}</b></div><div class="stat">⚔️ Атака<b>+${h.atk}</b></div><div class="stat">🛡️ Защита<b>${h.ac}</b></div>`;}
+function renderMap(){const loc=Number(roomData?.game?.location||0);$('map').innerHTML=places.map((p,i)=>`<div class="tile ${i>loc?'locked':''} ${i===loc?'current':''}"><span>${i>loc?'🔒':p.icon}</span>${p.name}</div>`).join('');$('locationTitle').textContent=places[loc].name;$('locationText').textContent=places[loc].text;}
+function renderPlayers(){const ps=Object.values(roomData?.players||{});$('players').innerHTML=ps.map(p=>{const h=heroes.find(x=>x.id===p.heroId);return `<div class="player">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}<br><span class="muted small">${h?esc(h.role+' — '+h.name):'Персонаж не выбран'}</span></div>`}).join('')||'<span class="muted">Пока никого нет</span>';renderStats();}
+function renderFeed(items){$('feed').innerHTML=items.map(e=>`<div class="entry"><span class="muted">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <b>${esc(e.name||'Система')}:</b> ${esc(e.text)}</div>`).join('')||'<div class="muted">Журнал пока пуст.</div>';}
+function startListeners(){
+ for(const u of [unsubRoom,unsubPlayers,unsubLog]) if(u)u();
+ unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{roomData=snap.val();if(!roomData){status('Комната удалена или недоступна.');setConnected(false);return;}isMaster=roomData.masterUid===uid;$('roomInfo').classList.remove('hidden');$('roomLabel').textContent=roomId;$('inviteLink').value=location.origin+location.pathname+'?room='+roomId; $('nextLocation').disabled=!isMaster;$('clearRoom').disabled=!isMaster;renderMap();renderPlayers();setConnected(true);status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);});
+ unsubPlayers=onValue(ref(db,`rooms/${roomId}/players`),snap=>{const p=snap.val()||{};if(p[uid])myPlayer=p[uid];});
+ unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{const v=snap.val()||{};const items=Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,70);renderFeed(items);});
+}
+async function addLog(text,name){if(!roomId||!uid)return;await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});}
+async function connectRoom(code){if(!configured){$('configNotice').classList.remove('hidden');status('Нужно заполнить Firebase config в index.html. См. README.');return;}if(!auth.currentUser)throw new Error('Firebase авторизация ещё не готова. Попробуйте ещё раз.');roomId=code.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);if(roomId.length<5)throw new Error('Код комнаты должен содержать минимум 5 символов.');const rref=ref(db,`rooms/${roomId}`);const snap=await get(rref);if(!snap.exists())throw new Error('Комната не найдена. Проверьте код или создайте новую.');const name=$('playerName').value.trim().slice(0,24)||'Игрок';await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now()});history.replaceState(null,'',`?room=${roomId}`);startListeners();await addLog('подключился к партии',name);}
+async function createRoom(){if(!configured){$('configNotice').classList.remove('hidden');status('Нужно заполнить Firebase config в index.html. См. README.');return;}const name=$('playerName').value.trim().slice(0,24)||'Мастер';roomId=Math.random().toString(36).slice(2,9).toUpperCase();await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));history.replaceState(null,'',`?room=${roomId}`);startListeners();await addLog('создал комнату. Приключение начинается! ',name);}
+if(configured){try{app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);signInAnonymously(auth).catch(e=>status('Ошибка входа: '+e.message));onAuthStateChanged(auth,user=>{if(!user)return;uid=user.uid;const code=new URLSearchParams(location.search).get('room');if(code){$('roomCode').value=code;connectRoom(code).catch(e=>status(e.message));}});}catch(e){status('Не удалось запустить Firebase: '+e.message);}}else{$('configNotice').classList.remove('hidden');}
+$('createRoom').onclick=()=>createRoom().catch(e=>status(e.message));
+$('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>status(e.message));
+$('pickHero').onclick=async()=>{if(!roomId||!uid)return;const name=$('playerName').value.trim().slice(0,24)||myPlayer?.name||'Игрок';const p=roomData.players||{};if(Object.values(p).some(x=>x.uid!==uid&&x.heroId===selected.id)){status('Этот герой уже выбран другим игроком. Выберите другого.');return;}await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,heroId:selected.id,hp:selected.hp});await addLog(`выбрал персонажа ${selected.name}`,name);};
+$('heal').onclick=async()=>{const p=roomData?.players?.[uid];if(!p?.heroId)return status('Сначала выберите персонажа.');const h=heroes.find(x=>x.id===p.heroId);if(p.hp>=h.hp)return status('Здоровье уже полное.');await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(h.hp,(p.hp??h.hp)+4)});await addLog('использовал зелье лечения (+4 HP)');};
+$('roll').onclick=async()=>{const p=roomData?.players?.[uid];const h=heroes.find(x=>x.id===p?.heroId)||selected;const d=Math.floor(Math.random()*20)+1,bonus=$('checkType').value==='attack'?h.atk:Math.max(0,h.atk-1),dc=Number($('dc').value),total=d+bonus;const outcome=d===20?'Критический успех!':d===1?'Натуральная 1 — осложнение!':total>=dc?'Успех!':'Неудача.';const txt=`🎲 ${$('checkType').selectedOptions[0].text}: d20 (${d}) + ${bonus} = ${total}, цель ${dc}. ${outcome}`;$('rollResult').textContent=txt;await addLog(txt);};
+$('explore').onclick=async()=>{await addLog('исследует локацию: '+places[Number(roomData?.game?.location||0)].name+'. '+places[Number(roomData?.game?.location||0)].text);};
+$('nextLocation').onclick=async()=>{if(!isMaster)return;const old=Number(roomData?.game?.location||0),next=Math.min(places.length-1,old+1);if(next===old){await addLog('достиг финала приключения. Решите судьбу дракона!');return;}await update(ref(db,`rooms/${roomId}/game`),{location:next,notes:places[next].text});await addLog('мастер открыл локацию: '+places[next].name);};
+$('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return; $('chatText').value='';await addLog(t);};
+$('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
+$('copyLink').onclick=async()=>{try{await navigator.clipboard.writeText($('inviteLink').value);status('Ссылка скопирована — отправьте её друзьям.',true);}catch{ $('inviteLink').select();status('Ссылка выделена. Скопируйте её вручную.');}};
+$('exportLog').onclick=async()=>{const s=await get(ref(db,`rooms/${roomId}/log`));const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='dnd-zhurnal.txt';a.click();URL.revokeObjectURL(a.href);};
+$('clearRoom').onclick=async()=>{if(!isMaster||!confirm('Сбросить локацию и журнал комнаты? Персонажи останутся.'))return;await update(ref(db,`rooms/${roomId}/game`),{location:0,notes:places[0].text});await set(ref(db,`rooms/${roomId}/log`),null);await addLog('мастер начал приключение заново');};
+renderHeroes();renderMap();
+</script>
+</body></html>
