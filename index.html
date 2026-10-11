@@ -147,9 +147,49 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 }
 .trait.revealed{background:linear-gradient(135deg,rgba(240,184,74,.06),var(--bg2));border-color:rgba(240,184,74,.3);}
 .trait.revealed::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);}
-.trait-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.trait-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:6px;}
+.trait-label .open-mark{color:var(--green);font-size:.85rem;}
 .trait-value{color:var(--text);font-size:.9rem;line-height:1.4;}
 .trait.locked .trait-value{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:1rem;}
+
+/* КНОПКИ ВСКРЫТИЯ */
+.reveal-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:12px;
+}
+.reveal-btn{
+  background:linear-gradient(160deg,var(--card2),var(--bg2));
+  border:1px solid var(--border2);
+  border-radius:10px;
+  padding:12px 14px;
+  color:var(--text);
+  font-weight:600;
+  font-size:.88rem;
+  text-transform:none;
+  letter-spacing:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  cursor:pointer;
+  transition:.15s;
+}
+.reveal-btn:hover:not(:disabled){
+  border-color:var(--gold);
+  background:linear-gradient(160deg,rgba(240,184,74,.1),var(--bg2));
+  transform:translateY(-2px);
+}
+.reveal-btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;}
+.reveal-btn.already{
+  background:rgba(74,222,128,.06);
+  border-color:rgba(74,222,128,.3);
+  color:var(--green);
+  opacity:.9;
+}
+.reveal-btn .icon{font-size:1.1rem;}
+.reveal-btn .label{flex:1;text-align:left;}
 
 /* PICK GRID */
 .pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
@@ -241,9 +281,12 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:16px 12px 40px;}
-  .traits,.pick-grid{grid-template-columns:1fr 1fr;}
+  .traits,.pick-grid,.reveal-grid{grid-template-columns:1fr 1fr;}
   .player-traits{grid-template-columns:1fr;}
   .scenario-stats{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  .reveal-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -264,7 +307,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 
 <main>
 
-<!-- ЛОББИ -->
 <section class="card">
   <div class="card-header">
     <h2>🚪 Комната</h2>
@@ -297,7 +339,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
 </section>
 
-<!-- ВЫБОР ПРОФЕССИИ -->
 <section class="card" id="pickCard" style="display:none;">
   <div class="card-header">
     <h2>🎴 Выбор профессии</h2>
@@ -311,18 +352,15 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
 </section>
 
-<!-- МОЙ ПЕРСОНАЖ -->
 <section class="card" id="myCharCard" style="display:none;">
   <div class="card-header">
     <h2>👤 Ваш персонаж</h2>
     <span class="badge" id="revealProgress">0 / 7</span>
   </div>
   <div id="myChar"></div>
-  <div class="actions" id="myActions"></div>
-  <p class="muted small" style="margin-top:10px;">Свои характеристики вы видите всегда. Другие увидят их только после вскрытия.</p>
+  <p class="muted small" style="margin-top:10px;">Свои характеристики вы видите всегда. Другие увидят их только после вскрытия. В свой ход вы можете открыть <b>любую</b> характеристику.</p>
 </section>
 
-<!-- СЦЕНАРИЙ -->
 <section class="card" style="grid-column:span 2;" id="scenarioCard">
   <div class="card-header">
     <h2>📜 Сценарий</h2>
@@ -347,7 +385,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
 </section>
 
-<!-- СТОЛ -->
 <section class="card" style="grid-column:span 2;">
   <div class="card-header">
     <h2>🪑 За столом</h2>
@@ -356,7 +393,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   <div class="players-list" id="players"></div>
 </section>
 
-<!-- ГОЛОСОВАНИЕ -->
 <section class="card" id="voteCard">
   <div class="card-header">
     <h2>🗳️ Голосование</h2>
@@ -367,7 +403,6 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
 </section>
 
-<!-- ЖУРНАЛ -->
 <section class="card">
   <div class="card-header">
     <h2>📜 Хроника</h2>
@@ -415,7 +450,7 @@ const db=getDatabase(app1);
 
 let uid=null,roomId=null,roomData=null;
 let isHost=false,unsubRoom=null,unsubLog=null;
-let myVote=null,myPickOptions=null,myPickedProfession=null;
+let myVote=null,myPickedProfession=null;
 
 signInAnonymously(auth).catch(e=>setStatus('Ошибка входа: '+e.code,false));
 onAuthStateChanged(auth,user=>{
@@ -425,7 +460,7 @@ onAuthStateChanged(auth,user=>{
   if(code){$('roomCode').value=code;connectRoom(code).catch(e=>setStatus(e.message,false));}
 });
 
-/* ---------- ДАННЫЕ ---------- */
+/* ---------- ДАННЫЕ (уникальные id) ---------- */
 const professions = [
   {id:'doctor',name:'Врач',emoji:'⚕️',bonus:'лечит болезни'},
   {id:'engineer',name:'Инженер',emoji:'🔧',bonus:'чинит оборудование'},
@@ -449,152 +484,99 @@ const professions = [
   {id:'tailor',name:'Швея',emoji:'🧵',bonus:'пошив одежды'}
 ];
 const biologies = [
-  {id:'m25',text:'Мужчина, 25 лет'},
-  {id:'w32',text:'Женщина, 32 года'},
-  {id:'m45',text:'Мужчина, 45 лет'},
-  {id:'w19',text:'Женщина, 19 лет'},
-  {id:'m60',text:'Мужчина, 60 лет'},
-  {id:'w50',text:'Женщина, 50 лет'},
-  {id:'m30',text:'Мужчина, 30 лет'},
-  {id:'w27',text:'Женщина, 27 лет'},
-  {id:'m38',text:'Мужчина, 38 лет'},
-  {id:'w22',text:'Женщина, 22 года'},
-  {id:'m52',text:'Мужчина, 52 года'},
-  {id:'w41',text:'Женщина, 41 год'},
-  {id:'m35',text:'Мужчина, 35 лет'},
-  {id:'w28',text:'Женщина, 28 лет'},
-  {id:'m33',text:'Мужчина, 33 года'},
-  {id:'w36',text:'Женщина, 36 лет'}
+  {id:'m25',text:'Мужчина, 25 лет'},{id:'w32',text:'Женщина, 32 года'},
+  {id:'m45',text:'Мужчина, 45 лет'},{id:'w19',text:'Женщина, 19 лет'},
+  {id:'m60',text:'Мужчина, 60 лет'},{id:'w50',text:'Женщина, 50 лет'},
+  {id:'m30',text:'Мужчина, 30 лет'},{id:'w27',text:'Женщина, 27 лет'},
+  {id:'m38',text:'Мужчина, 38 лет'},{id:'w22',text:'Женщина, 22 года'},
+  {id:'m52',text:'Мужчина, 52 года'},{id:'w41',text:'Женщина, 41 год'},
+  {id:'m35',text:'Мужчина, 35 лет'},{id:'w28',text:'Женщина, 28 лет'},
+  {id:'m33',text:'Мужчина, 33 года'},{id:'w36',text:'Женщина, 36 лет'}
 ];
 const healths = [
-  {id:'h1',text:'Абсолютно здоров'},
-  {id:'h2',text:'Аллергия на пыль'},
-  {id:'h3',text:'Диабет 2 типа'},
-  {id:'h4',text:'Астма'},
-  {id:'h5',text:'Близорукость -6'},
-  {id:'h6',text:'Зависимость от алкоголя'},
-  {id:'h7',text:'Клаустрофобия'},
-  {id:'h8',text:'Идеальное здоровье'},
-  {id:'h9',text:'Хроническая бессонница'},
-  {id:'h10',text:'Аллергия на антибиотики'},
-  {id:'h11',text:'Протез ноги'},
-  {id:'h12',text:'Заикание'},
-  {id:'h13',text:'Гипертония'},
-  {id:'h14',text:'Крепкое здоровье'},
-  {id:'h15',text:'Панические атаки'},
-  {id:'h16',text:'Никотиновая зависимость'}
+  {id:'h1',text:'Абсолютно здоров'},{id:'h2',text:'Аллергия на пыль'},
+  {id:'h3',text:'Диабет 2 типа'},{id:'h4',text:'Астма'},
+  {id:'h5',text:'Близорукость -6'},{id:'h6',text:'Зависимость от алкоголя'},
+  {id:'h7',text:'Клаустрофобия'},{id:'h8',text:'Идеальное здоровье'},
+  {id:'h9',text:'Хроническая бессонница'},{id:'h10',text:'Аллергия на антибиотики'},
+  {id:'h11',text:'Протез ноги'},{id:'h12',text:'Заикание'},
+  {id:'h13',text:'Гипертония'},{id:'h14',text:'Крепкое здоровье'},
+  {id:'h15',text:'Панические атаки'},{id:'h16',text:'Никотиновая зависимость'}
 ];
 const hobbies = [
-  {id:'ho1',text:'Разведение кур'},
-  {id:'ho2',text:'Стрельба из лука'},
-  {id:'ho3',text:'Выращивание овощей'},
-  {id:'ho4',text:'Рыбалка'},
-  {id:'ho5',text:'Ремонт техники'},
-  {id:'ho6',text:'Медитация'},
-  {id:'ho7',text:'Кулинария'},
-  {id:'ho8',text:'Шитьё'},
-  {id:'ho9',text:'Плотничество'},
-  {id:'ho10',text:'Изучение языков'},
-  {id:'ho11',text:'Шахматы'},
-  {id:'ho12',text:'Пчеловодство'},
-  {id:'ho13',text:'Игра на гитаре'},
-  {id:'ho14',text:'Скалолазание'},
-  {id:'ho15',text:'Собирательство трав'},
-  {id:'ho16',text:'Вязание'},
-  {id:'ho17',text:'Радиолюбительство'},
-  {id:'ho18',text:'Гончарное дело'}
+  {id:'ho1',text:'Разведение кур'},{id:'ho2',text:'Стрельба из лука'},
+  {id:'ho3',text:'Выращивание овощей'},{id:'ho4',text:'Рыбалка'},
+  {id:'ho5',text:'Ремонт техники'},{id:'ho6',text:'Медитация'},
+  {id:'ho7',text:'Кулинария'},{id:'ho8',text:'Шитьё'},
+  {id:'ho9',text:'Плотничество'},{id:'ho10',text:'Изучение языков'},
+  {id:'ho11',text:'Шахматы'},{id:'ho12',text:'Пчеловодство'},
+  {id:'ho13',text:'Игра на гитаре'},{id:'ho14',text:'Скалолазание'},
+  {id:'ho15',text:'Собирательство трав'},{id:'ho16',text:'Вязание'},
+  {id:'ho17',text:'Радиолюбительство'},{id:'ho18',text:'Гончарное дело'}
 ];
 const phobias = [
-  {id:'ph1',text:'Боязнь темноты'},
-  {id:'ph2',text:'Боязнь замкнутых пространств'},
-  {id:'ph3',text:'Боязнь крови'},
-  {id:'ph4',text:'Боязнь насекомых'},
-  {id:'ph5',text:'Боязнь воды'},
-  {id:'ph6',text:'Клаустрофобия'},
-  {id:'ph7',text:'Боязнь одиночества'},
-  {id:'ph8',text:'Нет фобий'},
-  {id:'ph9',text:'Боязнь громких звуков'},
-  {id:'ph10',text:'Боязнь огня'},
-  {id:'ph11',text:'Социофобия'},
-  {id:'ph12',text:'Боязнь микробов'},
-  {id:'ph13',text:'Акрофобия'},
-  {id:'ph14',text:'Стальные нервы'},
+  {id:'ph1',text:'Боязнь темноты'},{id:'ph2',text:'Боязнь замкнутых пространств'},
+  {id:'ph3',text:'Боязнь крови'},{id:'ph4',text:'Боязнь насекомых'},
+  {id:'ph5',text:'Боязнь воды'},{id:'ph6',text:'Клаустрофобия'},
+  {id:'ph7',text:'Боязнь одиночества'},{id:'ph8',text:'Нет фобий'},
+  {id:'ph9',text:'Боязнь громких звуков'},{id:'ph10',text:'Боязнь огня'},
+  {id:'ph11',text:'Социофобия'},{id:'ph12',text:'Боязнь микробов'},
+  {id:'ph13',text:'Акрофобия'},{id:'ph14',text:'Стальные нервы'},
   {id:'ph15',text:'Боязнь животных'}
 ];
 const inventories = [
-  {id:'i1',text:'Аптечка'},
-  {id:'i2',text:'Набор инструментов'},
-  {id:'i3',text:'Семена овощей'},
-  {id:'i4',text:'Ружьё + 20 патронов'},
-  {id:'i5',text:'Радиостанция'},
-  {id:'i6',text:'Солнечная батарея'},
-  {id:'i7',text:'Фильтр для воды'},
-  {id:'i8',text:'10 банок тушёнки'},
-  {id:'i9',text:'Канистра бензина'},
-  {id:'i10',text:'Книга «Медицина без лекарств»'},
-  {id:'i11',text:'Спальный мешок'},
-  {id:'i12',text:'Мультитул'},
-  {id:'i13',text:'Фонарик + батарейки'},
-  {id:'i14',text:'Противорадиационный костюм'},
-  {id:'i15',text:'Дозиметр'},
-  {id:'i16',text:'Гитара'},
-  {id:'i17',text:'Топор'},
-  {id:'i18',text:'Лук и 30 стрел'},
-  {id:'i19',text:'Антибиотики'},
-  {id:'i20',text:'Генератор'},
-  {id:'i21',text:'Фотографии семьи'},
-  {id:'i22',text:'Учебник физики'},
-  {id:'i23',text:'Маска с фильтром'},
-  {id:'i24',text:'Палатка'},
-  {id:'i25',text:'Набор для шитья'},
-  {id:'i26',text:'Коза (живая)'},
-  {id:'i27',text:'Курица (живая)'},
-  {id:'i28',text:'Пистолет + 15 патронов'},
-  {id:'i29',text:'Семена пшеницы'},
-  {id:'i30',text:'Швейная машинка'}
+  {id:'i1',text:'Аптечка'},{id:'i2',text:'Набор инструментов'},
+  {id:'i3',text:'Семена овощей'},{id:'i4',text:'Ружьё + 20 патронов'},
+  {id:'i5',text:'Радиостанция'},{id:'i6',text:'Солнечная батарея'},
+  {id:'i7',text:'Фильтр для воды'},{id:'i8',text:'10 банок тушёнки'},
+  {id:'i9',text:'Канистра бензина'},{id:'i10',text:'Книга «Медицина без лекарств»'},
+  {id:'i11',text:'Спальный мешок'},{id:'i12',text:'Мультитул'},
+  {id:'i13',text:'Фонарик + батарейки'},{id:'i14',text:'Противорадиационный костюм'},
+  {id:'i15',text:'Дозиметр'},{id:'i16',text:'Гитара'},
+  {id:'i17',text:'Топор'},{id:'i18',text:'Лук и 30 стрел'},
+  {id:'i19',text:'Антибиотики'},{id:'i20',text:'Генератор'},
+  {id:'i21',text:'Фотографии семьи'},{id:'i22',text:'Учебник физики'},
+  {id:'i23',text:'Маска с фильтром'},{id:'i24',text:'Палатка'},
+  {id:'i25',text:'Набор для шитья'},{id:'i26',text:'Коза (живая)'},
+  {id:'i27',text:'Курица (живая)'},{id:'i28',text:'Пистолет + 15 патронов'},
+  {id:'i29',text:'Семена пшеницы'},{id:'i30',text:'Швейная машинка'}
 ];
 const specials = [
-  {id:'s1',text:'Иммунитет к радиации'},
-  {id:'s2',text:'Опыт выживания в дикой природе'},
-  {id:'s3',text:'Знает дорогу к городу'},
-  {id:'s4',text:'Разбирается в оружии'},
-  {id:'s5',text:'Добывает огонь без спичек'},
-  {id:'s6',text:'Хорошо ладит с людьми'},
-  {id:'s7',text:'Медицинские знания'},
-  {id:'s8',text:'Очищает воду подручными средствами'},
-  {id:'s9',text:'Умеет охотиться'},
-  {id:'s10',text:'Не боится крови'},
-  {id:'s11',text:'Мастер на все руки'},
-  {id:'s12',text:'Знает язык жестов'},
-  {id:'s13',text:'Фотографическая память'},
-  {id:'s14',text:'Готовит из чего угодно'},
-  {id:'s15',text:'Лечит животных'},
-  {id:'s16',text:'Основы электротехники'},
-  {id:'s17',text:'Отличный рассказчик'},
-  {id:'s18',text:'Быстро бегает'},
-  {id:'s19',text:'Хорошо стреляет'},
-  {id:'s20',text:'Шьёт и вяжет'}
+  {id:'s1',text:'Иммунитет к радиации'},{id:'s2',text:'Опыт выживания в дикой природе'},
+  {id:'s3',text:'Знает дорогу к городу'},{id:'s4',text:'Разбирается в оружии'},
+  {id:'s5',text:'Добывает огонь без спичек'},{id:'s6',text:'Хорошо ладит с людьми'},
+  {id:'s7',text:'Медицинские знания'},{id:'s8',text:'Очищает воду подручными средствами'},
+  {id:'s9',text:'Умеет охотиться'},{id:'s10',text:'Не боится крови'},
+  {id:'s11',text:'Мастер на все руки'},{id:'s12',text:'Знает язык жестов'},
+  {id:'s13',text:'Фотографическая память'},{id:'s14',text:'Готовит из чего угодно'},
+  {id:'s15',text:'Лечит животных'},{id:'s16',text:'Основы электротехники'},
+  {id:'s17',text:'Отличный рассказчик'},{id:'s18',text:'Быстро бегает'},
+  {id:'s19',text:'Хорошо стреляет'},{id:'s20',text:'Шьёт и вяжет'}
 ];
 
 const pick = a => a[Math.floor(Math.random()*a.length)];
+const REVEAL_KEYS=['profession','biology','health','hobby','phobia','inventory','special'];
+const REVEAL_LABELS={
+  profession:'Профессия',
+  biology:'Биология',
+  health:'Здоровье',
+  hobby:'Хобби',
+  phobia:'Фобия',
+  inventory:'Багаж',
+  special:'Спецусловие'
+};
+const REVEAL_ICONS={
+  profession:'💼',biology:'🧬',health:'❤️',hobby:'🎯',phobia:'😱',inventory:'🎒',special:'⭐'
+};
 
-/* Возвращает 3 случайные профессии, которых нет в takenIds */
 function threeProfessions(takenIds){
   const pool = professions.filter(p=>!takenIds.includes(p.id));
-  const out=[];
-  const a=[...pool];
-  for(let i=0;i<3&&a.length>0;i++){
-    out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
-  }
+  const out=[];const a=[...pool];
+  for(let i=0;i<3&&a.length>0;i++)out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
   return out;
 }
-
-/* Собирает все занятые id характеристик из players */
 function collectTakenIds(players){
-  const taken={
-    profession:[],biology:[],health:[],hobby:[],
-    phobia:[],inventory:[],special:[]
-  };
+  const taken={profession:[],biology:[],health:[],hobby:[],phobia:[],inventory:[],special:[]};
   for(const p of Object.values(players||{})){
     if(p.isHost||!p.character)continue;
     const c=p.character;
@@ -608,19 +590,12 @@ function collectTakenIds(players){
   }
   return taken;
 }
-
-/* Собирает все занятые предметы инвентаря (id) */
 function pickUniqueTwo(pool,takenIds){
   const available=pool.filter(x=>!takenIds.includes(x.id));
-  const out=[];
-  const a=[...available];
-  for(let i=0;i<2&&a.length>0;i++){
-    out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
-  }
+  const out=[];const a=[...available];
+  for(let i=0;i<2&&a.length>0;i++)out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
   return out;
 }
-
-/* Генерация остальных характеристик для игрока с уникальностью */
 function generateRest(players){
   const taken=collectTakenIds(players);
   const bioPool=biologies.filter(x=>!taken.biology.includes(x.id));
@@ -650,7 +625,8 @@ function defaultRoom(hostUid,name){
         pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
       }
     },
-    turn:{order:[],turnIndex:0,phase:'lobby',round:0,revealIndex:0},
+    /* turn.revealIndex больше не используется — игрок сам выбирает */
+    turn:{order:[],turnIndex:0,phase:'lobby',round:0},
     bunker:{capacity:0,started:false,finished:false,winners:[]},
     votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false}
   };
@@ -663,7 +639,6 @@ function startListeners(){
     roomData=snap.val();
     if(!roomData){setStatus('Комната удалена',false);return;}
     isHost=roomData.hostUid===uid;
-    // авто-очистка хоста из очереди
     if(roomData.turn?.order?.includes(roomData.hostUid)){
       const cleaned=roomData.turn.order.filter(u=>u!==roomData.hostUid);
       update(ref(db,`rooms/${roomId}/turn`),{order:cleaned});
@@ -713,13 +688,11 @@ function renderPick(){
   }
   pc.style.display='';
   if(!me.pickOptions){
-    // первый раз — генерим 3 с учётом занятых
     const taken=collectTakenIds(roomData.players);
     const opts=threeProfessions(taken.profession);
     update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts});
     return;
   }
-  // узнаём, какие профессии уже заняты другими
   const taken=collectTakenIds(roomData.players);
   $('pickGrid').innerHTML=me.pickOptions.map((p,i)=>{
     const isTaken=taken.profession.includes(p.id);
@@ -754,13 +727,9 @@ function renderMyChar(){
   card.style.display='';
   const ch=me.character;
   const revealed=me.revealed||{};
-  const keys=['profession','biology','health','hobby','phobia','inventory','special'];
-  const revealedCount=keys.filter(k=>revealed[k]).length;
+  const revealedCount=REVEAL_KEYS.filter(k=>revealed[k]).length;
   $('revealProgress').textContent=`${revealedCount} / 7`;
-  const labels={
-    profession:'Профессия',biology:'Биология',health:'Здоровье',
-    hobby:'Хобби',phobia:'Фобия',inventory:'Багаж',special:'Спецусловие'
-  };
+
   const values={
     profession:ch.profession.emoji+' '+ch.profession.name+' ('+ch.profession.bonus+')',
     biology:ch.biology.text,
@@ -770,11 +739,13 @@ function renderMyChar(){
     inventory:Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'',
     special:ch.special.text
   };
-  // свои всегда видны
-  const traits=keys.map(k=>{
+  const traits=REVEAL_KEYS.map(k=>{
     const open=!!revealed[k];
     return `<div class="trait revealed">
-      <div class="trait-label">${labels[k]}${open?' ✓':''}</div>
+      <div class="trait-label">
+        <span>${REVEAL_ICONS[k]} ${REVEAL_LABELS[k]}</span>
+        ${open?'<span class="open-mark">✓ открыто</span>':'<span class="open-mark" style="color:var(--muted);">скрыто</span>'}
+      </div>
       <div class="trait-value">${esc(values[k])}</div>
     </div>`;
   }).join('');
@@ -788,23 +759,48 @@ function renderMyChar(){
     </div>
     <div class="traits">${traits}</div>
   `;
-  // кнопки
+
+  // === Кнопки вскрытия ===
   const t=roomData.turn;
   const myTurn=t?.order?.[t?.turnIndex]===uid;
   const phase=t?.phase;
   const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
-  // Какая характеристика следующая по счёту в этом раунде
-  const nextIdx=(t?.revealIndex||0);
-  const nextKey=keys[nextIdx]||keys[0];
-  const alreadyRevealed=revealed[nextKey];
-  let label;
-  if(phase!=='reveal')label='Ждите фазы раскрытия';
-  else if(!myTurn)label='Ждите своего хода';
-  else if(alreadyRevealed)label=`«${labels[nextKey]}» уже открыта`;
-  else label=`🔓 Открыть: ${labels[nextKey]}`;
-  $('myActions').innerHTML=`<button id="revealBtn" ${canReveal&&!alreadyRevealed?'':'disabled'}>${label}</button>`;
-  const rb=$('revealBtn');
-  if(rb&&canReveal&&!alreadyRevealed)rb.onclick=()=>doReveal(nextKey);
+
+  const oldActions=document.getElementById('myActions');
+  if(oldActions)oldActions.remove();
+
+  const actionsDiv=document.createElement('div');
+  actionsDiv.className='actions';
+  actionsDiv.id='myActions';
+  actionsDiv.style.display='block';
+
+  let hint;
+  if(phase!=='reveal')hint='Сейчас не фаза раскрытия';
+  else if(!myTurn)hint='Ждите своего хода';
+  else hint='Выберите характеристику для вскрытия';
+
+  actionsDiv.innerHTML=`
+    <div class="small muted" style="margin-bottom:8px;text-align:center;">${hint}</div>
+    <div class="reveal-grid" id="revealGrid"></div>
+  `;
+  card.appendChild(actionsDiv);
+
+  const grid=$('revealGrid');
+  grid.innerHTML=REVEAL_KEYS.map(k=>{
+    const open=!!revealed[k];
+    const disabled=!canReveal||open;
+    return `<button class="reveal-btn ${open?'already':''}" data-key="${k}" ${disabled?'disabled':''}>
+      <span class="icon">${REVEAL_ICONS[k]}</span>
+      <span class="label">${REVEAL_LABELS[k]}</span>
+      ${open?'<span class="open-mark">✓</span>':''}
+    </button>`;
+  }).join('');
+  grid.querySelectorAll('.reveal-btn').forEach(b=>{
+    b.onclick=()=>{
+      if(b.disabled)return;
+      doReveal(b.dataset.key);
+    };
+  });
 }
 function renderScenario(){
   const ps=Object.values(roomData?.players||{}).filter(p=>!p.isHost);
@@ -812,16 +808,14 @@ function renderScenario(){
   const capacity=Math.max(1,n-2);
   const t=roomData?.turn;
   const inGame=t?.phase!=='lobby'&&t?.phase!=='finished';
-  $('roundBadge').textContent=inGame?`Раунд ${t.round}/7`:(t?.phase==='finished'?'Финал':'Лобби');
+  $('roundBadge').textContent=inGame?`Раунд ${t.round}`:(t?.phase==='finished'?'Финал':'Лобби');
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
       <div class="scenario-title">☢ Ядерная война · день 1</div>
       <div class="scenario-text">Мир сгорел. Снаружи — радиация, мародёры и смерть. Внутри — бункер, который выдержит 10 лет.
 Но места хватит только на <b>${capacity}</b>. Вас — <b>${n}</b>.
 
-Каждый хочет жить. Каждый готов спорить. Слабые останутся снаружи.
-
-Говорите. Вскрывайте карты. Голосуйте. Выживайте.</div>
+В свой ход вы вскрываете <b>любую</b> характеристику — рассказывайте о себе, договаривайтесь, выживайте.</div>
       <div class="scenario-stats">
         <div class="stat"><b>${capacity}</b><span>мест</span></div>
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
@@ -854,12 +848,10 @@ function renderTurnBanner(){
   const cur=t.order?.[t.turnIndex];
   const isMyTurn=cur===uid;
   const curName=cur?roomData.players?.[cur]?.name:'—';
-  const keys=['Профессия','Биология','Здоровье','Хобби','Фобия','Багаж','Спецусловие'];
-  const nextKey=keys[t.revealIndex||0]||'—';
   el.innerHTML=`
     <div class="turn-banner ${isMyTurn?'my-turn':''}">
       <div class="who">${isMyTurn?'👑 Ваш ход':'Ход: '+esc(curName)}</div>
-      <div class="hint">${isMyTurn?'Откройте: '+nextKey:'Раунд '+t.round+' · ждите своей очереди'}</div>
+      <div class="hint">${isMyTurn?'Выберите любую характеристику для вскрытия':'Раунд '+t.round+' · ждите своей очереди'}</div>
     </div>
   `;
 }
@@ -875,7 +867,6 @@ function renderPlayers(){
     const r=p.revealed||{};
     const me=p.uid===uid;
     const row=(label,val,key)=>{
-      // свои видим всегда; чужие — только если вскрыты
       const open=me||showAll||r[key];
       return `<span class="pt ${open?'':'locked'}">${label}: <b>${open?esc(val):'—'}</b></span>`;
     };
@@ -886,21 +877,23 @@ function renderPlayers(){
       </div>`;
     }
     const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
+    const revealedCount=REVEAL_KEYS.filter(k=>r[k]).length;
     return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
       <div class="player-name">
         ${esc(p.name)}
         ${isTurn?'<span class="player-tag gold">▶ ХОД</span>':''}
         ${me?'<span class="player-tag">вы</span>':''}
         ${p.kicked?'<span class="player-tag red">изгнан</span>':''}
+        <span class="player-tag green">${revealedCount}/7 открыто</span>
       </div>
       <div class="player-traits">
-        ${row('Проф',ch.profession.name,'profession')}
-        ${row('Био',ch.biology.text,'biology')}
-        ${row('Здор',ch.health.text,'health')}
-        ${row('Хобби',ch.hobby.text,'hobby')}
-        ${row('Фобия',ch.phobia.text,'phobia')}
-        ${row('Багаж',invText,'inventory')}
-        ${row('Спец',ch.special.text,'special')}
+        ${row('💼 Проф',ch.profession.name,'profession')}
+        ${row('🧬 Био',ch.biology.text,'biology')}
+        ${row('❤️ Здор',ch.health.text,'health')}
+        ${row('🎯 Хобби',ch.hobby.text,'hobby')}
+        ${row('😱 Фобия',ch.phobia.text,'phobia')}
+        ${row('🎒 Багаж',invText,'inventory')}
+        ${row('⭐ Спец',ch.special.text,'special')}
       </div>
     </div>`;
   }).join('')||'<p class="muted small">Пока никого нет</p>';
@@ -973,17 +966,14 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена');
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
-
   if(room.hostUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();
     return;
   }
-
   const players=room.players||{};
   const playerCount=Object.values(players).filter(p=>!p.isHost).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
-
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
     character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
@@ -1009,7 +999,6 @@ $('confirmPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
   const prof=me.pickOptions[myPickedProfession];
-  // проверка на занятость (мог кто-то опередить)
   const takenNow=collectTakenIds(roomData.players);
   if(takenNow.profession.includes(prof.id))return setStatus('Эту профессию только что заняли',false);
   const rest=generateRest(roomData.players);
@@ -1030,42 +1019,42 @@ $('rerollPick').onclick=async()=>{
   await addLog('перебросил варианты профессий',me.name);
 };
 
-/* ---------- РАСКРЫТИЕ ---------- */
+/* ---------- ВСКРЫТИЕ (любая характеристика) ---------- */
 async function doReveal(key){
+  if(!REVEAL_KEYS.includes(key))return;
   const t=roomData.turn;
   if(t?.phase!=='reveal')return setStatus('Не фаза раскрытия',false);
   if(t.order[t.turnIndex]!==uid)return setStatus('Не ваш ход',false);
   const me=roomData.players?.[uid];
   if(!me?.character)return;
   if(me.revealed?.[key])return setStatus('Уже открыто',false);
+
   await update(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
-  const labels={profession:'Профессию',biology:'Биологию',health:'Здоровье',hobby:'Хобби',phobia:'Фобию',inventory:'Багаж',special:'Спецусловие'};
-  await addLog(`вскрывает: ${labels[key]||key}`,me.name);
-  // следующий живой
+  await addLog(`вскрывает: ${REVEAL_LABELS[key]}`,me.name);
+
+  // Проверка: все ли живые раскрыли все 7?
   const aliveOrder=t.order.filter(u=>roomData.players?.[u]&&!roomData.players[u].kicked);
-  const curAliveIdx=aliveOrder.indexOf(uid);
-  const nextReveal=t.revealIndex+1;
-  // если это был последний живой ИЛИ все 7 характеристик открыты — фаза голосования
   const allRevealed=aliveOrder.every(u=>{
-    const p=roomData.players[u];
-    const r=p.revealed||{};
-    return r.profession&&r.biology&&r.health&&r.hobby&&r.phobia&&r.inventory&&r.special;
+    const r=roomData.players[u].revealed||{};
+    return REVEAL_KEYS.every(k=>r[k]);
   });
-  if(allRevealed||nextReveal>=7){
+
+  if(allRevealed){
     const candidates=aliveOrder;
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
     await update(ref(db,`rooms/${roomId}/votes`),{
       active:true,type:'action',label:'Проверка бункера',kick:false,
       candidates,votes:{},finished:false,result:null
     });
-    await addLog(`Раунд ${t.round}: голосование — кто проведёт проверку бункера?`,'system');
+    await addLog(`Все характеристики раскрыты! Голосование: кто проведёт проверку бункера?`,'system');
   } else {
+    // следующий живой игрок
     let idx=t.turnIndex;
     for(let i=0;i<aliveOrder.length;i++){
       idx=(idx+1)%t.order.length;
       if(roomData.players?.[t.order[idx]]&&!roomData.players[t.order[idx]].kicked)break;
     }
-    await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,revealIndex:nextReveal});
+    await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx});
   }
 }
 
@@ -1110,7 +1099,6 @@ async function finishVote(){
   } else {
     await addLog('🤝 Ничья — никто не выбран','system');
   }
-  // проверка на конец
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
   const players=Object.values(all).filter(p=>!p.isHost);
@@ -1123,22 +1111,11 @@ async function finishVote(){
     await addLog(`🏆 Игра окончена! Выжившие: ${winners.map(w=>w.name).join(', ')}`,'system');
     return;
   }
-  // следующий раунд или продолжение
   const newOrder=alive.map(p=>p.uid);
-  if(v.kick){
-    // после изгнания — новый раунд с начала
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1,revealIndex:0
-    });
-    // сбрасываем revealed? нет — характеристики уже открыты у оставшихся
-    // сбрасываем только того, кого изгнали — не нужно
-  } else {
-    // обычное действие — продолжаем текущий раунд
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:newOrder,turnIndex:0,phase:'reveal',
-      round:roomData.turn?.round||1,revealIndex:roomData.turn?.revealIndex||0
-    });
-  }
+  // следующий раунд — с тем же раскрытием (у кого ещё не всё открыто — продолжат)
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
+  });
 }
 
 /* ---------- ПАНЕЛЬ ВЕДУЩЕГО ---------- */
@@ -1152,10 +1129,10 @@ $('startGameBtn').onclick=async()=>{
   const order=ps.map(p=>p.uid);
   const capacity=Math.max(1,ps.length-2);
   await update(ref(db,`rooms/${roomId}/turn`),{
-    order,turnIndex:0,phase:'reveal',round:1,revealIndex:0
+    order,turnIndex:0,phase:'reveal',round:1
   });
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:false,winners:[]});
-  await addLog(`🎬 Игра началась! Мест: ${capacity}. Раунд 1: Профессия.`,'system');
+  await addLog(`🎬 Игра началась! Мест: ${capacity}. Каждый ход — вскрытие любой характеристики.`,'system');
 };
 $('nextPhaseBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1198,7 +1175,7 @@ $('resetGameBtn').onclick=async()=>{
   }
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
-  updates['turn/revealIndex']=0;
+  updates['turn/turnIndex']=0;
   updates['bunker/started']=false;
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
