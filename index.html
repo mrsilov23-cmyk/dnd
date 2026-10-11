@@ -24,17 +24,10 @@ body{
   font:15px/1.55 'Manrope', -apple-system, system-ui, sans-serif;
   min-height:100vh;-webkit-font-smoothing:antialiased;
 }
-header{
-  padding:20px 24px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
-  background:rgba(11,15,25,.75);backdrop-filter:blur(12px);
-  position:sticky;top:0;z-index:50;
-}
+header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:rgba(11,15,25,.75);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50;}
 .brand{display:flex;align-items:center;gap:14px;}
 .brand-icon{font-size:32px;filter:drop-shadow(0 0 20px rgba(240,184,74,.4));}
-.brand h1{margin:0;font-size:1.35rem;font-weight:800;letter-spacing:.5px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.brand h1{margin:0;font-size:1.35rem;font-weight:800;letter-spacing:.5px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 .brand p{margin:2px 0 0;color:var(--muted);font-size:.82rem;}
 .hdr-status{font-size:.85rem;padding:8px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--muted);display:flex;align-items:center;gap:8px;}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--dim);box-shadow:0 0 8px currentColor;}
@@ -63,7 +56,6 @@ button.secondary:hover:not(:disabled){border-color:var(--blue);color:var(--blue)
 button.danger{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;border-color:var(--red);}
 button.ghost{background:transparent;border-color:var(--border2);color:var(--muted);}
 button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
-
 .row{display:flex;gap:10px;align-items:flex-end;}
 .row>*{flex:1;min-width:0;}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
@@ -76,13 +68,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .status-box.error{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red);}
 .status-box.warn{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);color:var(--orange);}
 
-/* отладка */
-#debugBar{
-  position:fixed;bottom:8px;right:8px;max-width:480px;z-index:999;
-  background:rgba(0,0,0,.9);color:#fff;font-family:monospace;font-size:11px;
-  padding:8px 12px;border-radius:8px;border:1px solid var(--red);
-  display:none;white-space:pre-wrap;
-}
+#debugBar{position:fixed;bottom:8px;right:8px;max-width:480px;z-index:999;background:rgba(0,0,0,.9);color:#fff;font-family:monospace;font-size:11px;padding:8px 12px;border-radius:8px;border:1px solid var(--red);display:none;white-space:pre-wrap;}
 #debugBar.show{display:block;}
 
 .scenario{background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
@@ -108,14 +94,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .trait-value{color:var(--text);font-size:.9rem;line-height:1.4;}
 
 .reveal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
-.reveal-btn{
-  background:linear-gradient(160deg,var(--card2),var(--bg2));
-  border:1px solid var(--border2);border-radius:10px;padding:12px 14px;
-  color:var(--text);font-weight:600;font-size:.88rem;
-  text-transform:none;letter-spacing:0;
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  cursor:pointer;font-family:inherit;
-}
+.reveal-btn{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-weight:600;font-size:.88rem;text-transform:none;letter-spacing:0;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;font-family:inherit;}
 .reveal-btn:hover:not(:disabled){border-color:var(--gold);background:linear-gradient(160deg,rgba(240,184,74,.1),var(--bg2));}
 .reveal-btn:disabled{opacity:.35;cursor:not-allowed;}
 .reveal-btn.already{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.3);color:var(--green);}
@@ -185,9 +164,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
   .player-traits{grid-template-columns:1fr;}
   .scenario-stats{grid-template-columns:1fr;}
 }
-@media(max-width:520px){
-  .reveal-grid{grid-template-columns:1fr;}
-}
+@media(max-width:520px){.reveal-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -244,10 +221,10 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <h2>🎴 Выбор профессии</h2>
     <span class="badge gold">1 из 3</span>
   </div>
-  <p class="muted small" style="margin-top:0;">Ведущий начал игру. Выберите одну из трёх профессий — остальные характеристики выпадут случайно и будут уникальными.</p>
+  <p class="muted small" style="margin-top:0;">Выберите одну из трёх профессий. <b>Выбор окончательный</b> — вернуться к нему нельзя.</p>
   <div class="pick-grid" id="pickGrid"></div>
   <div class="actions">
-    <button id="confirmPick" disabled>Подтвердить выбор</button>
+    <button id="confirmPick" disabled>✅ Подтвердить (окончательно)</button>
     <button id="rerollPick" class="secondary">🎲 Другие варианты (1 раз)</button>
   </div>
 </section>
@@ -258,7 +235,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <span class="badge" id="revealProgress">0 / 7</span>
   </div>
   <div id="myChar"></div>
-  <p class="muted small" style="margin-top:10px;">Свои характеристики вы видите всегда. В свой ход можно вскрыть <b>любую</b> из них.</p>
+  <p class="muted small" style="margin-top:10px;">Персонаж зафиксирован. В свой ход можно вскрыть <b>любую</b> из характеристик.</p>
 </section>
 
 <section class="card" style="grid-column:span 2;" id="scenarioCard">
@@ -279,7 +256,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <p class="muted small">Вы не играете — вы ведёте.</p>
     <div class="actions">
       <button id="startGameBtn">▶️ Начать игру</button>
-      <button id="beginPickBtn" class="secondary hidden">🎴 Раздать профессии</button>
       <button id="beginRevealBtn" class="secondary hidden">🔓 Начать раскрытие</button>
       <button id="startQuestBtn" class="secondary hidden">⚔️ Отправить на квест</button>
       <button id="openResultBtn" class="secondary hidden">📖 Открыть исход квеста</button>
@@ -312,7 +288,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 <div id="debugBar"></div>
 
 <script type="module">
-/* ---------- Отладка: ловим все ошибки ---------- */
+/* ---------- Отладка ---------- */
 const debugBar=document.getElementById('debugBar');
 function showDebug(msg){
   debugBar.textContent='⚠ '+msg;
@@ -322,7 +298,7 @@ function showDebug(msg){
 }
 window.addEventListener('error', e=>{
   console.error('GLOBAL ERROR:', e.error||e.message);
-  showDebug((e.error?.message||e.message)+' ('+(e.filename||'').split('/').pop()+':'+e.lineno+')');
+  showDebug((e.error?.message||e.message));
 });
 window.addEventListener('unhandledrejection', e=>{
   console.error('UNHANDLED PROMISE:', e.reason);
@@ -340,7 +316,7 @@ try{
   ({getAuth,signInAnonymously,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
   ({getDatabase,ref,set,get,update,push,onValue}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
 }catch(e){
-  alert('Ошибка загрузки Firebase: '+e.message+'\nОткройте через localhost.');
+  alert('Ошибка загрузки Firebase: '+e.message);
   throw e;
 }
 const firebaseConfig = {
@@ -369,7 +345,7 @@ onAuthStateChanged(auth,user=>{
   if(code){$('roomCode').value=code;connectRoom(code).catch(e=>setStatus(e.message,false));}
 });
 
-/* ---------- ДАННЫЕ ---------- */
+/* ---------- ДАННЫЕ (полностью как в прошлой версии) ---------- */
 const professions = [
   {id:'doctor',name:'Врач',emoji:'⚕️',bonus:'лечит болезни',tags:['medic','smart']},
   {id:'engineer',name:'Инженер',emoji:'🔧',bonus:'чинит оборудование',tags:['tech','smart']},
@@ -519,9 +495,8 @@ const specials = [
   {id:'s19',text:'Хорошо стреляет',tags:['combat']},
   {id:'s20',text:'Шьёт и вяжет',tags:['craft']}
 ];
-
 const quests = [
-  {id:'q_water',title:'🚰 Сломанный насос',text:'Насос подачи воды сломан. Без воды — смерть за сутки. Нужно спуститься в технический отсек.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
+  {id:'q_water',title:'🚰 Сломанный насос',text:'Насос подачи воды сломан. Без воды — смерть за сутки.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
   {id:'q_raid',title:'🌫️ Вылазка за лекарствами',text:'Лекарства кончаются. Аптека в 2 км. Радиация снаружи смертельна.',requiredTags:['medic','survival','combat'],hint:'Медицина, выживание или бой'},
   {id:'q_scouts',title:'👥 Разведка мародёров',text:'Поблизости замечены мародёры. Нужно разведать их лагерь.',requiredTags:['combat','survival','smart'],hint:'Бой, выживание или смекалка'},
   {id:'q_generator',title:'⚡ Генератор глохнет',text:'Генератор с перебоями. Если встанет — бункер замёрзнет.',requiredTags:['tech','craft'],hint:'Техника или ремесло'},
@@ -582,18 +557,6 @@ function generateRest(players){
     inventory: pickUniqueTwo(inventories,taken.inventory),
     special: pick(spPool.length?spPool:specials)
   };
-}
-function allTagsOf(ch){
-  const tags=new Set();
-  const add = arr => { if(Array.isArray(arr)) arr.forEach(t=>tags.add(t)); };
-  if(ch.profession?.tags) add(ch.profession.tags);
-  if(ch.biology?.tags) add(ch.biology.tags);
-  if(ch.health?.tags) add(ch.health.tags);
-  if(ch.hobby?.tags) add(ch.hobby.tags);
-  if(ch.phobia?.tags) add(ch.phobia.tags);
-  if(Array.isArray(ch.inventory)) ch.inventory.forEach(i=>add(i.tags));
-  if(ch.special?.tags) add(ch.special.tags);
-  return tags;
 }
 function prepareQuest(player){
   if(!player?.character) return null;
@@ -656,11 +619,9 @@ function renderAll(){
   safe('players',renderPlayers);
   safe('vote',renderVote);
   safe('quest',renderQuest);
-
   const v=roomData?.votes;
   if(!v?.active)myVote=null;
   if(v?.active&&v?.votes&&uid&&!v.votes[uid])myVote=null;
-
   bindGlobalClicks();
 }
 let globalClicksBound=false;
@@ -679,6 +640,8 @@ function bindGlobalClicks(){
 function handlePickClick(el){
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
+  // защита: если уже выбрал — игнор
+  if(me.character)return setStatus('Вы уже выбрали профессию',false);
   const idx=Number(el.dataset.idx);
   const p=me.pickOptions[idx];
   if(!p)return;
@@ -688,12 +651,12 @@ function handlePickClick(el){
 }
 
 function renderLobby(){
-  const ps=Object.values(roomData?.players||{});
-  $('playerCount').textContent=ps.length;
+  $('playerCount').textContent=Object.values(roomData?.players||{}).length;
 }
 function renderPick(){
   const me=roomData?.players?.[uid];
   const pc=$('pickCard');
+  // НЕ показываем, если персонаж уже выбран, или это мастер, или фаза не pick
   if(!me||me.isHost||me.character||roomData.turn?.phase!=='pick'){
     pc.style.display='none';return;
   }
@@ -716,6 +679,7 @@ function renderPick(){
   const cur=myPickedProfession!==null?me.pickOptions[myPickedProfession]:null;
   const tn=collectTakenIds(roomData.players);
   $('confirmPick').disabled=!(cur&&!tn.profession.includes(cur.id));
+  // переброс доступен только один раз и только до подтверждения
   $('rerollPick').disabled=me.rerolled;
 }
 function renderMyChar(){
@@ -743,7 +707,6 @@ function renderMyChar(){
       <div class="trait-value">${esc(values[k])}</div>
     </div>`;
   }).join('');
-
   const t=roomData.turn;
   const myTurn=t?.order?.[t?.turnIndex]===uid;
   const phase=t?.phase;
@@ -752,7 +715,6 @@ function renderMyChar(){
   if(phase!=='reveal')hint='Сейчас не фаза раскрытия';
   else if(!myTurn)hint='Ждите своего хода';
   else hint='Выберите характеристику для вскрытия';
-
   const buttons=REVEAL_KEYS.map(k=>{
     const open=!!revealed[k];
     const disabled=!canReveal||open;
@@ -781,10 +743,7 @@ function renderScenario(){
   const capacity=Math.max(1,n-2);
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
-  const label={
-    'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,
-    'vote':'Голосование','quest':'Квест','finished':'Финал'
-  }[phase]||phase;
+  const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
   $('roundBadge').textContent=label;
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
@@ -805,8 +764,6 @@ function renderMasterPanel(){
   $('masterPanel').classList.toggle('hidden',!isHost);
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
-  // показываем релевантные кнопки
-  $('beginPickBtn').classList.toggle('hidden',!(isHost&&phase==='lobby'&&roomData?.bunker?.started!==true));
   $('startGameBtn').classList.toggle('hidden',!(isHost&&phase==='lobby'));
   $('beginRevealBtn').classList.toggle('hidden',!(isHost&&phase==='pick'));
   $('startQuestBtn').classList.toggle('hidden',!(isHost&&phase==='reveal'));
@@ -817,22 +774,10 @@ function renderTurnBanner(){
   const el=$('turnBanner');
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
-  if(phase==='lobby'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isHost?'Нажмите «Начать игру».':'Ждём ведущего…'}</div></div>`;
-    return;
-  }
-  if(phase==='pick'){
-    el.innerHTML=`<div class="turn-banner my-turn"><div class="who">🎴 Выбор профессии</div><div class="hint">Выберите одну из трёх карт выше</div></div>`;
-    return;
-  }
-  if(phase==='quest'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест в разгаре</div><div class="hint">Ведущий откроет исход кнопкой «Открыть исход»</div></div>`;
-    return;
-  }
-  if(phase==='finished'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;
-    return;
-  }
+  if(phase==='lobby'){el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isHost?'Нажмите «Начать игру».':'Ждём ведущего…'}</div></div>`;return;}
+  if(phase==='pick'){el.innerHTML=`<div class="turn-banner my-turn"><div class="who">🎴 Выбор профессии</div><div class="hint">Выберите одну из трёх карт выше. Выбор окончательный.</div></div>`;return;}
+  if(phase==='quest'){el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест в разгаре</div><div class="hint">Ведущий откроет исход</div></div>`;return;}
+  if(phase==='finished'){el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;return;}
   if(isHost){
     const cur=t.order?.[t.turnIndex];
     const curName=cur?roomData.players?.[cur]?.name:'—';
@@ -945,28 +890,20 @@ function renderQuest(){
       <div class="quest-box">
         <div class="quest-title">${esc(d.title)}</div>
         <div class="quest-text">${esc(d.text)}</div>
-        <div class="quest-hero">
-          <b>Отправлен:</b> ${esc(d.playerName)}<br>
-          <span class="muted small">Подсказка: ${esc(d.hint)}</span>
-        </div>
+        <div class="quest-hero"><b>Отправлен:</b> ${esc(d.playerName)}<br><span class="muted small">Подсказка: ${esc(d.hint)}</span></div>
         <p class="muted small" style="text-align:center;margin-top:10px;">Ведущий откроет исход…</p>
       </div>`;
     return;
   }
   const r=q.result;
   if(!r){el.innerHTML='';return;}
-  const matchLines=(r.matchedTags.length?r.matchedTags:['—']).map(t=>`
-    <div class="match-line"><span class="ok">✓</span><span>Подошло: <b>${esc(t)}</b></span></div>`).join('');
-  const missLines=r.requiredTags.filter(t=>!r.matchedTags.includes(t)).map(t=>`
-    <div class="match-line miss"><span class="no">✗</span><span>Не хватило: ${esc(t)}</span></div>`).join('');
+  const matchLines=(r.matchedTags.length?r.matchedTags:['—']).map(t=>`<div class="match-line"><span class="ok">✓</span><span>Подошло: <b>${esc(t)}</b></span></div>`).join('');
+  const missLines=r.requiredTags.filter(t=>!r.matchedTags.includes(t)).map(t=>`<div class="match-line miss"><span class="no">✗</span><span>Не хватило: ${esc(t)}</span></div>`).join('');
   el.innerHTML=`
     <div class="quest-box">
       <div class="quest-title">${esc(d.title)}</div>
       <div class="quest-text">${esc(d.text)}</div>
-      <div class="quest-hero">
-        <b>Герой:</b> ${esc(d.playerName)}<br>
-        <span class="muted small">Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · совпадений: ${r.matchCount}</span>
-      </div>
+      <div class="quest-hero"><b>Герой:</b> ${esc(d.playerName)}<br><span class="muted small">Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · совпадений: ${r.matchCount}</span></div>
       <div class="quest-match">${matchLines}${missLines}</div>
       <div class="quest-result ${r.success?'win':'lose'}">${r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'💀 ПОГИБ'}</div>
     </div>`;
@@ -996,10 +933,19 @@ async function connectRoom(code){
   const players=room.players||{};
   const playerCount=Object.values(players).filter(p=>!p.isHost).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{
-    uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
-    character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
-  });
+
+  // ✅ Если игрок уже был в комнате — НЕ сбрасываем персонажа
+  const existing=players[uid];
+  if(existing){
+    // он возвращается — просто обновляем имя (если поменял) и сохраняем всё остальное
+    await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,joinedAt:Date.now()});
+  } else {
+    await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+      uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
+      character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
+    });
+  }
+
   const order=room.turn?.order||[];
   if(!order.includes(uid)){
     await update(ref(db,`rooms/${roomId}/turn`),{order:[...order,uid]});
@@ -1014,17 +960,20 @@ $('copyLink').onclick=async()=>{
   catch{$('inviteLink').select();}
 };
 
-/* ---------- ВЫБОР ПРОФЕССИИ ---------- */
+/* ---------- ВЫБОР ПРОФЕССИИ (только один раз) ---------- */
 $('confirmPick').onclick=async()=>{
-  if(myPickedProfession===null)return;
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
+  // ✅ защита: если уже есть персонаж — выходим
+  if(me.character)return setStatus('Вы уже выбрали профессию',false);
+  if(myPickedProfession===null)return;
   const prof=me.pickOptions[myPickedProfession];
   const tn=collectTakenIds(roomData.players);
   if(tn.profession.includes(prof.id))return setStatus('Эту профессию только что заняли',false);
   const rest=generateRest(roomData.players);
   const character={profession:prof,...rest};
   const revealed={profession:false,biology:false,health:false,hobby:false,phobia:false,inventory:false,special:false};
+  // ✅ одним set-ом фиксируем и стираем pickOptions — вернуться нельзя
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     character,pickedProfession:prof.name,revealed,pickOptions:null
   });
@@ -1032,6 +981,8 @@ $('confirmPick').onclick=async()=>{
 $('rerollPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||me.rerolled)return;
+  // ✅ защита: если уже выбрал — нельзя перебрасывать
+  if(me.character)return setStatus('Вы уже выбрали профессию',false);
   const taken=collectTakenIds(roomData.players);
   const opts=threeProfessions(taken.profession);
   myPickedProfession=null;
@@ -1053,7 +1004,8 @@ async function doReveal(key){
     if(!me?.character)return;
     if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
 
-    await update(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
+    // ✅ set для примитива (не update!)
+    await set(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
 
     const aliveOrder=t.order.filter(u=>fresh.players?.[u]&&!fresh.players[u].kicked);
     const snap2=await get(ref(db,`rooms/${roomId}/players`));
@@ -1064,7 +1016,6 @@ async function doReveal(key){
     });
 
     if(allRevealed){
-      // все раскрылись → голосование за квест
       await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
       await update(ref(db,`rooms/${roomId}/votes`),{
         active:true,type:'quest',label:'Отправить на квест',kick:false,
@@ -1099,7 +1050,8 @@ async function doVote(targetUid){
     if(!me||me.kicked)return;
     if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
     myVote=targetUid;
-    await update(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
+    // ✅ set для примитива
+    await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
     const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
     const votes=snap2.val()||{};
     const alive=Object.values(fresh.players||{}).filter(p=>!p.isHost&&!p.kicked);
@@ -1127,14 +1079,10 @@ async function finishVote(){
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
 
   if(!chosen){
-    // ничья — новый раунд раскрытия (или кик повторно)
     const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
-    });
+    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
-
   if(v.kick){
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
     const psSnap=await get(ref(db,`rooms/${roomId}/players`));
@@ -1149,25 +1097,17 @@ async function finishVote(){
       return;
     }
     const newOrder=alive.map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
-    });
+    await update(ref(db,`rooms/${roomId}/turn`),{order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
-
-  // КВЕСТ
   const player=roomData.players[maxUid];
   const questData=prepareQuest(player);
   if(!questData){
     const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
-    });
+    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
-  await update(ref(db,`rooms/${roomId}/quest`),{
-    active:true,finished:false,data:questData,result:null
-  });
+  await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'quest',turnIndex:0});
 }
 
@@ -1182,8 +1122,6 @@ $('startGameBtn').onclick=async()=>{
   await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:1});
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:false,winners:[]});
 };
-
-/* Ведущий переводит из pick в reveal */
 $('beginRevealBtn').onclick=async()=>{
   if(!isHost)return;
   const t=roomData.turn;
@@ -1191,29 +1129,15 @@ $('beginRevealBtn').onclick=async()=>{
   const ps=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus('Не все выбрали профессию: '+without.map(p=>p.name).join(', '),false);
-  await update(ref(db,`rooms/${roomId}/turn`),{
-    order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1
-  });
+  await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1});
 };
-
-/* Кнопка ведущего «Начать игру» больше не нужна отдельно — она даёт старт pick-фазы */
-$('beginPickBtn').onclick=async()=>{
-  // legacy — не используется
-};
-
-/* Голосование за квест */
 $('startQuestBtn').onclick=async()=>{
   if(!isHost)return;
   const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
   if(alive.length<2)return setStatus('Мало игроков',false);
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
-  await update(ref(db,`rooms/${roomId}/votes`),{
-    active:true,type:'quest',label:'Отправить на квест',kick:false,
-    candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null
-  });
+  await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'quest',label:'Отправить на квест',kick:false,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
 };
-
-/* Открыть исход квеста */
 $('openResultBtn').onclick=async()=>{
   if(!isHost)return;
   const q=roomData.quest;
@@ -1237,22 +1161,15 @@ $('openResultBtn').onclick=async()=>{
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
     return;
   }
-  await update(ref(db,`rooms/${roomId}/turn`),{
-    order:alive.map(p=>p.uid),turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1
-  });
+  await update(ref(db,`rooms/${roomId}/turn`),{order:alive.map(p=>p.uid),turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
 };
-
 $('startKickBtn').onclick=async()=>{
   if(!isHost)return;
   const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
   if(alive.length<=2)return setStatus('Мало игроков',false);
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
-  await update(ref(db,`rooms/${roomId}/votes`),{
-    active:true,type:'kick',label:'Изгнание',kick:true,
-    candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null
-  });
+  await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'kick',label:'Изгнание',kick:true,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
 };
-
 $('resetGameBtn').onclick=async()=>{
   if(!isHost||!confirm('Сбросить игру?'))return;
   const updates={};
