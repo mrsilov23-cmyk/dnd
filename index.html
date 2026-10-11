@@ -64,11 +64,14 @@ import { getDatabase, ref, set, get, update, push, onValue, runTransaction, serv
 
 // TODO: Replace values with your Firebase project's Web App config (README explains how).
 const firebaseConfig = {
-  apiKey: "PASTE_API_KEY_HERE",
-  authDomain: "PASTE_PROJECT_ID_HERE.firebaseapp.com",
-  databaseURL: "https://PASTE_PROJECT_ID_HERE-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "PASTE_PROJECT_ID_HERE",
-  appId: "PASTE_APP_ID_HERE"
+   apiKey: "AIzaSyDIkOkge0LtsNqMIVGQLi-YV43awOyS_iA",
+  authDomain: "dnd-gay.firebaseapp.com",
+  databaseURL: "https://dnd-gay-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "dnd-gay",
+  storageBucket: "dnd-gay.firebasestorage.app",
+  messagingSenderId: "610307220921",
+  appId: "1:610307220921:web:acad740979400b20a60268",
+  measurementId: "G-ELWNLG3S4N"
 };
 const configured = !Object.values(firebaseConfig).some(v => String(v).includes("PASTE_"));
 const $ = id => document.getElementById(id);
