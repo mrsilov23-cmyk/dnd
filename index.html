@@ -20,6 +20,7 @@ input,select{background:#121520;color:var(--text);width:100%}
 button{cursor:pointer;background:var(--gold);color:#211a10;font-weight:700;border:0}
 button:disabled{opacity:.4;cursor:not-allowed}
 button.secondary{background:var(--panel2);color:var(--text);border:1px solid #454b5d}
+button.danger{background:#5c2a2a;color:#ffd9d9;border:1px solid #7a3a3a}
 .row{display:flex;gap:8px;align-items:end}
 .row>*{flex:1;min-width:0}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
@@ -30,20 +31,17 @@ button.secondary{background:var(--panel2);color:var(--text);border:1px solid #45
 .good{color:var(--green)}
 .bad{color:var(--red)}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.hero{background:var(--panel2);border:1px solid #41485b;border-radius:10px;padding:10px;cursor:pointer}
+.hero{background:var(--panel2);border:1px solid #41485b;border-radius:10px;padding:10px;cursor:pointer;transition:.15s}
+.hero:hover{border-color:var(--gold)}
 .hero.active{border:2px solid var(--gold);padding:9px}
 .hero b{display:block;color:var(--gold)}
 .hero small{color:var(--muted)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
 .stat{text-align:center;background:var(--panel2);border-radius:9px;padding:8px}
 .stat b{display:block;color:var(--gold);font-size:1.2rem}
-.map{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.tile{padding:10px;border-radius:9px;background:#253c34;border:1px solid #3e6152}
-.tile.locked{opacity:.4;background:#272a34;border-color:#414451}
-.tile.current{outline:2px solid var(--gold)}
-.tile span{font-size:1.2rem;margin-right:5px}
 #feed{height:220px;overflow:auto;background:#10131c;border-radius:9px;padding:10px}
 .entry{padding:6px 0;border-bottom:1px solid #282d3a;font-size:.9rem;overflow-wrap:anywhere}
+.entry b{color:var(--gold)}
 .player{padding:7px 9px;border-radius:8px;background:var(--panel2);margin:5px 0;overflow-wrap:anywhere}
 .tag{font-size:.75rem;color:var(--gold);margin-left:5px}
 .notice{background:#302b24;border:1px solid #685332;padding:10px;border-radius:9px;font-size:.9rem}
@@ -53,54 +51,64 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px
 /* Диагностика */
 #diag{margin:12px auto 0;max-width:900px;text-align:left;background:#0d1018;border:1px solid #454b5d;border-radius:9px;padding:10px;font:13px/1.5 monospace}
 
-/* Боевая сетка (карта урона) */
-.battlefield{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;background:#0d1018;padding:8px;border-radius:10px;border:1px solid #373b4b;margin-bottom:6px}
-.cell{aspect-ratio:1;background:#1a1f2b;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;cursor:pointer;border:1px solid #2a3040;transition:.15s}
-.cell:hover{border-color:var(--gold)}
-.cell.hero{background:#2a3d5c;border-color:var(--blue)}
-.cell.enemy{background:#4a2626;border-color:var(--red)}
-.cell.selected{outline:2px solid var(--gold);box-shadow:0 0 8px var(--gold)}
-.cell .hpbar{position:absolute;bottom:2px;left:2px;right:2px;height:3px;background:#000;border-radius:2px;overflow:hidden}
-.cell .hpbar i{display:block;height:100%;background:var(--green)}
+/* Сюжетная сцена */
+.scene{background:linear-gradient(160deg,#1a1f2b,#131720);border:1px solid #3a4256;border-radius:12px;padding:16px;margin-bottom:12px}
+.scene-title{color:var(--gold);font-size:1.15rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.scene-text{color:var(--text);margin-bottom:12px;line-height:1.6;white-space:pre-wrap}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{background:var(--panel2);border:1px solid #454b5d;border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;color:var(--text);font-weight:400;transition:.15s;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.choice:hover:not(:disabled){border-color:var(--gold);background:#2c3345}
+.choice:disabled{opacity:.5;cursor:not-allowed}
+.choice .check{font-size:.8rem;color:var(--purple);white-space:nowrap}
+.choice .arrow{color:var(--gold);font-size:1.1rem}
 
-/* Полоса хода */
-.turnbar{background:#1f2a1f;border:1px solid #3e6152;border-radius:9px;padding:9px;margin:8px 0;font-size:.9rem}
-.turnbar.active{background:#2a2418;border-color:var(--gold);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,184,93,.4)}50%{box-shadow:0 0 0 6px rgba(232,184,93,0)}}
+/* Бой (список вместо сетки) */
+.combat{border:1px solid #4a3a3a;border-radius:12px;padding:14px;background:linear-gradient(160deg,#1e1818,#151216);margin-bottom:12px}
+.combat.active{border-color:var(--gold);box-shadow:0 0 14px rgba(232,184,93,.15)}
+.combat-round{color:var(--gold);font-weight:700;margin-bottom:8px}
+.combatant{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;background:var(--panel2);margin:5px 0;border:1px solid #454b5d}
+.combatant.turn{outline:2px solid var(--gold);background:#2a2418}
+.combatant.dead{opacity:.4}
+.combatant .emoji{font-size:1.6rem}
+.combatant .info{flex:1;min-width:0}
+.combatant .name{font-weight:700}
+.combatant .hpbar{height:6px;background:#0d1018;border-radius:4px;overflow:hidden;margin-top:4px}
+.combatant .hpbar i{display:block;height:100%;transition:.3s}
+.combatant .hp-text{font-size:.8rem;color:var(--muted);margin-top:2px}
+.combatant .target-btn{background:transparent;border:1px solid #454b5d;color:var(--text);padding:5px 9px;font-size:.85rem;border-radius:7px}
+.combatant .target-btn.selected{border-color:var(--gold);background:#2a2418}
 
-/* Карточки врагов */
-.enemy-card{background:#2b1d1d;border:1px solid #6b3a3a;border-radius:9px;padding:8px;margin:5px 0;font-size:.88rem;cursor:pointer}
-.enemy-card.dead{opacity:.4;text-decoration:line-through}
-.enemy-card.selected{border-color:var(--gold)}
-
-/* Инвентарь */
-.inv{display:flex;flex-wrap:wrap;gap:5px;min-height:24px}
-.inv span{background:var(--panel2);border:1px solid #454b5d;border-radius:6px;padding:3px 7px;font-size:.8rem}
-
-/* Способности */
-.ability{background:var(--panel2);border:1px solid #454b5d;border-radius:9px;padding:8px;cursor:pointer;text-align:left;color:var(--text);font-weight:400;display:block;width:100%}
+/* Список действий в бою */
+.combat-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.combat-actions button{min-width:0;padding:10px}
+.ability{background:var(--panel2);border:1px solid #454b5d;border-radius:9px;padding:9px;cursor:pointer;text-align:left;color:var(--text);font-weight:400}
 .ability:disabled{opacity:.4;cursor:not-allowed}
 .ability b{color:var(--purple);display:block;font-size:.9rem}
+.ability .cd{color:var(--muted);font-size:.8rem}
 
-/* Полоса XP и HP */
+/* Полосы XP/HP */
 .xpbar{height:8px;background:#0d1018;border-radius:5px;overflow:hidden;margin:4px 0}
 .xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));transition:.3s}
 .hero-hp{height:6px;background:#0d1018;border-radius:4px;overflow:hidden;margin-top:3px}
 .hero-hp i{display:block;height:100%;background:var(--green);transition:.3s}
-
-/* Состояния */
+.inv{display:flex;flex-wrap:wrap;gap:5px;min-height:24px}
+.inv span{background:var(--panel2);border:1px solid #454b5d;border-radius:6px;padding:3px 7px;font-size:.8rem}
 .cond{font-size:.72rem;padding:1px 5px;border-radius:4px;margin-left:3px;display:inline-block}
 .cond.poison{background:#3a2a4a;color:#c9a0ff}
 .cond.burn{background:#4a2a1a;color:#ff9e6b}
 .cond.stun{background:#4a4a1a;color:#ffe06b}
 
-@media(max-width:760px){main{grid-template-columns:1fr}.row{align-items:stretch}.cards{grid-template-columns:1fr 1fr}}
+/* Кнопки выбора сюжета для мастера */
+.scene-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.scene-picker button{flex:1;min-width:120px;font-size:.85rem;padding:8px}
+
+@media(max-width:760px){main{grid-template-columns:1fr}.row{align-items:stretch}.cards{grid-template-columns:1fr 1fr}.combat-actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header>
   <h1>🐉 D&D Онлайн: Проклятие Чёрного дракона</h1>
-  <p>Общая комната · живые обновления · мастер управляет приключением</p>
+  <p>Общая комната · живые обновления · сюжетные приключения</p>
   <div id="diag">
     <div>🔧 <b>Диагностика:</b></div>
     <div id="d1">⏳ Загрузка модулей Firebase…</div>
@@ -111,12 +119,19 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px
   </div>
 </header>
 <main>
+
+<!-- Комната -->
 <section class="panel">
-<h2>🌐 Подключение к комнате</h2>
+<h2>🌐 Комната</h2>
 <div class="row"><div><label for="playerName">Ваше имя</label><input id="playerName" maxlength="24" placeholder="Например, Артём"></div><div><label for="roomCode">Код комнаты</label><input id="roomCode" maxlength="12" placeholder="Напр. DRAGON7"></div></div>
 <div class="actions"><button id="createRoom">Создать комнату (я мастер)</button><button id="joinRoom" class="secondary">Войти по коду</button></div>
 <div class="status" id="connection">Не подключено.</div>
-<div id="roomInfo" class="hidden"><b>Комната: <span id="roomLabel"></span></b><p class="muted small">Отправьте друзьям ссылку ниже.</p><div class="row"><input id="inviteLink" readonly><button id="copyLink" class="secondary">Копировать</button></div><h3>👥 Игроки в комнате</h3><div id="players"></div></div>
+<div id="roomInfo" class="hidden">
+  <b>Комната: <span id="roomLabel"></span></b>
+  <p class="muted small">Отправьте друзьям ссылку ниже.</p>
+  <div class="row"><input id="inviteLink" readonly><button id="copyLink" class="secondary">Копировать</button></div>
+  <h3>👥 Игроки в комнате</h3><div id="players"></div>
+</div>
 <hr style="border:0;border-top:1px solid #373b4b;margin:17px 0">
 <h2>🧙 Ваш персонаж</h2><div class="cards" id="heroes"></div>
 <div id="charStats" class="stats"></div>
@@ -126,62 +141,76 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 25px
 <h3>🎒 Инвентарь и золото</h3><div class="inv" id="inventory"><span class="muted small">Пусто</span></div>
 <p class="small" style="margin-top:5px">💰 Золото: <b id="gold">0</b></p>
 </section>
+
+<!-- Сюжет -->
 <section class="panel">
-<h2>🗺️ Приключение</h2><div class="map" id="map"></div>
-<h3 id="locationTitle">Серебряный Брод</h3><p id="locationText" class="muted">Подключитесь, чтобы увидеть состояние партии.</p>
-<div class="actions"><button id="explore" disabled>Исследовать локацию</button><button id="nextLocation" disabled>Открыть следующую →</button></div>
-<hr style="border:0;border-top:1px solid #373b4b;margin:17px 0">
-<h2>⚔️ Бой</h2>
-<div class="turnbar" id="turnBar">Ход: — · Инициатива не начата</div>
-<div class="actions" style="margin-bottom:8px">
-  <button id="startBattle" class="secondary" disabled>⚔️ Начать бой</button>
-  <button id="spawnEnemy" class="secondary" disabled>👹 Мастер: спавн врага</button>
-  <button id="endTurn" class="secondary" disabled>⏭️ Завершить ход</button>
+<h2>📖 Приключение</h2>
+<div id="sceneContainer">
+  <div class="scene">
+    <div class="scene-title">🏘️ Серебряный Брод</div>
+    <div class="scene-text">Создайте комнату или подключитесь, чтобы начать приключение.</div>
+  </div>
 </div>
-<h3>Поле боя (карта урона)</h3>
-<div class="battlefield" id="battlefield"></div>
-<p class="muted small">Кликните по клетке для выбора цели. Синие — герои, красные — враги.</p>
-<h3>👹 Враги</h3><div id="enemies"><span class="muted small">Нет врагов.</span></div>
-<h3>✨ Способности</h3><div id="abilities" class="cards"></div>
+<div id="masterScene" class="hidden">
+  <h3>🎬 Мастер: сцены</h3>
+  <p class="muted small">Выберите следующую сцену для партии.</p>
+  <div class="scene-picker" id="scenePicker"></div>
+</div>
 </section>
+
+<!-- Бой -->
 <section class="panel">
-<h2>🎲 Общие броски</h2>
+<h2>⚔️ Бой</h2>
+<div id="combatContainer">
+  <div class="status muted">Бой не начат. Мастер может начать бой из сцены.</div>
+</div>
+</section>
+
+<!-- Броски -->
+<section class="panel">
+<h2>🎲 Броски</h2>
 <div class="row"><div><label for="checkType">Проверка</label><select id="checkType"><option value="skill">Проверка умения</option><option value="attack">Атака</option><option value="save">Спасбросок</option></select></div><div><label for="dc">Сложность</label><select id="dc"><option value="8">8 — легко</option><option value="11" selected>11 — обычно</option><option value="14">14 — сложно</option><option value="17">17 — героически</option></select></div></div>
 <div class="row" style="margin-top:6px"><div><label for="rollMode">Режим</label><select id="rollMode"><option value="normal">Обычный</option><option value="adv">Преимущество</option><option value="dis">Помеха</option></select></div><div><label for="bonusMod">Модификатор</label><input id="bonusMod" type="number" value="0" min="-5" max="10"></div></div>
 <div class="actions"><button id="roll" disabled>Бросить d20</button></div><div id="rollResult" class="status">Броски появятся здесь.</div>
 </section>
+
+<!-- Журнал -->
 <section class="panel">
 <h2>📜 Общий журнал</h2><div id="feed" aria-live="polite"></div>
 <div class="row" style="margin-top:9px"><input id="chatText" maxlength="300" placeholder="Сообщение партии…"><button id="sendChat" disabled>Отправить</button></div>
-<div class="actions"><button id="exportLog" class="secondary" disabled>Скачать журнал</button><button id="clearRoom" class="secondary" disabled>Сбросить (мастер)</button></div>
+<div class="actions"><button id="exportLog" class="secondary" disabled>Скачать журнал</button><button id="clearRoom" class="secondary danger" disabled>Сбросить (мастер)</button></div>
 </section>
+
+<!-- Шпаргалка -->
 <section class="panel">
-<h2>📖 Завязка для мастера</h2>
-<p>В деревне Серебряный Брод пропадают жители, а вода в реке становится чёрной. Мэр обещает награду героям.</p>
-<h3>Локации</h3>
-<ol><li><b>Серебряный Брод:</b> расспросите мэра. Следы ведут на север.</li><li><b>Шепчущий лес:</b> гоблины и пленник.</li><li><b>Старый храм:</b> загадка символов: солнце, глаз, коготь.</li><li><b>Логово дракона:</b> снимите ошейник или сразитесь.</li></ol>
-<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение.</div>
+<h2>📖 Шпаргалка мастера</h2>
+<p>В деревне Серебряный Брод пропадают жители, а вода в реке становится чёрной. Мэр обещает награду героям, которые выяснят, что происходит.</p>
+<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Мастер описывает последствия и выбирает следующую сцену.</div>
+<h3>Ветки сюжета</h3>
+<ul class="small">
+<li><b>Расследование:</b> таверна → допрос → следы на севере.</li>
+<li><b>Шепчущий лес:</b> гоблины, пленник, выбор: спасти или выпытать.</li>
+<li><b>Старый храм:</b> загадка трёх символов.</li>
+<li><b>Логово дракона:</b> финал — сразиться или снять ошейник.</li>
+</ul>
 </section>
 </main>
-<footer>Нужен Firebase-проект и HTTPS-сайт (или localhost).</footer>
+<footer>Firebase + localhost или HTTPS. Панель диагностики сверху покажет проблемы.</footer>
 
 <script type="module">
 const d = id => document.getElementById(id);
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+/* ---------- Firebase ---------- */
 let initializeApp, getAuth, signInAnonymously, onAuthStateChanged;
 let getDatabase, ref, set, get, update, push, onValue;
-
-try {
-  ({ initializeApp } = await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"));
-  ({ getAuth, signInAnonymously, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
-  ({ getDatabase, ref, set, get, update, push, onValue } = await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
-  d('d1').innerHTML = '✅ Модули Firebase загружены';
-} catch(e) {
-  d('d1').innerHTML = '❌ Не удалось загрузить Firebase: ' + e.message + ' (нужен сервер, не file://)';
-  throw e;
-}
+try{
+  ({initializeApp}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"));
+  ({getAuth,signInAnonymously,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
+  ({getDatabase,ref,set,get,update,push,onValue}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
+  d('d1').innerHTML='✅ Модули Firebase загружены';
+}catch(e){d('d1').innerHTML='❌ '+e.message;throw e;}
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIkOkge0LtsNqMIVGQLi-YV43awOyS_iA",
@@ -193,321 +222,657 @@ const firebaseConfig = {
   appId: "1:610307220921:web:acad740979400b20a60268",
   measurementId: "G-ELWNLG3S4N"
 };
+let app,auth,db,uid=null,roomId=null,roomData=null;
+let selected=null,myPlayer=null,isMaster=false;
+let unsubRoom=null,unsubLog=null;
+let selectedTarget=null;
 
-let app, auth, db, uid=null, roomId=null, roomData=null;
-let selected=null, myPlayer=null, isMaster=false;
-let unsubRoom=null, unsubLog=null, unsubBattle=null;
-let selectedCell=null;
-
-try {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getDatabase(app);
-  d('d2').innerHTML = '✅ Приложение инициализировано (projectId: ' + firebaseConfig.projectId + ')';
-  d('d4').innerHTML = '✅ База данных настроена: ' + firebaseConfig.databaseURL;
-} catch(e) {
-  d('d2').innerHTML = '❌ Ошибка инициализации: ' + e.message;
-  throw e;
-}
+try{
+  app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);
+  d('d2').innerHTML='✅ Приложение инициализировано';
+  d('d4').innerHTML='✅ База: '+firebaseConfig.databaseURL;
+}catch(e){d('d2').innerHTML='❌ '+e.message;throw e;}
 
 signInAnonymously(auth)
-  .then(() => { d('d3').innerHTML = '✅ Анонимный вход выполнен'; })
-  .catch(e => { d('d3').innerHTML = '❌ Ошибка входа: ' + e.code + ' — ' + e.message + ' (включите Anonymous в Firebase Console → Authentication)'; });
-
-onAuthStateChanged(auth, user => {
-  if(!user) { d('d5').innerHTML = '⏳ Ждём авторизации…'; return; }
-  uid = user.uid;
-  d('d5').innerHTML = '✅ Готово. uid=' + uid.slice(0,8) + '… Можно создавать комнату.';
-  const code = new URLSearchParams(location.search).get('room');
-  if(code){ $('roomCode').value = code; connectRoom(code).catch(e => status(e.message)); }
+  .then(()=>{d('d3').innerHTML='✅ Анонимный вход выполнен';})
+  .catch(e=>{d('d3').innerHTML='❌ '+e.code+' — '+e.message;});
+onAuthStateChanged(auth,user=>{
+  if(!user){d('d5').innerHTML='⏳ Ждём авторизации…';return;}
+  uid=user.uid;
+  d('d5').innerHTML='✅ uid='+uid.slice(0,8)+'…';
+  const code=new URLSearchParams(location.search).get('room');
+  if(code){$('roomCode').value=code;connectRoom(code).catch(e=>status(e.message));}
 });
 
 /* ---------- Данные ---------- */
 const heroes = [
- {id:'warrior',role:'Воин',name:'Борин Железный Щит',emoji:'🛡️',hp:12,atk:3,ac:13,
-  abilities:[{id:'cleave',name:'Рассекающий удар',desc:'Атака по всем врагам рядом',cd:2,type:'aoe'},{id:'shield',name:'Стена щитов',desc:'+3 HP',cd:3,type:'buff'}]},
- {id:'mage',role:'Маг',name:'Лира Искророждённая',emoji:'🔮',hp:8,atk:4,ac:11,
+ {id:'warrior',role:'Воин',name:'Борин Железный Щит',emoji:'🛡️',hp:14,atk:3,ac:14,
+  abilities:[{id:'power',name:'Мощный удар',desc:'2d6+atk',cd:2,type:'attack'},{id:'shield',name:'Стена щитов',desc:'+3 HP',cd:3,type:'buff'}]},
+ {id:'mage',role:'Маг',name:'Лира Искророждённая',emoji:'🔮',hp:9,atk:4,ac:11,
   abilities:[{id:'fireball',name:'Огненный шар',desc:'2d6 урона',cd:3,type:'attack'},{id:'heal',name:'Лечащий свет',desc:'1d8 HP союзнику',cd:2,type:'heal'}]},
- {id:'ranger',role:'Следопыт',name:'Тарен Лесной След',emoji:'🏹',hp:10,atk:3,ac:12,
+ {id:'ranger',role:'Следопыт',name:'Тарен Лесной След',emoji:'🏹',hp:11,atk:3,ac:13,
   abilities:[{id:'volley',name:'Град стрел',desc:'2 атаки',cd:2,type:'multi'},{id:'trap',name:'Ловушка',desc:'Оглушение',cd:3,type:'stun'}]},
- {id:'rogue',role:'Разбойница',name:'Мира Тихий Шаг',emoji:'🗡️',hp:9,atk:4,ac:12,
-  abilities:[{id:'sneak',name:'Скрытая атака',desc:'+2d6 урона',cd:2,type:'attack'},{id:'poison',name:'Отравленный клинок',desc:'Урон + яд',cd:3,type:'poison'}]}
+ {id:'rogue',role:'Разбойница',name:'Мира Тихий Шаг',emoji:'🗡️',hp:10,atk:4,ac:12,
+  abilities:[{id:'sneak',name:'Скрытая атака',desc:'2d6+atk',cd:2,type:'attack'},{id:'poison',name:'Отравленный клинок',desc:'Урон + яд',cd:3,type:'poison'}]}
 ];
-const enemyTypes = [
- {id:'goblin',name:'Гоблин',emoji:'👺',hp:7,atk:2,ac:11,xp:20,gold:5},
- {id:'wolf',name:'Лесной волк',emoji:'🐺',hp:11,atk:3,ac:12,xp:30,gold:3},
- {id:'bandit',name:'Бандит',emoji:'🗡️',hp:13,atk:3,ac:12,xp:40,gold:12},
- {id:'troll',name:'Тролль',emoji:'🧟',hp:22,atk:4,ac:13,xp:80,gold:25},
- {id:'dragon',name:'Чёрный дракон',emoji:'🐉',hp:45,atk:6,ac:16,xp:300,gold:200}
-];
-const places = [
- {name:'Серебряный Брод',icon:'🏘️',text:'В деревне пропадают жители.'},
- {name:'Шепчущий лес',icon:'🌲',text:'Разбитая телега, гоблины и пленник.'},
- {name:'Старый храм',icon:'🏚️',text:'Загадка трёх символов.'},
- {name:'Логово дракона',icon:'🐉',text:'Чёрный дракон в магическом ошейнике.'}
-];
-const xpForLevel = lvl => 100 + (lvl-1)*150;
-const GRID_W=6, GRID_H=4;
+const enemyTypes = {
+  goblin:{name:'Гоблин',emoji:'👺',hp:8,atk:2,ac:11,xp:25,gold:5},
+  wolf:{name:'Лесной волк',emoji:'🐺',hp:12,atk:3,ac:12,xp:35,gold:3},
+  bandit:{name:'Бандит',emoji:'🗡️',hp:14,atk:3,ac:12,xp:45,gold:15},
+  troll:{name:'Тролль',emoji:'🧟',hp:26,atk:5,ac:13,xp:90,gold:30},
+  dragon:{name:'Чёрный дракон',emoji:'🐉',hp:50,atk:6,ac:16,xp:300,gold:250}
+};
 
-function status(s, good=false){ $('connection').innerHTML = `<span class="${good?'good':'bad'}">${esc(s)}</span>`; }
+/* ---------- Сюжетные сцены ---------- */
+/* Каждая сцена: id, title, text, choices[{text, check?, dc?, success, fail, next?, combat?, reward?, master?}] */
+const scenes = {
+  village: {
+    title:'🏘️ Серебряный Брод',
+    text:'В деревне пропадают люди. Вода в реке чернеет. Мэр встречает вас у ратуши:\n\n«Герои, помогите! Три дня назад ушли трое — и не вернулись. Следы ведут к лесу. Если найдёте — награжу щедро.»',
+    choices:[
+      {text:'Расспросить мэра о пропавших', check:'skill', dc:10, success:'Мэр рассказал: пропали дровосек, его дочь и старый охотник. Все уходили на север.', fail:'Мэр путается в показаниях, но вы вытянули хотя бы имена.', next:'tavern'},
+      {text:'Осмотреть берег реки', check:'skill', dc:12, success:'На берегу — чёрные чешуйки и след огромной лапы, ведущий к лесу.', fail:'Река мутная, ничего не видно. Но вы замечаете обрывок ткани.', next:'tavern'},
+      {text:'Сразу идти в лес', next:'forest', master:true}
+    ]
+  },
+  tavern: {
+    title:'🍺 Таверна «Пьяный Гоблин»',
+    text:'Тавернщик Гаррик протирает кружки и мрачно смотрит на вас:\n\n«Дровосек был должен мне. И охотник… Странные дела. А ночью у леса кто-то шепчет. Слышите? Даже сейчас.»',
+    choices:[
+      {text:'Угостить тавернщика и разговорить', check:'skill', dc:11, success:'За кружкой Гаррик признался: видел человека в чёрном плаще, шедшего к лесу. На плаще — символ дракона.', fail:'Гаррик замкнулся: «Нечего мне сказать».', next:'forest'},
+      {text:'Обыскать комнату охотника', check:'skill', dc:13, success:'Под кроватью — карта с отметкой у старого храма и записка: «Ошейник снять нельзя, только разбить».', fail:'Хозяин комнаты забрал свои вещи.', next:'forest'},
+      {text:'Идти в лес', next:'forest'}
+    ]
+  },
+  forest: {
+    title:'🌲 Шепчущий лес',
+    text:'Тропа уходит вглубь. Среди деревьев — разбитая телега. Из кустов слышен шёпот: «Отдайте кристалл — и пленник останется жив». На поляне — три гоблина и связанный следопыт у дерева.',
+    choices:[
+      {text:'Атаковать гоблинов!', combat:'goblin', count:3, next:'forest_after'},
+      {text:'Попробовать договориться', check:'skill', dc:14, success:'Гоблины дрогнули: «Кристалл у дракона. Мы лишь слуги.» Они отпустили пленника и убежали.', fail:'Переговоры провалились — гоблины хватают оружие!', failCombat:'goblin', count:3, next:'forest_after'},
+      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы обошли гоблинов и нашли тайную тропу к храму. Пленник позже сбежал сам.', fail:'Ветка хрустнула — гоблины заметили вас!', failCombat:'goblin', count:3, next:'forest_after'}
+    ]
+  },
+  forest_after: {
+    title:'🌲 После боя в лесу',
+    text:'Пленник — старый следопыт Эдрик — тяжело дышит:\n\n«Дракон не виноват. На нём ошейник, проклятие чёрного мага. Снимите ошейник — и дракон станет собой. В храме есть подсказка.»',
+    choices:[
+      {text:'Идти к старому храму', next:'temple'},
+      {text:'Вернуться в деревню и доложить', next:'village'}
+    ]
+  },
+  temple: {
+    title:'🏚️ Старый храм',
+    text:'На каменной двери три символа: ☀️ солнце, 👁️ глаз, 🦅 коготь. Рядом высечено: «Свет видит, глаз знает, коготь берёт».',
+    choices:[
+      {text:'Солнце → глаз → коготь', check:'skill', dc:10, success:'Дверь открылась. Внутри — древний свиток с ритуалом снятия ошейника.', fail:'Порядок неверный, дверь не поддалась. Попробуйте ещё.', next:'temple', retry:true},
+      {text:'Глаз → солнце → коготь', fail:'Из стены вырвалась тьма — все получают 3 урона.', damageAll:3, next:'temple'},
+      {text:'Коготь → глаз → солнце', fail:'Пол задрожал, из трещин пошли тени. Готовьтесь к бою.', failCombat:'wolf', count:2, next:'temple_after'}
+    ]
+  },
+  temple_after: {
+    title:'🏚️ Храм: ритуал',
+    text:'В свитке сказано: чтобы снять ошейник, нужно произнести истинное имя дракона — «Ашар-Нор» — и коснуться ошейника серебром.',
+    choices:[
+      {text:'Идти к логову дракона', next:'lair'},
+      {text:'Вернуться в деревню за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал и благословение.', fail:'Кузнец отказал: «Это семейная реликвия».', next:'lair'}
+    ]
+  },
+  lair: {
+    title:'🐉 Логово дракона',
+    text:'Чёрный дракон лежит над тёмным озером. На шее — магический ошейник, из которого сочится тьма. Дракон поднимает голову:\n\n«Убейте… меня… или снимите это…»',
+    choices:[
+      {text:'Произнести истинное имя: Ашар-Нор', check:'skill', dc:13, success:'Ошейник треснул. Дракон вздохнул свободно и поклонился вам. Проклятие снято!', next:'epilogue_good'},
+      {text:'Сразиться с драконом', combat:'dragon', count:1, next:'epilogue_battle'},
+      {text:'Отступить и позвать подмогу', next:'village'}
+    ]
+  },
+  epilogue_good: {
+    title:'✨ Финал: Свобода',
+    text:'Дракон Ашар-Нор свободен. Он улетает, оставив вам сокровище из своего логова как благодарность. Деревня спасена, проклятие снято.\n\n🏆 ПОБЕДА!',
+    choices:[
+      {text:'Начать новое приключение', next:'village', master:true}
+    ]
+  },
+  epilogue_battle: {
+    title:'⚔️ Финал: Цена победы',
+    text:'Дракон повержен, но тьма ошейника рассеялась в воздухе. Вы победили, но чувствуете, что где-то есть тот, кто надел ошейник — и он ещё жив.\n\n🏆 ПОБЕДА (но не конец).',
+    choices:[
+      {text:'Начать новое приключение', next:'village', master:true}
+    ]
+  }
+};
+
+/* ---------- Вспомогательные ---------- */
+const xpForLevel = lvl => 100+(lvl-1)*150;
+const rollDice = s => Math.floor(Math.random()*s)+1;
+const rollDamage = (c,s,b)=>{let t=0;for(let i=0;i<c;i++)t+=rollDice(s);return t+(b||0);};
+function status(s,good=false){$('connection').innerHTML=`<span class="${good?'good':'bad'}">${esc(s)}</span>`;}
 function setConnected(on){
-  ['roll','explore','sendChat','exportLog','pickHero','heal','endTurn'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
-  const master = on && isMaster;
-  ['nextLocation','clearRoom','startBattle','spawnEnemy','restBtn'].forEach(id=>{const el=$(id);if(el)el.disabled=!master;});
+  ['roll','explore','sendChat','exportLog','pickHero','heal'].forEach(id=>{const el=$(id);if(el)el.disabled=!on;});
+  ['restBtn','clearRoom'].forEach(id=>{const el=$(id);if(el)el.disabled=!on||!isMaster;});
 }
-function defaultRoom(masterUid, name){
-  return { createdAt:Date.now(), masterUid,
-    players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,maxHp:null,xp:0,level:1,gold:0,inventory:[],conditions:[],pos:{x:0,y:0},joinedAt:Date.now()}},
-    game:{location:0,notes:'Приключение начинается.'},
-    battle:{active:false, round:0, turnIndex:0, order:[], enemies:{}}
+function defaultRoom(masterUid,name){
+  return {createdAt:Date.now(),masterUid,
+    players:{[masterUid]:{uid:masterUid,name,heroId:null,hp:null,maxHp:null,xp:0,level:1,gold:0,inventory:[],conditions:[],cooldowns:{},joinedAt:Date.now()}},
+    game:{scene:'village',sceneText:scenes.village.text},
+    combat:{active:false,round:0,turnIndex:0,order:[],enemies:{},log:''}
   };
 }
 
-/* ---------- Рендер ---------- */
+/* ---------- Рендер персонажа ---------- */
 function renderHeroes(){
-  $('heroes').innerHTML = heroes.map(h=>`<div class="hero ${selected?.id===h.id?'active':''}" data-id="${h.id}"><b>${h.emoji} ${h.role}</b><small>${h.name}<br>❤️ ${h.hp} · ⚔️ +${h.atk} · 🛡️ ${h.ac}</small></div>`).join('');
-  document.querySelectorAll('.hero').forEach(el=>el.onclick=()=>{ selected=heroes.find(h=>h.id===el.dataset.id); renderHeroes(); });
-  renderStats(); renderAbilities();
+  $('heroes').innerHTML=heroes.map(h=>`<div class="hero ${selected?.id===h.id?'active':''}" data-id="${h.id}"><b>${h.emoji} ${h.role}</b><small>${h.name}<br>❤️ ${h.hp} · ⚔️ +${h.atk} · 🛡️ ${h.ac}</small></div>`).join('');
+  document.querySelectorAll('.hero').forEach(el=>el.onclick=()=>{selected=heroes.find(h=>h.id===el.dataset.id);renderHeroes();});
+  renderStats();
 }
-function getMyHero(){ const p=roomData?.players?.[uid]; return heroes.find(x=>x.id===(p?.heroId||selected?.id))||selected||heroes[0]; }
+function getMyHero(){const p=roomData?.players?.[uid];return heroes.find(x=>x.id===(p?.heroId||selected?.id))||selected||heroes[0];}
 function renderStats(){
-  const p=roomData?.players?.[uid]; const h=getMyHero();
-  const hp=p?.hp??h.hp, maxHp=p?.maxHp??h.hp;
+  const p=roomData?.players?.[uid];const h=getMyHero();
+  const hp=p?.hp??h.hp,maxHp=p?.maxHp??h.hp;
   $('charStats').innerHTML=`<div class="stat">❤️ HP<b>${hp}/${maxHp}</b></div><div class="stat">⚔️ Атака<b>+${h.atk}</b></div><div class="stat">🛡️ Защита<b>${h.ac}</b></div>`;
-  const xp=p?.xp??0, lvl=p?.level??1, need=xpForLevel(lvl);
+  const xp=p?.xp??0,lvl=p?.level??1,need=xpForLevel(lvl);
   $('xpFill').style.width=Math.min(100,(xp/need)*100)+'%';
   $('xpText').textContent=`XP: ${xp} / ${need} · Уровень ${lvl}`;
   $('gold').textContent=p?.gold??0;
   const inv=p?.inventory||[];
   $('inventory').innerHTML=inv.length?inv.map(i=>`<span>${esc(i)}</span>`).join(''):'<span class="muted small">Пусто</span>';
 }
-function renderAbilities(){
-  const h=getMyHero(); const p=roomData?.players?.[uid]; const cds=p?.cooldowns||{};
-  $('abilities').innerHTML=h.abilities.map(a=>{ const cd=cds[a.id]||0;
-    return `<button class="ability" data-ability="${a.id}" ${cd>0?'disabled':''}><b>${a.name} ${cd>0?'(⏳'+cd+')':''}</b><span class="small muted">${a.desc}</span></button>`;
-  }).join('');
-  document.querySelectorAll('.ability').forEach(b=>b.onclick=()=>useAbility(b.dataset.ability));
-}
-function renderMap(){
-  const loc=Number(roomData?.game?.location||0);
-  $('map').innerHTML=places.map((p,i)=>`<div class="tile ${i>loc?'locked':''} ${i===loc?'current':''}"><span>${i>loc?'🔒':p.icon}</span>${p.name}</div>`).join('');
-  $('locationTitle').textContent=places[loc].name; $('locationText').textContent=places[loc].text;
-}
 function renderPlayers(){
   const ps=Object.values(roomData?.players||{});
   $('players').innerHTML=ps.map(p=>{
-    const h=heroes.find(x=>x.id===p.heroId); const lvl=p.level||1;
-    const maxHp=p.maxHp||h?.hp||10; const hp=p.hp??maxHp;
+    const h=heroes.find(x=>x.id===p.heroId);const lvl=p.level||1;
+    const maxHp=p.maxHp||h?.hp||10;const hp=p.hp??maxHp;
     const pct=Math.max(0,Math.min(100,(hp/maxHp)*100));
     const conds=(p.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
-    return `<div class="player">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):'—'} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
+    const isTurn=roomData?.combat?.active&&roomData.combat.order?.[roomData.combat.turnIndex]===p.uid;
+    return `<div class="player" style="${isTurn?'outline:2px solid var(--gold)':''}">${esc(p.name)}${p.uid===roomData.masterUid?'<span class="tag">МАСТЕР</span>':''}${isTurn?'<span class="tag">▶ ХОД</span>':''}${conds}<br><span class="muted small">${h?esc(h.role):'—'} · Ур.${lvl} · 💰${p.gold||0}</span>${h?`<div class="hero-hp"><i style="width:${pct}%"></i></div><span class="muted small">${hp}/${maxHp} HP</span>`:''}</div>`;
   }).join('')||'<span class="muted">Пока никого нет</span>';
   renderStats();
 }
 function renderFeed(items){
   $('feed').innerHTML=items.map(e=>`<div class="entry"><span class="muted">${new Date(e.at||Date.now()).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})}</span> <b>${esc(e.name||'Система')}:</b> ${esc(e.text)}</div>`).join('')||'<div class="muted">Журнал пуст.</div>';
 }
-function renderBattlefield(){
-  const battle=roomData?.battle; const players=roomData?.players||{}; const enemies=battle?.enemies||{};
-  let html='';
-  for(let y=0;y<GRID_H;y++) for(let x=0;x<GRID_W;x++){
-    let occ=null,type=null,hpPct=100;
-    for(const p of Object.values(players)){ const pos=p.pos||{x:0,y:0}; if(pos.x===x&&pos.y===y){occ=p;type='hero';const h=heroes.find(hh=>hh.id===p.heroId);const m=p.maxHp||h?.hp||10;hpPct=Math.max(0,((p.hp??m)/m)*100);break;} }
-    if(!occ) for(const e of Object.values(enemies)){ if(e.dead)continue; const pos=e.pos||{x:0,y:0}; if(pos.x===x&&pos.y===y){occ=e;type='enemy';hpPct=Math.max(0,(e.hp/e.maxHp)*100);break;} }
-    const sel=(selectedCell&&selectedCell.x===x&&selectedCell.y===y)?'selected':'';
-    html+=`<div class="cell ${type||''} ${sel}" data-x="${x}" data-y="${y}" title="${occ?esc(occ.name):'Пусто'}">${occ?(type==='hero'?(heroes.find(h=>h.id===occ.heroId)?.emoji||'🧙'):occ.emoji):''}${occ?`<div class="hpbar"><i style="width:${hpPct}%;background:${type==='hero'?'var(--green)':'var(--red)'}"></i></div>`:''}</div>`;
+
+/* ---------- Сюжетная сцена ---------- */
+function renderScene(){
+  const sceneId=roomData?.game?.scene||'village';
+  const sc=scenes[sceneId]||scenes.village;
+  const p=roomData?.players?.[uid];
+  const myTurn=!roomData?.combat?.active;
+  const html=`
+    <div class="scene">
+      <div class="scene-title">${sc.title}</div>
+      <div class="scene-text">${esc(sc.text)}</div>
+      <div class="choices">
+        ${sc.choices.map((c,i)=>{
+          const locked=!myTurn;
+          const check=c.check?`<span class="check">${c.check==='skill'?'🎯 проверка':c.check==='attack'?'⚔️ атака':'🛡️ спасбросок'} СЛ ${c.dc||11}</span>`:'';
+          return `<button class="choice" data-idx="${i}" ${locked?'disabled':''}>
+            <span>${esc(c.text)}</span>
+            <span style="display:flex;align-items:center;gap:8px">${check}<span class="arrow">→</span></span>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`;
+  $('sceneContainer').innerHTML=html;
+  document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>chooseOption(Number(b.dataset.idx)));
+  // Панель мастера
+  if(isMaster){
+    $('masterScene').classList.remove('hidden');
+    $('scenePicker').innerHTML=Object.entries(scenes).map(([id,s])=>`<button class="secondary" data-scene="${id}">${s.title}</button>`).join('');
+    document.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>setScene(b.dataset.scene));
+  }else{
+    $('masterScene').classList.add('hidden');
   }
-  $('battlefield').innerHTML=html;
-  $('battlefield').querySelectorAll('.cell').forEach(c=>c.onclick=()=>{selectedCell={x:+c.dataset.x,y:+c.dataset.y};renderBattlefield();});
-  renderTurnBar(); renderEnemies();
 }
-function renderTurnBar(){
-  const battle=roomData?.battle, bar=$('turnBar');
-  if(!battle?.active){bar.textContent='Ход: — · Инициатива не начата';bar.classList.remove('active');return;}
-  const turnUid=battle.order?.[battle.turnIndex]; const p=roomData.players?.[turnUid]; const h=heroes.find(x=>x.id===p?.heroId);
+async function setScene(sceneId){
+  if(!isMaster)return;
+  await update(ref(db,`rooms/${roomId}/game`),{scene:sceneId,sceneText:scenes[sceneId].text});
+  await addLog(`🎬 Мастер открыл сцену: ${scenes[sceneId].title}`);
+}
+
+/* ---------- Выбор варианта ---------- */
+async function chooseOption(idx){
+  const sceneId=roomData?.game?.scene||'village';
+  const sc=scenes[sceneId];
+  const choice=sc.choices[idx];
+  if(!choice)return;
+  const p=roomData?.players?.[uid];
+  if(!p?.heroId)return status('Сначала выберите персонажа.');
+  const h=heroes.find(x=>x.id===p.heroId);
+
+  await addLog(`выбирает: «${choice.text}»`, p.name);
+
+  // Проверка характеристики
+  if(choice.check){
+    const d20=rollDice(20);
+    const bonus=h.atk;
+    const total=d20+bonus;
+    const dc=choice.dc||11;
+    const success=d20===20||(d20!==1&&total>=dc);
+    const txt=`🎲 ${choice.text}: d20(${d20})+${bonus}=${total} vs ${dc} — ${success?'успех':'провал'}`;
+    await addLog(txt, p.name);
+
+    if(success){
+      if(choice.success)await addLog(choice.success);
+      if(choice.reward){await giveReward(choice.reward);}
+      if(choice.next)return setScene(choice.next);
+    }else{
+      if(choice.fail)await addLog(choice.fail);
+      if(choice.failCombat){
+        return startCombat(choice.failCombat, choice.count||1, choice.next||sceneId);
+      }
+      if(choice.damageAll){
+        for(const pl of Object.values(roomData.players||{})){
+          if(!pl.heroId)continue;
+          const ph=heroes.find(x=>x.id===pl.heroId);
+          const mx=pl.maxHp||ph.hp;
+          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
+        }
+        await addLog(`💥 Все получают ${choice.damageAll} урона!`);
+      }
+      if(choice.next)return setScene(choice.next);
+    }
+    return;
+  }
+
+  // Без проверки — просто переход
+  if(choice.success)await addLog(choice.success);
+  if(choice.combat)return startCombat(choice.combat, choice.count||1, choice.next||sceneId);
+  if(choice.damageAll){
+    for(const pl of Object.values(roomData.players||{})){
+      if(!pl.heroId)continue;
+      const ph=heroes.find(x=>x.id===pl.heroId);
+      const mx=pl.maxHp||ph.hp;
+      await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-choice.damageAll)});
+    }
+    await addLog(`💥 Все получают ${choice.damageAll} урона!`);
+  }
+  if(choice.next)return setScene(choice.next);
+}
+async function giveReward(r){
+  const p=roomData.players[uid];if(!p)return;
+  const up={};
+  if(r.gold)up.gold=(p.gold||0)+r.gold;
+  if(r.xp)up.xp=(p.xp||0)+r.xp;
+  if(r.item){up.inventory=[...(p.inventory||[]),r.item];}
+  if(Object.keys(up).length)await update(ref(db,`rooms/${roomId}/players/${uid}`),up);
+  await addLog(`🎁 Награда: ${r.gold?'+'+r.gold+'💰 ':''}${r.xp?'+'+r.xp+' XP ':''}${r.item?r.item:''}`);
+}
+
+/* ---------- БОЙ (список, без сетки) ---------- */
+async function startCombat(enemyType,count,returnScene){
+  if(!roomData.players||!Object.keys(roomData.players).length)return;
+  const enemies={};
+  for(let i=0;i<count;i++){
+    const t=enemyTypes[enemyType]||enemyTypes.goblin;
+    const eid='e'+Date.now().toString(36)+i;
+    enemies[eid]={id:eid,type:enemyType,name:t.name+(count>1?' #'+(i+1):''),emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,dead:false};
+  }
+  // Инициатива
+  const order=[];
+  for(const pl of Object.values(roomData.players)){
+    if(!pl.heroId)continue;
+    const h=heroes.find(x=>x.id===pl.heroId);
+    order.push({uid:pl.uid,init:rollDice(20)+h.atk});
+  }
+  order.sort((a,b)=>b.init-a.init);
+  await update(ref(db,`rooms/${roomId}/combat`),{
+    active:true,round:1,turnIndex:0,order:order.map(o=>o.uid),enemies,returnScene:returnScene||roomData.game.scene
+  });
+  await addLog(`⚔️ Бой начался! Врагов: ${count} (${enemyTypes[enemyType].name})`);
+  await addLog('Инициатива: '+order.map(o=>roomData.players[o.uid].name+'('+o.init+')').join(', '));
+}
+function renderCombat(){
+  const c=roomData?.combat;
+  if(!c?.active){
+    $('combatContainer').innerHTML='<div class="status muted">Бой не начат.</div>';
+    return;
+  }
+  const order=c.order||[];
+  const turnUid=order[c.turnIndex];
   const isMyTurn=turnUid===uid;
-  bar.innerHTML=`Раунд ${battle.round} · Ход: <b>${esc(p?.name||'?')}</b> ${h?'('+h.emoji+h.role+')':''} ${isMyTurn?'<span class="good">← ваш ход</span>':''}`;
-  bar.classList.toggle('active',isMyTurn);
+  const myPlayer=roomData.players?.[uid];
+  const myHero=heroes.find(x=>x.id===myPlayer?.heroId);
+
+  // Список всех участников
+  const combatants=[];
+  for(const pl of Object.values(roomData.players||{})){
+    if(!pl.heroId)continue;
+    const h=heroes.find(x=>x.id===pl.heroId);
+    const mx=pl.maxHp||h.hp;const hp=pl.hp??mx;
+    combatants.push({kind:'player',data:pl,hero:h,hp,maxHp:mx,isTurn:pl.uid===turnUid,dead:hp<=0});
+  }
+  for(const e of Object.values(c.enemies||{})){
+    combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:false,dead:e.dead});
+  }
+
+  const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
+
+  const html=`
+    <div class="combat active">
+      <div class="combat-round">Раунд ${c.round} · Ход: ${esc(roomData.players[turnUid]?.name||'?')} ${isMyTurn?'<span class="good">← ваш ход</span>':''}</div>
+      <div id="combatants">
+        ${combatants.map(x=>{
+          if(x.kind==='player'){
+            const pct=Math.max(0,(x.hp/x.maxHp)*100);
+            const conds=(x.data.conditions||[]).map(c=>`<span class="cond ${c}">${c}</span>`).join('');
+            return `<div class="combatant ${x.isTurn?'turn':''} ${x.dead?'dead':''}">
+              <span class="emoji">${x.hero.emoji}</span>
+              <div class="info"><div class="name">${esc(x.data.name)}${x.data.uid===roomData.masterUid?' <span class="tag">МАСТЕР</span>':''}${conds}</div>
+              <div class="hpbar"><i style="width:${pct}%;background:var(--green)"></i></div>
+              <div class="hp-text">${x.hp}/${x.maxHp} HP · ${x.hero.role}</div></div>
+            </div>`;
+          }else{
+            const pct=Math.max(0,(x.hp/x.maxHp)*100);
+            const sel=selectedTarget===x.data.id?'selected':'';
+            return `<div class="combatant ${x.dead?'dead':''}">
+              <span class="emoji">${x.data.emoji}</span>
+              <div class="info"><div class="name">${esc(x.data.name)}</div>
+              <div class="hpbar"><i style="width:${pct}%;background:var(--red)"></i></div>
+              <div class="hp-text">${x.hp}/${x.maxHp} HP · ⚔️+${x.data.atk} · 🛡️${x.data.ac}${x.dead?' · повержен':''}</div></div>
+              ${!x.dead?`<button class="target-btn ${sel}" data-target="${x.data.id}">${sel?'✔ выбран':'выбрать'}</button>`:''}
+            </div>`;
+          }
+        }).join('')}
+      </div>
+      ${isMyTurn?`
+        <div class="combat-actions">
+          <button id="atkBtn" ${enemyList.length?'':'disabled'}>⚔️ Атака${selectedTarget?' → '+esc(c.enemies[selectedTarget]?.name||''):''}</button>
+          <button id="defBtn" class="secondary">🛡️ Защита (+2 AC)</button>
+          <button id="potionBtn" class="secondary" ${(myPlayer?.inventory||[]).some(i=>i.includes('Зелье'))?'':'disabled'}>🧪 Зелье (+6 HP)</button>
+          <button id="endTurnBtn" class="secondary">⏭️ Конец хода</button>
+          ${myHero.abilities.map(a=>{
+            const cd=myPlayer?.cooldowns?.[a.id]||0;
+            return `<button class="ability" data-ab="${a.id}" ${cd>0?'disabled':''}><b>${a.name} ${cd>0?'(⏳'+cd+')':''}</b><span class="cd">${a.desc}</span></button>`;
+          }).join('')}
+        </div>
+      `:`<p class="muted small" style="margin-top:8px">Ждём хода ${esc(roomData.players[turnUid]?.name||'?')}…</p>`}
+    </div>`;
+  $('combatContainer').innerHTML=html;
+
+  document.querySelectorAll('[data-target]').forEach(b=>b.onclick=()=>{selectedTarget=b.dataset.target;renderCombat();});
+  const atk=$('atkBtn');if(atk)atk.onclick=()=>doAttack();
+  const def=$('defBtn');if(def)def.onclick=()=>doDefend();
+  const pot=$('potionBtn');if(pot)pot.onclick=()=>doPotion();
+  const et=$('endTurnBtn');if(et)et.onclick=()=>endTurn();
+  document.querySelectorAll('[data-ab]').forEach(b=>b.onclick=()=>useAbility(b.dataset.ab));
 }
-function renderEnemies(){
-  const enemies=Object.values(roomData?.battle?.enemies||{});
-  if(!enemies.length){$('enemies').innerHTML='<span class="muted small">Нет врагов.</span>';return;}
-  $('enemies').innerHTML=enemies.map(e=>`<div class="enemy-card ${e.dead?'dead':''}">${e.emoji} <b>${esc(e.name)}</b> — ${e.hp}/${e.maxHp} HP · ⚔️+${e.atk} · 🛡️${e.ac}${e.dead?' <span class="bad">[повержен]</span>':''}<div class="hero-hp"><i style="width:${Math.max(0,(e.hp/e.maxHp)*100)}%;background:var(--red)"></i></div></div>`).join('');
+
+async function doAttack(){
+  const c=roomData.combat;
+  const turnUid=c.order[c.turnIndex];
+  if(turnUid!==uid)return status('Не ваш ход.');
+  if(!selectedTarget)return status('Выберите цель.');
+  const e=c.enemies[selectedTarget];
+  if(!e||e.dead)return status('Цель повержена.');
+  const p=roomData.players[uid];
+  const h=heroes.find(x=>x.id===p.heroId);
+  const d=rollDice(20)+h.atk;
+  if(d>=e.ac){
+    let dmg=rollDamage(1,6,h.atk);
+    if(d===20){dmg*=2;}
+    const nh=Math.max(0,e.hp-dmg);
+    await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
+    await addLog(`⚔️ ${p.name} атакует ${e.name}: d20(${d})+${h.atk}=${d+h.atk} vs AC${e.ac} — попадание, ${dmg} урона!${d===20?' КРИТ!':''}`);
+    if(nh<=0){
+      await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`);
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
+      await checkLevelUp(uid,(p.xp||0)+e.xp);
+      selectedTarget=null;
+      await checkCombatEnd();
+    }
+  }else{
+    await addLog(`⚔️ ${p.name} атакует ${e.name}: d20(${d})+${h.atk}=${d+h.atk} vs AC${e.ac} — промах.`);
+  }
+}
+async function doDefend(){
+  const p=roomData.players[uid];
+  if(!p?.heroId)return;
+  await addLog(`🛡️ ${p.name} встаёт в защиту (+2 AC до конца раунда).`);
+  // Упрощённо: лечим 2 HP как «подготовка»
+  const h=heroes.find(x=>x.id===p.heroId);
+  const mx=p.maxHp||h.hp;
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+2)});
+}
+async function doPotion(){
+  const p=roomData.players[uid];
+  const inv=p.inventory||[];
+  const idx=inv.findIndex(i=>i.includes('Зелье'));
+  if(idx<0)return;
+  const h=heroes.find(x=>x.id===p.heroId);
+  const mx=p.maxHp||h.hp;
+  const newInv=[...inv];newInv.splice(idx,1);
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
+  await addLog(`🧪 ${p.name} выпивает зелье: +6 HP`);
+}
+async function useAbility(aid){
+  const c=roomData.combat;
+  if(!c?.active)return;
+  const turnUid=c.order[c.turnIndex];
+  if(turnUid!==uid)return status('Не ваш ход.');
+  const p=roomData.players[uid];
+  const h=heroes.find(x=>x.id===p.heroId);
+  const ab=h.abilities.find(a=>a.id===aid);
+  if(!ab)return;
+  const cd=p.cooldowns?.[aid]||0;
+  if(cd>0)return status('Кулдаун.');
+  const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
+  if(!enemyList.length)return status('Нет врагов.');
+
+  if(ab.type==='heal'){
+    const mx=p.maxHp||h.hp;
+    const heal=rollDamage(1,8,0);
+    await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+heal)});
+    await addLog(`✨ ${p.name} использует ${ab.name}: +${heal} HP`);
+  }else if(ab.type==='buff'){
+    const mx=p.maxHp||h.hp;
+    await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+3)});
+    await addLog(`🛡️ ${p.name}: ${ab.name} (+3 HP)`);
+  }else if(ab.type==='multi'){
+    const targets=enemyList.slice(0,2);
+    for(const t of targets){
+      const d=rollDice(20)+h.atk;
+      if(d>=t.ac){
+        const dmg=rollDamage(1,6,h.atk);
+        const nh=Math.max(0,t.hp-dmg);
+        await update(ref(db,`rooms/${roomId}/combat/enemies/${t.id}`),{hp:nh,dead:nh<=0});
+        await addLog(`🏹 ${p.name} → ${t.name}: ${dmg} урона (${nh}/${t.maxHp})`);
+        if(nh<=0)await onKill(t);
+      }else{
+        await addLog(`🏹 ${p.name} промахнулся по ${t.name}`);
+      }
+    }
+  }else{
+    // attack / poison / stun — нужна цель
+    if(!selectedTarget)return status('Выберите цель.');
+    const e=c.enemies[selectedTarget];
+    if(!e||e.dead)return status('Цель повержена.');
+    let dmg=0,label=ab.name;
+    if(aid==='fireball'||aid==='power'||aid==='sneak')dmg=rollDamage(2,6,h.atk);
+    else if(aid==='poison')dmg=rollDamage(1,6,h.atk);
+    const nh=Math.max(0,e.hp-dmg);
+    await update(ref(db,`rooms/${roomId}/combat/enemies/${selectedTarget}`),{hp:nh,dead:nh<=0});
+    await addLog(`✨ ${p.name} → ${e.name}: ${ab.name}, ${dmg} урона (${nh}/${e.maxHp})`);
+    if(aid==='poison')await addLog(`☠️ ${e.name} отравлен!`);
+    if(aid==='stun')await addLog(`💫 ${e.name} оглушён!`);
+    if(nh<=0){await onKill(e);selectedTarget=null;}
+  }
+  await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[aid]:ab.cd});
+  await checkCombatEnd();
+}
+async function onKill(e){
+  const p=roomData.players[uid];
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold});
+  await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold}💰`);
+  await checkLevelUp(uid,(p.xp||0)+e.xp);
+}
+async function checkCombatEnd(){
+  const c=roomData.combat;
+  const alive=Object.values(c.enemies||{}).filter(e=>!e.dead);
+  if(!alive.length){
+    await addLog('🏆 Все враги повержены! Бой окончен.');
+    const ret=c.returnScene||roomData.game.scene;
+    await update(ref(db,`rooms/${roomId}/combat`),{active:false,turnIndex:0,order:[],enemies:{},round:0});
+    if(ret)await setScene(ret);
+  }
+}
+async function endTurn(){
+  const c=roomData.combat;
+  if(!c?.active)return;
+  const turnUid=c.order[c.turnIndex];
+  if(turnUid!==uid&&!isMaster)return status('Не ваш ход.');
+  let idx=(c.turnIndex+1)%c.order.length;
+  let round=c.round;
+  if(idx===0)round++;
+  await update(ref(db,`rooms/${roomId}/combat`),{turnIndex:idx,round});
+  await addLog(`⏭️ Ход → ${roomData.players[c.order[idx]]?.name||'?'} (раунд ${round})`);
+  // Враги атакуют
+  await enemiesTurn();
+}
+async function enemiesTurn(){
+  const c=roomData.combat;
+  if(!c?.active)return;
+  const alive=Object.values(roomData.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
+  if(!alive.length)return;
+  for(const e of Object.values(c.enemies||{})){
+    if(e.dead)continue;
+    const target=alive[Math.floor(Math.random()*alive.length)];
+    const h=heroes.find(x=>x.id===target.heroId);
+    if(!h)continue;
+    const d=rollDice(20)+e.atk;
+    if(d>=h.ac){
+      const dmg=rollDamage(1,6,e.atk);
+      const nh=Math.max(0,(target.hp??h.hp)-dmg);
+      await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
+      await addLog(`👹 ${e.name} бьёт ${target.name}: ${dmg} урона (${nh} HP)`);
+      if(nh<=0)await addLog(`💀 ${target.name} падает без сознания!`);
+    }else{
+      await addLog(`👹 ${e.name} промахнулся по ${target.name}`);
+    }
+  }
+}
+async function checkLevelUp(playerUid,xp){
+  const p=roomData.players[playerUid];
+  const h=heroes.find(x=>x.id===p.heroId);if(!h)return;
+  let lvl=p.level||1;
+  while(xp>=xpForLevel(lvl))lvl++;
+  if(lvl>p.level){
+    const newMax=(p.maxHp||h.hp)+3;
+    await update(ref(db,`rooms/${roomId}/players/${playerUid}`),{level:lvl,maxHp:newMax,hp:newMax});
+    await addLog(`⬆️ ${p.name} достиг уровня ${lvl}! Макс. HP: ${newMax}`);
+  }
 }
 
 /* ---------- Слушатели ---------- */
 function startListeners(){
-  for(const u of [unsubRoom,unsubLog,unsubBattle]) if(u)u();
+  for(const u of [unsubRoom,unsubLog])if(u)u();
   unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
     roomData=snap.val();
     if(!roomData){status('Комната удалена.');setConnected(false);return;}
     isMaster=roomData.masterUid===uid;
-    $('roomInfo').classList.remove('hidden'); $('roomLabel').textContent=roomId;
+    $('roomInfo').classList.remove('hidden');
+    $('roomLabel').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
-    renderMap();renderPlayers();renderBattlefield();renderAbilities();setConnected(true);
+    renderPlayers();renderScene();renderCombat();setConnected(true);
     status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
-  },err=>{status('Ошибка чтения комнаты: '+err.message);});
-  unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{const v=snap.val()||{};renderFeed(Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,70));});
-  unsubBattle=onValue(ref(db,`rooms/${roomId}/battle`),()=>renderBattlefield());
+  },err=>status('Ошибка чтения: '+err.message));
+  unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{
+    const v=snap.val()||{};
+    renderFeed(Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,70));
+  });
 }
-async function addLog(text,name){ if(!roomId||!uid)return; await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()}); }
+async function addLog(text,name){if(!roomId||!uid)return;await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});}
 
 /* ---------- Комнаты ---------- */
 async function connectRoom(code){
-  if(!auth.currentUser) throw new Error('Авторизация ещё не готова. Подождите 1-2 секунды.');
+  if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
   roomId=code.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
-  if(roomId.length<5) throw new Error('Код комнаты минимум 5 символов.');
+  if(roomId.length<5)throw new Error('Код минимум 5 символов.');
   const snap=await get(ref(db,`rooms/${roomId}`));
-  if(!snap.exists()) throw new Error('Комната не найдена.');
+  if(!snap.exists())throw new Error('Комната не найдена.');
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now()});
   history.replaceState(null,'',`?room=${roomId}`);
-  startListeners(); await addLog('подключился',name);
+  startListeners();await addLog('подключился',name);
 }
 async function createRoom(){
-  if(!auth.currentUser) throw new Error('Авторизация ещё не готова. Подождите 1-2 секунды.');
+  if(!auth.currentUser)throw new Error('Авторизация не готова. Подождите.');
   const name=$('playerName').value.trim().slice(0,24)||'Мастер';
   roomId=Math.random().toString(36).slice(2,9).toUpperCase();
   await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
   history.replaceState(null,'',`?room=${roomId}`);
-  startListeners(); await addLog('создал комнату',name);
+  startListeners();await addLog('создал комнату. Приключение начинается!',name);
 }
 $('createRoom').onclick=()=>createRoom().catch(e=>status(e.message));
 $('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>status(e.message));
 
-/* ---------- Герой / зелье / отдых ---------- */
+/* ---------- Кнопки персонажа ---------- */
 $('pickHero').onclick=async()=>{
   if(!roomId||!uid)return;
   const name=$('playerName').value.trim().slice(0,24)||myPlayer?.name||'Игрок';
   const p=roomData.players||{};
   if(Object.values(p).some(x=>x.uid!==uid&&x.heroId===selected.id)){status('Герой занят.');return;}
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,heroId:selected.id,hp:selected.hp,maxHp:selected.hp,xp:0,level:1,gold:0,inventory:['🧪 Зелье лечения'],conditions:[],cooldowns:{},pos:{x:0,y:0}});
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,heroId:selected.id,hp:selected.hp,maxHp:selected.hp,xp:0,level:1,gold:0,inventory:['🧪 Зелье лечения'],conditions:[],cooldowns:{}});
   await addLog(`выбрал ${selected.name}`,name);
 };
 $('heal').onclick=async()=>{
-  const p=roomData?.players?.[uid]; if(!p?.heroId)return status('Сначала выберите персонажа.');
-  const h=heroes.find(x=>x.id===p.heroId); const maxHp=p.maxHp||h.hp;
-  if((p.hp??maxHp)>=maxHp)return status('Уже полное HP.');
-  const inv=p.inventory||[]; const idx=inv.findIndex(i=>i.includes('Зелье'));
+  const p=roomData?.players?.[uid];if(!p?.heroId)return status('Сначала выберите персонажа.');
+  const h=heroes.find(x=>x.id===p.heroId);const mx=p.maxHp||h.hp;
+  if((p.hp??mx)>=mx)return status('Уже полное HP.');
+  const inv=p.inventory||[];const idx=inv.findIndex(i=>i.includes('Зелье'));
   if(idx<0)return status('Нет зелий.');
-  const newInv=[...inv]; newInv.splice(idx,1);
-  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(maxHp,(p.hp??maxHp)+6),inventory:newInv});
+  const newInv=[...inv];newInv.splice(idx,1);
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+6),inventory:newInv});
   await addLog('использовал зелье (+6 HP)');
 };
 $('restBtn').onclick=async()=>{
   if(!isMaster)return;
   const ups={};
-  for(const p of Object.values(roomData.players||{})){ const h=heroes.find(x=>x.id===p.heroId); if(!h)continue;
-    ups[`${p.uid}/hp`]=p.maxHp||h.hp; ups[`${p.uid}/conditions`]=[]; ups[`${p.uid}/cooldowns`]={}; }
-  if(Object.keys(ups).length) await update(ref(db,`rooms/${roomId}/players`),ups);
-  await update(ref(db,`rooms/${roomId}/battle`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
-  await addLog('мастер объявил долгий отдых');
+  for(const p of Object.values(roomData.players||{})){
+    const h=heroes.find(x=>x.id===p.heroId);if(!h)continue;
+    ups[`${p.uid}/hp`]=p.maxHp||h.hp;ups[`${p.uid}/conditions`]=[];ups[`${p.uid}/cooldowns`]={};
+  }
+  if(Object.keys(ups).length)await update(ref(db,`rooms/${roomId}/players`),ups);
+  await update(ref(db,`rooms/${roomId}/combat`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await addLog('🔥 Мастер объявил долгий отдых');
 };
 
 /* ---------- Броски ---------- */
 $('roll').onclick=async()=>{
-  const p=roomData?.players?.[uid]; const h=heroes.find(x=>x.id===p?.heroId)||selected||heroes[0];
-  const mode=$('rollMode').value; const rolls=[Math.floor(Math.random()*20)+1];
-  if(mode!=='normal') rolls.push(Math.floor(Math.random()*20)+1);
+  const p=roomData?.players?.[uid];const h=heroes.find(x=>x.id===p?.heroId)||selected||heroes[0];
+  const mode=$('rollMode').value;const rolls=[rollDice(20)];
+  if(mode!=='normal')rolls.push(rollDice(20));
   const d=mode==='adv'?Math.max(...rolls):mode==='dis'?Math.min(...rolls):rolls[0];
   const baseBonus=$('checkType').value==='attack'?h.atk:Math.max(0,h.atk-1);
   const bonus=baseBonus+(Number($('bonusMod').value)||0);
-  const dc=Number($('dc').value), total=d+bonus;
+  const dc=Number($('dc').value),total=d+bonus;
   const outcome=d===20?'Крит!':d===1?'Натуральная 1!':total>=dc?'Успех!':'Неудача.';
   const txt=`🎲 ${$('checkType').selectedOptions[0].text}: d20(${rolls.join('/')}→${d}) + ${bonus} = ${total} vs ${dc}. ${outcome}`;
-  $('rollResult').textContent=txt; await addLog(txt);
+  $('rollResult').textContent=txt;await addLog(txt);
 };
-
-/* ---------- Исследование / локации ---------- */
-$('explore').onclick=async()=>{ const loc=Number(roomData?.game?.location||0); await addLog('исследует '+places[loc].name); };
-$('nextLocation').onclick=async()=>{ if(!isMaster)return; const old=Number(roomData?.game?.location||0),next=Math.min(places.length-1,old+1);
-  if(next===old){await addLog('финал!');return;} await update(ref(db,`rooms/${roomId}/game`),{location:next,notes:places[next].text}); await addLog('открыл '+places[next].name); };
 
 /* ---------- Чат / утилиты ---------- */
 $('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';await addLog(t);};
 $('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
 $('copyLink').onclick=async()=>{try{await navigator.clipboard.writeText($('inviteLink').value);status('Скопировано.',true);}catch{$('inviteLink').select();}};
-$('exportLog').onclick=async()=>{const s=await get(ref(db,`rooms/${roomId}/log`));const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='dnd.txt';a.click();};
-$('clearRoom').onclick=async()=>{if(!isMaster||!confirm('Сбросить?'))return;await update(ref(db,`rooms/${roomId}/game`),{location:0,notes:places[0].text});await update(ref(db,`rooms/${roomId}/battle`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});await set(ref(db,`rooms/${roomId}/log`),null);await addLog('начал заново');};
-
-/* ---------- Бой ---------- */
-const rollDice=s=>Math.floor(Math.random()*s)+1;
-const rollDamage=(c,s,b)=>{let t=0;for(let i=0;i<c;i++)t+=rollDice(s);return t+b;};
-
-$('startBattle').onclick=async()=>{
-  if(!isMaster)return; const players=roomData.players||{}; const order=[];
-  for(const p of Object.values(players)){ if(!p.heroId)continue; const h=heroes.find(x=>x.id===p.heroId); order.push({uid:p.uid,init:rollDice(20)+h.atk}); }
-  order.sort((a,b)=>b.init-a.init); const ups={}; let i=0;
-  for(const o of order){ ups[`${o.uid}/pos`]={x:i%GRID_W,y:Math.floor(i/GRID_W)}; ups[`${o.uid}/conditions`]=[]; i++; }
-  if(Object.keys(ups).length) await update(ref(db,`rooms/${roomId}/players`),ups);
-  await update(ref(db,`rooms/${roomId}/battle`),{active:true,round:1,turnIndex:0,order:order.map(o=>o.uid),enemies:{}});
-  await addLog('⚔️ Бой! Инициатива: '+order.map(o=>players[o.uid].name+'('+o.init+')').join(', '));
+$('exportLog').onclick=async()=>{
+  const s=await get(ref(db,`rooms/${roomId}/log`));
+  const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='dnd-zhurnal.txt';a.click();
 };
-$('spawnEnemy').onclick=async()=>{
-  if(!isMaster)return;
-  const tId=prompt('Тип: goblin, wolf, bandit, troll, dragon','goblin');
-  const t=enemyTypes.find(x=>x.id===tId)||enemyTypes[0];
-  const eid='e'+Date.now().toString(36);
-  const occ=new Set();
-  for(const p of Object.values(roomData.players||{})){const pos=p.pos||{x:0,y:0};occ.add(pos.x+','+pos.y);}
-  for(const e of Object.values(roomData?.battle?.enemies||{})){if(e.pos&&!e.dead)occ.add(e.pos.x+','+e.pos.y);}
-  let pos=null; for(let y=0;y<GRID_H;y++){for(let x=0;x<GRID_W;x++){if(!occ.has(x+','+y)){pos={x,y};break;}}if(pos)break;} if(!pos)pos={x:GRID_W-1,y:GRID_H-1};
-  await update(ref(db,`rooms/${roomId}/battle/enemies/${eid}`),{id:eid,name:t.name,emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,pos,dead:false});
-  await addLog(`👹 ${t.emoji} ${t.name} появился`);
+$('clearRoom').onclick=async()=>{
+  if(!isMaster||!confirm('Сбросить приключение?'))return;
+  await update(ref(db,`rooms/${roomId}/game`),{scene:'village',sceneText:scenes.village.text});
+  await update(ref(db,`rooms/${roomId}/combat`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await set(ref(db,`rooms/${roomId}/log`),null);
+  await addLog('Мастер начал приключение заново');
 };
-$('endTurn').onclick=async()=>{
-  const b=roomData.battle; if(!b?.active)return;
-  let idx=(b.turnIndex+1)%b.order.length, round=b.round; if(idx===0)round++;
-  await update(ref(db,`rooms/${roomId}/battle`),{turnIndex:idx,round});
-  for(const e of Object.values(b.enemies||{})){ if(e.dead)continue;
-    const alive=Object.values(roomData.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
-    if(!alive.length)break;
-    const target=alive[Math.floor(Math.random()*alive.length)];
-    const h=heroes.find(x=>x.id===target.heroId); if(!h)continue;
-    const d=rollDice(20)+e.atk;
-    if(d>=h.ac){ const dmg=rollDamage(1,6,e.atk); const nh=Math.max(0,(target.hp??h.hp)-dmg);
-      await update(ref(db,`rooms/${roomId}/players/${target.uid}`),{hp:nh});
-      await addLog(`👹 ${e.name} бьёт ${target.name}: ${dmg} урона (${nh} HP)`);
-    } else { await addLog(`👹 ${e.name} промахнулся по ${target.name}`); }
-  }
-  await addLog(`⏭️ Ход → ${roomData.players[b.order[idx]]?.name||'?'} (раунд ${round})`);
-};
-
-/* ---------- Способности ---------- */
-async function useAbility(aid){
-  const p=roomData?.players?.[uid]; if(!p?.heroId)return status('Выберите персонажа.');
-  if(!roomData.battle?.active)return status('Только в бою.');
-  const h=heroes.find(x=>x.id===p.heroId); const ab=h.abilities.find(a=>a.id===aid); if(!ab)return;
-  const cd=p.cooldowns?.[aid]||0; if(cd>0)return status('Кулдаун.');
-  if(!selectedCell)return status('Выберите клетку.');
-  let tEnemy=null,tPlayer=null;
-  for(const e of Object.values(roomData.battle.enemies||{})) if(!e.dead&&e.pos?.x===selectedCell.x&&e.pos?.y===selectedCell.y){tEnemy=e;break;}
-  for(const pl of Object.values(roomData.players||{})) if(pl.uid!==uid&&pl.pos?.x===selectedCell.x&&pl.pos?.y===selectedCell.y){tPlayer=pl;break;}
-  const enemies=Object.values(roomData.battle.enemies||{}).filter(e=>!e.dead);
-  try{
-    if(ab.type==='attack'){ if(!tEnemy)return status('Нужен враг.'); let dmg=ab.id==='fireball'?rollDamage(2,6,0):ab.id==='sneak'?rollDamage(1,6,h.atk)+rollDamage(2,6,0):rollDamage(1,6,h.atk);
-      await attackEnemy(tEnemy.id,dmg,ab.name); }
-    else if(ab.type==='aoe'){ const ts=enemies.filter(e=>Math.abs(e.pos.x-selectedCell.x)<=1&&Math.abs(e.pos.y-selectedCell.y)<=1); if(!ts.length)return status('Нет врагов рядом.'); for(const t of ts) await attackEnemy(t.id,rollDamage(1,6,h.atk),ab.name); }
-    else if(ab.type==='multi'){ const ts=enemies.slice(0,2); for(const t of ts) await attackEnemy(t.id,rollDamage(1,6,h.atk),ab.name); }
-    else if(ab.type==='heal'){ const ally=tPlayer||p; const ah=heroes.find(x=>x.id===ally.heroId); const mx=ally.maxHp||ah?.hp||10; const heal=rollDamage(1,8,0); const nh=Math.min(mx,(ally.hp??mx)+heal); await update(ref(db,`rooms/${roomId}/players/${ally.uid}`),{hp:nh}); await addLog(`✨ ${h.name} лечит ${ally.name}: +${heal} (${nh}/${mx})`); }
-    else if(ab.type==='buff'){ const mx=p.maxHp||h.hp; await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(mx,(p.hp??mx)+3)}); await addLog(`🛡️ ${h.name}: ${ab.name}`); }
-    else if(ab.type==='stun'){ if(!tEnemy)return status('Нужен враг.'); await addLog(`💫 ${tEnemy.name} оглушён`); }
-    else if(ab.type==='poison'){ if(!tEnemy)return status('Нужен враг.'); await attackEnemy(tEnemy.id,rollDamage(1,6,h.atk),ab.name); }
-    await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[aid]:ab.cd});
-    renderAbilities();
-  }catch(e){ status('Ошибка способности: '+e.message); }
-}
-async function attackEnemy(eid,dmg,label){
-  const e=roomData.battle?.enemies?.[eid]; if(!e||e.dead)return;
-  const nh=Math.max(0,e.hp-dmg); const dead=nh<=0;
-  await update(ref(db,`rooms/${roomId}/battle/enemies/${eid}`),{hp:nh,dead});
-  await addLog(`${label}: ${dmg} урона ${e.name} (${nh}/${e.maxHp})`);
-  if(dead){ const p=roomData.players[uid]; if(p){ await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:(p.xp||0)+e.xp,gold:(p.gold||0)+e.gold}); await addLog(`🎉 ${e.name} повержен! +${e.xp} XP, +${e.gold} 💰`); } }
-}
 
 /* ---------- Старт ---------- */
 selected=heroes[0];
-renderHeroes();renderMap();renderBattlefield();
+renderHeroes();
 status('Введите имя и создайте комнату.');
 </script>
 </body>
