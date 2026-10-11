@@ -158,11 +158,73 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .quest-result.win{background:rgba(74,222,128,.15);border:1px solid var(--green);color:var(--green);}
 .quest-result.lose{background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);}
 
+/* ИТОГИ БУНКЕРА */
+.final-panel{
+  background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);
+  border:2px solid var(--gold);
+  border-radius:16px;
+  padding:26px;
+  margin-top:14px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 40px rgba(240,184,74,.15), inset 0 0 80px rgba(0,0,0,.5);
+}
+.final-panel::before{
+  content:'☢';
+  position:absolute;
+  top:-30px;right:-20px;
+  font-size:220px;
+  color:var(--gold);
+  opacity:.04;
+  pointer-events:none;
+}
+.final-title{font-size:1.6rem;font-weight:800;text-align:center;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+.final-subtitle{text-align:center;color:var(--muted);font-style:italic;margin-bottom:20px;}
+.final-verdict{text-align:center;font-size:1.3rem;font-weight:800;letter-spacing:1px;padding:18px;border-radius:12px;margin-bottom:20px;}
+.final-verdict.win{background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.05));border:2px solid var(--green);color:var(--green);text-shadow:0 0 20px rgba(74,222,128,.5);}
+.final-verdict.warn{background:linear-gradient(135deg,rgba(251,146,60,.2),rgba(251,146,60,.05));border:2px solid var(--orange);color:var(--orange);}
+.final-verdict.lose{background:linear-gradient(135deg,rgba(248,113,113,.2),rgba(248,113,113,.05));border:2px solid var(--red);color:var(--red);text-shadow:0 0 20px rgba(248,113,113,.5);}
+.final-section{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:14px;}
+.final-section h3{margin:0 0 12px;font-size:.95rem;font-weight:700;color:var(--text);letter-spacing:.5px;}
+.final-section .mono{font-family:'JetBrains Mono',monospace;color:var(--gold);}
+.res-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.88rem;}
+.res-label{flex:0 0 160px;color:var(--muted);}
+.res-bar{flex:1;height:10px;background:rgba(0,0,0,.4);border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.res-bar i{display:block;height:100%;transition:.4s;}
+.res-val{flex:0 0 30px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.final-winners{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.final-winner{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--gold);border-radius:11px;padding:14px;}
+.fw-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border2);}
+.fw-emoji{font-size:2rem;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:10px;border:1px solid var(--border2);flex-shrink:0;}
+.fw-header h4{margin:0;font-size:1rem;color:var(--gold);}
+.fw-header p{margin:0;}
+.fw-traits{font-size:.82rem;line-height:1.6;color:var(--muted);}
+.fw-traits b{color:var(--text);}
+.dead-list{display:flex;flex-wrap:wrap;gap:8px;}
+.dead-chip{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);padding:5px 11px;border-radius:20px;font-size:.85rem;font-weight:600;}
+.final-restart{text-align:center;border-style:dashed;}
+
+.final-winner.can-repro{border-color:var(--green);box-shadow:0 0 20px rgba(74,222,128,.15);}
+.final-winner.no-repro{border-color:var(--red);opacity:.85;}
+.fw-repro{font-size:.85rem;font-weight:700;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--border2);}
+.can-repro .fw-repro{color:var(--green);}
+.no-repro .fw-repro{color:var(--red);}
+
+.verdict-reason{font-size:.85rem;font-weight:400;margin:8px 0 0;opacity:.9;font-style:italic;}
+
+.pair-check{display:flex;flex-direction:column;gap:8px;}
+.pair-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:.9rem;font-weight:600;}
+.pair-item.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
+.pair-icon{font-size:1.1rem;}
+
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:16px 12px 40px;}
   .traits,.pick-grid,.reveal-grid{grid-template-columns:1fr 1fr;}
   .player-traits{grid-template-columns:1fr;}
   .scenario-stats{grid-template-columns:1fr;}
+  .final-winners{grid-template-columns:1fr;}
+  .res-label{flex-basis:110px;}
 }
 @media(max-width:520px){.reveal-grid{grid-template-columns:1fr;}}
 </style>
@@ -345,7 +407,7 @@ onAuthStateChanged(auth,user=>{
   if(code){$('roomCode').value=code;connectRoom(code).catch(e=>setStatus(e.message,false));}
 });
 
-/* ---------- ДАННЫЕ (полностью как в прошлой версии) ---------- */
+/* ---------- ДАННЫЕ ---------- */
 const professions = [
   {id:'doctor',name:'Врач',emoji:'⚕️',bonus:'лечит болезни',tags:['medic','smart']},
   {id:'engineer',name:'Инженер',emoji:'🔧',bonus:'чинит оборудование',tags:['tech','smart']},
@@ -571,13 +633,38 @@ function prepareQuest(player){
   return {questId:q.id,title:q.title,text:q.text,hint:q.hint,requiredTags:q.requiredTags,matchedTags:matched,matchCount,chance,playerUid:player.uid,playerName:player.name};
 }
 
+/* ---------- ПРОВЕРКА ПАРЫ ---------- */
+function getSex(ch){
+  const bio=ch?.biology?.id||'';
+  if(bio.startsWith('m'))return 'M';
+  if(bio.startsWith('w'))return 'W';
+  return '?';
+}
+function canReproduce(ch){
+  if(!ch)return false;
+  const bio=ch.biology?.id||'';
+  const healthId=ch.health?.id||'';
+  const ageMatch=bio.match(/\d+/);
+  const age=ageMatch?parseInt(ageMatch[0]):30;
+  const isWoman=bio.startsWith('w');
+  const isMan=bio.startsWith('m');
+  if(!isWoman&&!isMan)return false;
+  if(isWoman&&age>50)return false;
+  if(isMan&&age>60)return false;
+  if(age<16)return false;
+  // Исключаем тяжёлые болезни (бесплодие)
+  const infertile=['h3','h4','h6','h7','h9','h10','h11','h13','h15','h16'];
+  if(infertile.includes(healthId))return false;
+  return true;
+}
+
 /* ---------- КОМНАТА ---------- */
 function defaultRoom(hostUid,name){
   return {
     createdAt:Date.now(),hostUid,
     players:{[hostUid]:{uid:hostUid,name,joinedAt:Date.now(),isHost:true,kicked:false,character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null}},
     turn:{order:[],turnIndex:0,phase:'lobby',round:0},
-    bunker:{capacity:0,started:false,finished:false,winners:[]},
+    bunker:{capacity:2,started:false,finished:false,winners:[]},
     votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false},
     quest:{active:false,data:null,finished:false,result:null}
   };
@@ -640,7 +727,6 @@ function bindGlobalClicks(){
 function handlePickClick(el){
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
-  // защита: если уже выбрал — игнор
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
   const idx=Number(el.dataset.idx);
   const p=me.pickOptions[idx];
@@ -656,7 +742,6 @@ function renderLobby(){
 function renderPick(){
   const me=roomData?.players?.[uid];
   const pc=$('pickCard');
-  // НЕ показываем, если персонаж уже выбран, или это мастер, или фаза не pick
   if(!me||me.isHost||me.character||roomData.turn?.phase!=='pick'){
     pc.style.display='none';return;
   }
@@ -679,7 +764,6 @@ function renderPick(){
   const cur=myPickedProfession!==null?me.pickOptions[myPickedProfession]:null;
   const tn=collectTakenIds(roomData.players);
   $('confirmPick').disabled=!(cur&&!tn.profession.includes(cur.id));
-  // переброс доступен только один раз и только до подтверждения
   $('rerollPick').disabled=me.rerolled;
 }
 function renderMyChar(){
@@ -740,7 +824,7 @@ function renderMyChar(){
 function renderScenario(){
   const ps=Object.values(roomData?.players||{}).filter(p=>!p.isHost);
   const n=ps.length||2;
-  const capacity=Math.max(1,n-2);
+  const capacity=2;
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
   const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
@@ -748,12 +832,14 @@ function renderScenario(){
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
       <div class="scenario-title">☢ Ядерная война · день 1</div>
-      <div class="scenario-text">Снаружи — радиация, мародёры и смерть. Внутри — бункер, который выдержит 10 лет.
-Но места хватит только на <b>${capacity}</b>. Вас — <b>${n}</b>.
+      <div class="scenario-text">Снаружи — радиация, мародёры и смерть. Внутри — бункер на <b>2 места</b>.
+Вас — <b>${n}</b>.
 
-Раскрывайте характеристики, договаривайтесь и голосуйте, кто пойдёт на смертельно опасный квест.</div>
+Чтобы человечество выжило, в бункере должны остаться <b>мужчина и женщина</b>, способные иметь детей. Иначе — конец.
+
+Раскрывайте характеристики и голосуйте. Каждый голос решает судьбу.</div>
       <div class="scenario-stats">
-        <div class="stat"><b>${capacity}</b><span>мест</span></div>
+        <div class="stat"><b>2</b><span>места</span></div>
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
         <div class="stat"><b>10 лет</b><span>изоляции</span></div>
       </div>
@@ -879,8 +965,127 @@ function renderVote(){
     <div class="small muted" style="margin-top:10px;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length}${myVote?' · ваш голос отдан':''}</div>
   `;
 }
+
+/* ---------- ИТОГИ ---------- */
+function calcBunkerOutcome(winners){
+  const tags={};
+  for(const w of winners){
+    const ch=w.character;
+    if(!ch)continue;
+    const addTags = (obj) => { if(obj?.tags) obj.tags.forEach(t=>tags[t]=(tags[t]||0)+1); };
+    addTags(ch.profession);
+    addTags(ch.biology);
+    addTags(ch.health);
+    addTags(ch.hobby);
+    addTags(ch.phobia);
+    addTags(ch.special);
+    if(Array.isArray(ch.inventory)) ch.inventory.forEach(i=>addTags(i));
+  }
+  const resources = {
+    '🍞 Еда': (tags.food||0),
+    '💊 Медицина': (tags.medic||0),
+    '🔧 Техника/ремонт': (tags.tech||0)+(tags.craft||0),
+    '⚔️ Боевая мощь': (tags.combat||0)+(tags.strong||0),
+    '🧭 Выживание': (tags.survival||0),
+    '💬 Социальные': (tags.social||0),
+    '🧠 Интеллект': (tags.smart||0),
+    '💪 Здоровье': (tags.healthy||0)
+  };
+  const problems = {
+    '🤢 Больные': (tags.sick||0),
+    '😱 Фобии': (tags.fear||0)
+  };
+
+  const men = winners.filter(w=>getSex(w.character)==='M');
+  const women = winners.filter(w=>getSex(w.character)==='W');
+  const menCanRepro = men.filter(w=>canReproduce(w.character));
+  const womenCanRepro = women.filter(w=>canReproduce(w.character));
+
+  const hasMan = menCanRepro.length>0;
+  const hasWoman = womenCanRepro.length>0;
+  const exactlyTwo = winners.length===2;
+  const canContinue = exactlyTwo && hasMan && hasWoman;
+
+  let score=0;
+  score += Math.min(resources['🍞 Еда'],3)*4;
+  score += Math.min(resources['💊 Медицина'],3)*4;
+  score += Math.min(resources['🔧 Техника/ремонт'],3)*3;
+  score += Math.min(resources['⚔️ Боевая мощь'],3)*3;
+  score += Math.min(resources['🧭 Выживание'],3)*3;
+  score += Math.min(resources['💬 Социальные'],3)*2;
+  score += Math.min(resources['🧠 Интеллект'],3)*2;
+  score -= problems['🤢 Больные']*2;
+  score -= problems['😱 Фобии']*1;
+
+  let verdict, verdictType, reason;
+  if(!exactlyTwo){
+    verdict='💀 БУНКЕР НЕ ЖИЗНЕСПОСОБЕН';
+    verdictType='lose';
+    reason=`В бункере ${winners.length} человек. Для выживания нужно ровно 2 — мужчина и женщина.`;
+  } else if(!hasMan && !hasWoman){
+    verdict='💀 ЧЕЛОВЕЧЕСТВО ОБРЕЧЕНО';
+    verdictType='lose';
+    reason='В бункере нет мужчины и женщины, способных к потомству.';
+  } else if(!hasMan){
+    verdict='💀 НЕТ МУЖЧИНЫ';
+    verdictType='lose';
+    reason='В бункере нет мужчины, способного к потомству. Род прервётся.';
+  } else if(!hasWoman){
+    verdict='💀 НЕТ ЖЕНЩИНЫ';
+    verdictType='lose';
+    reason='В бункере нет женщины, способной к потомству. Род прервётся.';
+  } else if(score>=40){
+    verdict='🏆 БУНКЕР ВЫЖИВЕТ!';
+    verdictType='win';
+    reason='Мужчина и женщина способны к потомству. Ресурсов хватает на 10 лет.';
+  } else if(score>=20){
+    verdict='⚠️ НА ГРАНИ, НО ЕСТЬ ШАНС';
+    verdictType='warn';
+    reason='Пара способна к потомству, но ресурсов мало. Первые годы будут тяжёлыми.';
+  } else {
+    verdict='😰 ВЫЖИВУТ, НО ТЯЖЕЛО';
+    verdictType='warn';
+    reason='Пара есть, но без еды, медицины и инструментов. Выживание под вопросом.';
+  }
+
+  return {
+    score: Math.round(score),
+    verdict, verdictType, reason,
+    resources, problems,
+    hasMan, hasWoman, exactlyTwo, canContinue,
+    menNames: men.map(w=>w.name),
+    womenNames: women.map(w=>w.name),
+    winners: winners.map(w=>({
+      uid:w.uid,
+      name:w.name,
+      character:w.character,
+      sex:getSex(w.character),
+      canRepro:canReproduce(w.character)
+    }))
+  };
+}
+async function finalizeGame(alive, allPlayers){
+  const dead = allPlayers.filter(p=>p.kicked);
+  const outcome = calcBunkerOutcome(alive);
+  const finalData = {
+    finished:true,
+    capacity: 2,
+    winners: alive.map(p=>({uid:p.uid,name:p.name})),
+    dead: dead.map(p=>({uid:p.uid,name:p.name})),
+    outcome
+  };
+  await update(ref(db,`rooms/${roomId}/bunker`),{
+    started:true, finished:true, winners:finalData.winners, outcome
+  });
+  await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
+}
+
 function renderQuest(){
   const el=$('questContainer');
+  if(roomData?.turn?.phase==='finished'){
+    renderFinalSummary(el);
+    return;
+  }
   const q=roomData?.quest;
   if(!q?.active&&!q?.finished){el.innerHTML='';return;}
   const d=q.data;
@@ -909,6 +1114,125 @@ function renderQuest(){
     </div>`;
 }
 
+function renderFinalSummary(el){
+  const b=roomData?.bunker;
+  if(!b?.outcome){
+    el.innerHTML=`<div class="final-panel"><div class="final-title">🏆 Игра окончена</div><p class="muted">Итоги не рассчитаны.</p></div>`;
+    return;
+  }
+  const o=b.outcome;
+
+  const winnersHtml = o.winners.map(w=>{
+    const ch=w.character;
+    if(!ch){
+      return `<div class="final-winner"><h4>${esc(w.name)}</h4><p class="muted small">Нет данных</p></div>`;
+    }
+    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
+    const sexLabel=w.sex==='M'?'♂️ Мужчина':w.sex==='W'?'♀️ Женщина':'—';
+    const reproLabel=w.canRepro?'✅ способен(на) к потомству':'❌ не способен(на) к потомству';
+    return `<div class="final-winner ${w.canRepro?'can-repro':'no-repro'}">
+      <div class="fw-header">
+        <span class="fw-emoji">${ch.profession.emoji}</span>
+        <div>
+          <h4>${esc(w.name)}</h4>
+          <p class="muted small">${sexLabel} · ${esc(ch.biology.text)}</p>
+        </div>
+      </div>
+      <div class="fw-repro">${reproLabel}</div>
+      <div class="fw-traits">
+        <div><b>💼 Профессия:</b> ${esc(ch.profession.name)}</div>
+        <div><b>❤️ Здоровье:</b> ${esc(ch.health.text)}</div>
+        <div><b>🎯 Хобби:</b> ${esc(ch.hobby.text)}</div>
+        <div><b>😱 Фобия:</b> ${esc(ch.phobia.text)}</div>
+        <div><b>🎒 Багаж:</b> ${esc(invText)}</div>
+        <div><b>⭐ Спец:</b> ${esc(ch.special.text)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const resourcesHtml = Object.entries(o.resources).map(([k,v])=>{
+    const bar=Math.min(100,v*25);
+    const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--red)';
+    return `<div class="res-row">
+      <span class="res-label">${k}</span>
+      <div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div>
+      <span class="res-val" style="color:${color}">${v}</span>
+    </div>`;
+  }).join('');
+
+  const problemsHtml = Object.entries(o.problems).filter(([k,v])=>v>0).map(([k,v])=>
+    `<div class="res-row">
+      <span class="res-label">${k}</span>
+      <div class="res-bar"><i style="width:${Math.min(100,v*25)}%;background:var(--red)"></i></div>
+      <span class="res-val" style="color:var(--red)">${v}</span>
+    </div>`
+  ).join('') || '<p class="muted small">Проблем нет — отличная команда!</p>';
+
+  const deadHtml = (b.dead||[]).length
+    ? b.dead.map(p=>`<span class="dead-chip">💀 ${esc(p.name)}</span>`).join('')
+    : '<span class="muted small">Никто не погиб.</span>';
+
+  const pairCheck = `
+    <div class="pair-check">
+      <div class="pair-item ${o.exactlyTwo?'ok':'bad'}">
+        <span class="pair-icon">${o.exactlyTwo?'✅':'❌'}</span>
+        <span>Ровно 2 выживших (сейчас: ${o.winners.length})</span>
+      </div>
+      <div class="pair-item ${o.hasMan?'ok':'bad'}">
+        <span class="pair-icon">${o.hasMan?'✅':'❌'}</span>
+        <span>Мужчина, способный к потомству</span>
+      </div>
+      <div class="pair-item ${o.hasWoman?'ok':'bad'}">
+        <span class="pair-icon">${o.hasWoman?'✅':'❌'}</span>
+        <span>Женщина, способная к потомству</span>
+      </div>
+    </div>`;
+
+  const verdictClass = o.verdictType==='win'?'win':o.verdictType==='lose'?'lose':'warn';
+
+  el.innerHTML=`
+    <div class="final-panel">
+      <div class="final-title">☢ ИТОГИ БУНКЕРА</div>
+      <div class="final-subtitle">Сможет ли человечество продолжиться?</div>
+
+      <div class="final-verdict ${verdictClass}">
+        ${o.verdict}
+        <p class="verdict-reason">${esc(o.reason)}</p>
+      </div>
+
+      <div class="final-section">
+        <h3>🧬 Проверка пары</h3>
+        ${pairCheck}
+      </div>
+
+      <div class="final-section">
+        <h3>🛠️ Ресурсы бункера · счёт ${o.score}</h3>
+        ${resourcesHtml}
+      </div>
+
+      ${Object.values(o.problems).some(v=>v>0)?`
+      <div class="final-section">
+        <h3>⚠️ Проблемы</h3>
+        ${problemsHtml}
+      </div>`:''}
+
+      <div class="final-section">
+        <h3>✅ Выжившие (${o.winners.length})</h3>
+        <div class="final-winners">${winnersHtml}</div>
+      </div>
+
+      <div class="final-section">
+        <h3>💀 Погибшие</h3>
+        <div class="dead-list">${deadHtml}</div>
+      </div>
+
+      <div class="final-section final-restart">
+        <p class="muted small">Ведущий может нажать «🔄 Сброс», чтобы начать новую игру.</p>
+      </div>
+    </div>
+  `;
+}
+
 /* ---------- КОМНАТА ---------- */
 async function createRoom(){
   if(!auth.currentUser)throw new Error('Подождите авторизацию');
@@ -934,10 +1258,8 @@ async function connectRoom(code){
   const playerCount=Object.values(players).filter(p=>!p.isHost).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
 
-  // ✅ Если игрок уже был в комнате — НЕ сбрасываем персонажа
   const existing=players[uid];
   if(existing){
-    // он возвращается — просто обновляем имя (если поменял) и сохраняем всё остальное
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{name,joinedAt:Date.now()});
   } else {
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{
@@ -960,11 +1282,10 @@ $('copyLink').onclick=async()=>{
   catch{$('inviteLink').select();}
 };
 
-/* ---------- ВЫБОР ПРОФЕССИИ (только один раз) ---------- */
+/* ---------- ВЫБОР ПРОФЕССИИ ---------- */
 $('confirmPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
-  // ✅ защита: если уже есть персонаж — выходим
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
   if(myPickedProfession===null)return;
   const prof=me.pickOptions[myPickedProfession];
@@ -973,7 +1294,6 @@ $('confirmPick').onclick=async()=>{
   const rest=generateRest(roomData.players);
   const character={profession:prof,...rest};
   const revealed={profession:false,biology:false,health:false,hobby:false,phobia:false,inventory:false,special:false};
-  // ✅ одним set-ом фиксируем и стираем pickOptions — вернуться нельзя
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     character,pickedProfession:prof.name,revealed,pickOptions:null
   });
@@ -981,7 +1301,6 @@ $('confirmPick').onclick=async()=>{
 $('rerollPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||me.rerolled)return;
-  // ✅ защита: если уже выбрал — нельзя перебрасывать
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
   const taken=collectTakenIds(roomData.players);
   const opts=threeProfessions(taken.profession);
@@ -1004,7 +1323,6 @@ async function doReveal(key){
     if(!me?.character)return;
     if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
 
-    // ✅ set для примитива (не update!)
     await set(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
 
     const aliveOrder=t.order.filter(u=>fresh.players?.[u]&&!fresh.players[u].kicked);
@@ -1050,7 +1368,6 @@ async function doVote(targetUid){
     if(!me||me.kicked)return;
     if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
     myVote=targetUid;
-    // ✅ set для примитива
     await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
     const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
     const votes=snap2.val()||{};
@@ -1083,23 +1400,22 @@ async function finishVote(){
     await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
+
   if(v.kick){
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
     const psSnap=await get(ref(db,`rooms/${roomId}/players`));
     const all=psSnap.val()||{};
     const players=Object.values(all).filter(p=>!p.isHost);
     const alive=players.filter(p=>!p.kicked);
-    const capacity=Math.max(1,players.length-2);
-    if(alive.length<=capacity){
-      const winners=alive.map(p=>({uid:p.uid,name:p.name,profession:p.character?.profession?.name||'—'}));
-      await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:true,winners});
-      await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
+    if(alive.length<=2){
+      await finalizeGame(alive, players);
       return;
     }
     const newOrder=alive.map(p=>p.uid);
     await update(ref(db,`rooms/${roomId}/turn`),{order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
+
   const player=roomData.players[maxUid];
   const questData=prepareQuest(player);
   if(!questData){
@@ -1118,9 +1434,8 @@ $('startGameBtn').onclick=async()=>{
   if(ps.length<2)return setStatus('Нужно минимум 2 игрока',false);
   if(ps.length>12)return setStatus('Максимум 12 игроков',false);
   const order=ps.map(p=>p.uid);
-  const capacity=Math.max(1,ps.length-2);
   await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:1});
-  await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:false,winners:[]});
+  await update(ref(db,`rooms/${roomId}/bunker`),{capacity:2,started:true,finished:false,winners:[]});
 };
 $('beginRevealBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1154,11 +1469,8 @@ $('openResultBtn').onclick=async()=>{
   const all=psSnap.val()||{};
   const players=Object.values(all).filter(p=>!p.isHost);
   const alive=players.filter(p=>!p.kicked);
-  const capacity=Math.max(1,players.length-2);
-  if(alive.length<=capacity){
-    const winners=alive.map(p=>({uid:p.uid,name:p.name,profession:p.character?.profession?.name||'—'}));
-    await update(ref(db,`rooms/${roomId}/bunker`),{capacity,started:true,finished:true,winners});
-    await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
+  if(alive.length<=2){
+    await finalizeGame(alive, players);
     return;
   }
   await update(ref(db,`rooms/${roomId}/turn`),{order:alive.map(p=>p.uid),turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
@@ -1189,6 +1501,8 @@ $('resetGameBtn').onclick=async()=>{
   updates['bunker/started']=false;
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
+  updates['bunker/outcome']=null;
+  updates['bunker/capacity']=2;
   updates['votes/active']=false;
   updates['votes/votes']={};
   updates['votes/finished']=false;
