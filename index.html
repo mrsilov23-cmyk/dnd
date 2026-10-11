@@ -42,7 +42,6 @@ main{max-width:1320px;margin:0 auto;padding:24px 20px 60px;display:grid;grid-tem
 .badge.gold{background:rgba(240,184,74,.15);color:var(--gold);border-color:rgba(240,184,74,.3);}
 .badge.red{background:rgba(248,113,113,.15);color:var(--red);border-color:rgba(248,113,113,.3);}
 .badge.green{background:rgba(74,222,128,.15);color:var(--green);border-color:rgba(74,222,128,.3);}
-
 label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;}
 input,select,button{font:inherit;border-radius:10px;border:1px solid var(--border2);padding:11px 14px;outline:none;transition:.15s;}
 input,select{background:var(--bg2);color:var(--text);width:100%;font-size:.95rem;}
@@ -67,10 +66,8 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .status-box.success{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:var(--green);}
 .status-box.error{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red);}
 .status-box.warn{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);color:var(--orange);}
-
 #debugBar{position:fixed;bottom:8px;right:8px;max-width:480px;z-index:999;background:rgba(0,0,0,.9);color:#fff;font-family:monospace;font-size:11px;padding:8px 12px;border-radius:8px;border:1px solid var(--red);display:none;white-space:pre-wrap;}
 #debugBar.show{display:block;}
-
 .scenario{background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
 .scenario::after{content:'☢';position:absolute;top:-20px;right:-10px;font-size:110px;color:var(--orange);opacity:.06;pointer-events:none;}
 .scenario-title{font-weight:800;color:var(--orange);font-size:1.05rem;letter-spacing:.5px;margin-bottom:8px;}
@@ -79,12 +76,10 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .stat{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:8px;padding:10px;text-align:center;}
 .stat b{display:block;color:var(--orange);font-size:1.25rem;font-family:'JetBrains Mono',monospace;}
 .stat span{color:var(--muted);font-size:.75rem;}
-
 .char-header{display:flex;align-items:center;gap:14px;padding:14px;background:linear-gradient(135deg,var(--card2),var(--bg2));border-radius:12px;margin-bottom:14px;border:1px solid var(--border2);}
 .char-avatar{font-size:2.8rem;width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:12px;border:1px solid var(--border2);flex-shrink:0;}
 .char-info h3{margin:0;font-size:1.05rem;font-weight:700;}
 .char-info p{margin:2px 0 0;color:var(--muted);font-size:.85rem;}
-
 .traits{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .trait{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:11px 13px;position:relative;overflow:hidden;}
 .trait.revealed{background:linear-gradient(135deg,rgba(240,184,74,.06),var(--bg2));border-color:rgba(240,184,74,.3);}
@@ -92,7 +87,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .trait-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:6px;}
 .trait-label .open-mark{color:var(--green);font-size:.85rem;}
 .trait-value{color:var(--text);font-size:.9rem;line-height:1.4;}
-
 .reveal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
 .reveal-btn{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-weight:600;font-size:.88rem;text-transform:none;letter-spacing:0;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;font-family:inherit;}
 .reveal-btn:hover:not(:disabled){border-color:var(--gold);background:linear-gradient(160deg,rgba(240,184,74,.1),var(--bg2));}
@@ -100,7 +94,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .reveal-btn.already{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.3);color:var(--green);}
 .reveal-btn .icon{font-size:1.1rem;}
 .reveal-btn .label{flex:1;text-align:left;}
-
 .pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
 .pick-card{background:linear-gradient(160deg,var(--card2),var(--bg2));border:2px solid var(--border2);border-radius:12px;padding:18px 14px;text-align:center;cursor:pointer;transition:.2s;position:relative;}
 .pick-card:hover{border-color:var(--gold);transform:translateY(-3px);}
@@ -110,7 +103,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .pick-card .emoji{font-size:2.4rem;display:block;margin-bottom:8px;}
 .pick-card .name{font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px;}
 .pick-card .bonus{color:var(--muted);font-size:.8rem;}
-
 .players-list{display:flex;flex-direction:column;gap:10px;}
 .player{background:var(--bg2);border:1px solid var(--border2);border-radius:11px;padding:12px 14px;position:relative;}
 .player.turn{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,184,74,.15);background:linear-gradient(135deg,rgba(240,184,74,.08),var(--bg2));}
@@ -125,7 +117,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .player-traits .pt{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .player-traits .pt b{color:var(--text);font-weight:500;}
 .player-traits .pt.locked b{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
-
 .vote-info{background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));border:1px solid rgba(248,113,113,.3);border-radius:11px;padding:14px;margin-bottom:12px;}
 .vote-info h3{margin:0 0 4px;color:var(--red);font-size:.95rem;}
 .vote-info p{margin:0;color:var(--muted);font-size:.85rem;}
@@ -135,14 +126,12 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .vote-btn.chosen{border-color:var(--red);background:rgba(248,113,113,.1);}
 .vote-btn.self{opacity:.5;cursor:not-allowed;}
 .vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.9rem;}
-
 .turn-banner{padding:14px 18px;border-radius:12px;background:var(--card2);border:1px solid var(--border2);text-align:center;margin-bottom:14px;}
 .turn-banner.my-turn{background:linear-gradient(135deg,rgba(240,184,74,.12),rgba(240,184,74,.04));border-color:var(--gold);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,184,74,.3);}50%{box-shadow:0 0 0 12px rgba(240,184,74,0);}}
 .turn-banner .who{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:4px;}
 .turn-banner.my-turn .who{color:var(--gold);}
 .turn-banner .hint{color:var(--muted);font-size:.85rem;}
-
 .quest-box{background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(96,165,250,.05));border:1px solid rgba(167,139,250,.3);border-radius:12px;padding:18px;margin:10px 0;position:relative;overflow:hidden;}
 .quest-box::after{content:'⚔';position:absolute;top:-10px;right:-10px;font-size:90px;color:var(--purple);opacity:.08;pointer-events:none;}
 .quest-title{font-weight:800;color:var(--purple);font-size:1.05rem;margin-bottom:8px;}
@@ -157,7 +146,6 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .quest-result{padding:14px;border-radius:10px;text-align:center;margin-top:12px;font-weight:700;font-size:1rem;}
 .quest-result.win{background:rgba(74,222,128,.15);border:1px solid var(--green);color:var(--green);}
 .quest-result.lose{background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);}
-
 .final-panel{background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);border:2px solid var(--gold);border-radius:16px;padding:26px;margin-top:14px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(240,184,74,.15), inset 0 0 80px rgba(0,0,0,.5);}
 .final-panel::before{content:'☢';position:absolute;top:-30px;right:-20px;font-size:220px;color:var(--gold);opacity:.04;pointer-events:none;}
 .final-title{font-size:1.6rem;font-weight:800;text-align:center;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
@@ -185,21 +173,17 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .dead-list{display:flex;flex-wrap:wrap;gap:8px;}
 .dead-chip{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);padding:5px 11px;border-radius:20px;font-size:.85rem;font-weight:600;}
 .final-restart{text-align:center;border-style:dashed;}
-
 .final-winner.can-repro{border-color:var(--green);box-shadow:0 0 20px rgba(74,222,128,.15);}
 .final-winner.no-repro{border-color:var(--red);opacity:.85;}
 .fw-repro{font-size:.85rem;font-weight:700;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--border2);}
 .can-repro .fw-repro{color:var(--green);}
 .no-repro .fw-repro{color:var(--red);}
-
 .verdict-reason{font-size:.85rem;font-weight:400;margin:8px 0 0;opacity:.9;font-style:italic;}
-
 .pair-check{display:flex;flex-direction:column;gap:8px;}
 .pair-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:.9rem;font-weight:600;}
 .pair-item.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);color:var(--green);}
 .pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
 .pair-icon{font-size:1.1rem;}
-
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:16px 12px 40px;}
   .traits,.pick-grid,.reveal-grid{grid-template-columns:1fr 1fr;}
@@ -279,7 +263,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <span class="badge" id="revealProgress">0 / 7</span>
   </div>
   <div id="myChar"></div>
-  <p class="muted small" style="margin-top:10px;">Персонаж зафиксирован. В свой ход можно вскрыть <b>любую</b> из характеристик.</p>
+  <p class="muted small" style="margin-top:10px;">Первым делом вскрывается <b>Профессия</b>, затем — любая характеристика.</p>
 </section>
 
 <section class="card" style="grid-column:span 2;" id="scenarioCard">
@@ -297,7 +281,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
   <div id="questContainer"></div>
   <div id="masterPanel" class="hidden">
     <h3 style="margin-top:20px;font-size:.95rem;">🎬 Панель ведущего</h3>
-    <p class="muted small">Вы не играете — вы ведёте.</p>
+    <p class="muted small">Вы играете наравне со всеми, но также управляете фазами.</p>
     <div class="actions">
       <button id="startGameBtn">▶️ Начать игру</button>
       <button id="beginRevealBtn" class="secondary hidden">🔓 Начать раскрытие</button>
@@ -568,7 +552,7 @@ function threeProfessions(takenIds){
 function collectTakenIds(players){
   const taken={profession:[],biology:[],health:[],hobby:[],phobia:[],inventory:[],special:[]};
   for(const p of Object.values(players||{})){
-    if(p.isHost||!p.character)continue;
+    if(!p.character)continue;
     const c=p.character;
     if(c.profession?.id)taken.profession.push(c.profession.id);
     if(c.biology?.id)taken.biology.push(c.biology.id);
@@ -600,10 +584,10 @@ function generateRest(players){
   const phPool=phobias.filter(x=>!taken.phobia.includes(x.id));
   const spPool=specials.filter(x=>!taken.special.includes(x.id));
 
-  // === Баланс 50/50 мужчин и женщин ===
+  // Баланс 50/50 мужчин и женщин
   let menCount=0, womenCount=0;
   for(const p of Object.values(players||{})){
-    if(p.isHost||!p.character)continue;
+    if(!p.character)continue;
     const sex=getSex(p.character);
     if(sex==='M')menCount++;
     else if(sex==='W')womenCount++;
@@ -637,7 +621,6 @@ function prepareQuest(player){
   let chance=10+matchCount*25; chance=Math.min(chance,90);
   return {questId:q.id,title:q.title,text:q.text,hint:q.hint,requiredTags:q.requiredTags,matchedTags:matched,matchCount,chance,playerUid:player.uid,playerName:player.name};
 }
-
 function canReproduce(ch){
   if(!ch)return false;
   const bio=ch.biology?.id||'';
@@ -659,8 +642,19 @@ function canReproduce(ch){
 function defaultRoom(hostUid,name){
   return {
     createdAt:Date.now(),hostUid,
-    players:{[hostUid]:{uid:hostUid,name,joinedAt:Date.now(),isHost:true,kicked:false,character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null}},
-    turn:{order:[],turnIndex:0,phase:'lobby',round:0},
+    players:{[hostUid]:{
+      uid:hostUid,
+      name,
+      joinedAt:Date.now(),
+      isHost:true,
+      kicked:false,
+      character:null,
+      pickOptions:null,
+      pickedProfession:null,
+      rerolled:false,
+      revealed:null
+    }},
+    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0},
     bunker:{capacity:2,started:false,finished:false,winners:[]},
     votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false},
     quest:{active:false,data:null,finished:false,result:null}
@@ -674,10 +668,6 @@ function startListeners(){
     roomData=snap.val();
     if(!roomData){setStatus('Комната удалена',false);return;}
     isHost=roomData.hostUid===uid;
-    if(roomData.turn?.order?.includes(roomData.hostUid)){
-      const cleaned=roomData.turn.order.filter(u=>u!==roomData.hostUid);
-      update(ref(db,`rooms/${roomId}/turn`),{order:cleaned});
-    }
     $('roomInfo').classList.remove('hidden');
     $('roomBadge').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
@@ -725,6 +715,8 @@ function handlePickClick(el){
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
+  const t=roomData.turn;
+  if(t?.order?.[t?.turnIndex]!==uid)return setStatus('Сейчас не ваш ход',false);
   const idx=Number(el.dataset.idx);
   const p=me.pickOptions[idx];
   if(!p)return;
@@ -739,16 +731,34 @@ function renderLobby(){
 function renderPick(){
   const me=roomData?.players?.[uid];
   const pc=$('pickCard');
-  if(!me||me.isHost||me.character||roomData.turn?.phase!=='pick'){
+  const t=roomData?.turn;
+  const phase=t?.phase;
+  const curUid=t?.order?.[t?.turnIndex];
+  const isMyPickTurn=curUid===uid;
+
+  if(!me||me.character||phase!=='pick'){
     pc.style.display='none';return;
   }
   pc.style.display='';
+
+  if(!isMyPickTurn){
+    const curName=curUid?roomData.players?.[curUid]?.name:'—';
+    $('pickGrid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:24px 12px;color:var(--muted);font-style:italic;">
+      ⏳ Сейчас выбирает <b style="color:var(--gold)">${esc(curName)}</b>.<br>
+      <span class="small">Ждите своей очереди.</span>
+    </div>`;
+    $('confirmPick').disabled=true;
+    $('rerollPick').disabled=true;
+    return;
+  }
+
   if(!me.pickOptions){
     const taken=collectTakenIds(roomData.players);
     const opts=threeProfessions(taken.profession);
     update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts});
     return;
   }
+
   const taken=collectTakenIds(roomData.players);
   $('pickGrid').innerHTML=me.pickOptions.map((p,i)=>{
     const isTaken=taken.profession.includes(p.id);
@@ -766,7 +776,7 @@ function renderPick(){
 function renderMyChar(){
   const me=roomData?.players?.[uid];
   const card=$('myCharCard');
-  if(!me||me.isHost||!me.character){card.style.display='none';return;}
+  if(!me||!me.character){card.style.display='none';return;}
   card.style.display='';
   const ch=me.character;
   const revealed=me.revealed||{};
@@ -792,24 +802,29 @@ function renderMyChar(){
   const myTurn=t?.order?.[t?.turnIndex]===uid;
   const phase=t?.phase;
   const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
+  const professionRevealed=!!revealed.profession;
+
   let hint;
   if(phase!=='reveal')hint='Сейчас не фаза раскрытия';
   else if(!myTurn)hint='Ждите своего хода';
+  else if(!professionRevealed)hint='⚠️ Первым делом вскройте ПРОФЕССИЮ';
   else hint='Выберите характеристику для вскрытия';
+
   const buttons=REVEAL_KEYS.map(k=>{
     const open=!!revealed[k];
-    const disabled=!canReveal||open;
-    return `<button type="button" class="reveal-btn ${open?'already':''}" data-key="${k}" ${disabled?'disabled':''}>
+    const lockedByProfession = !professionRevealed && k!=='profession';
+    const disabled=!canReveal||open||lockedByProfession;
+    return `<button type="button" class="reveal-btn ${open?'already':''}" data-key="${k}" ${disabled?'disabled':''} title="${lockedByProfession?'Сначала вскройте профессию':''}">
       <span class="icon">${REVEAL_ICONS[k]}</span>
       <span class="label">${REVEAL_LABELS[k]}</span>
-      ${open?'<span class="open-mark">✓</span>':''}
+      ${open?'<span class="open-mark">✓</span>':lockedByProfession?'<span class="open-mark" style="color:var(--muted);">🔒</span>':''}
     </button>`;
   }).join('');
   $('myChar').innerHTML=`
     <div class="char-header">
       <div class="char-avatar">${ch.profession.emoji}</div>
       <div class="char-info">
-        <h3>${esc(me.name)}</h3>
+        <h3>${esc(me.name)}${me.isHost?' <span class="player-tag gold">ВЕДУЩИЙ</span>':''}</h3>
         <p>${esc(ch.profession.name)} · ${esc(ch.biology.text)}</p>
       </div>
     </div>
@@ -819,13 +834,55 @@ function renderMyChar(){
   `;
 }
 function renderScenario(){
-  const ps=Object.values(roomData?.players||{}).filter(p=>!p.isHost);
+  const ps=Object.values(roomData?.players||{});
   const n=ps.length||2;
-  const capacity=2;
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
   const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
   $('roundBadge').textContent=label;
+
+  // Ресурсы бункера по раскрытым характеристикам
+  const tags={};
+  for(const p of ps){
+    if(p.kicked)continue;
+    const ch=p.character;
+    if(!ch)continue;
+    const r=p.revealed||{};
+    const addObj = (obj, opened) => {
+      if(!opened||!obj?.tags)return;
+      obj.tags.forEach(t=>tags[t]=(tags[t]||0)+1);
+    };
+    addObj(ch.profession, r.profession);
+    addObj(ch.biology, r.biology);
+    addObj(ch.health, r.health);
+    addObj(ch.hobby, r.hobby);
+    addObj(ch.phobia, r.phobia);
+    addObj(ch.special, r.special);
+    if(r.inventory && Array.isArray(ch.inventory)){
+      ch.inventory.forEach(i=>{ if(i?.tags) i.tags.forEach(t=>tags[t]=(tags[t]||0)+1); });
+    }
+  }
+  const resList = [
+    {label:'🍞 Еда', value:(tags.food||0)},
+    {label:'💊 Медицина', value:(tags.medic||0)},
+    {label:'🔧 Техника', value:(tags.tech||0)+(tags.craft||0)},
+    {label:'⚔️ Бой', value:(tags.combat||0)+(tags.strong||0)},
+    {label:'🧭 Выживание', value:(tags.survival||0)},
+    {label:'💬 Социум', value:(tags.social||0)},
+    {label:'🧠 Ум', value:(tags.smart||0)},
+    {label:'💪 Здоровье', value:(tags.healthy||0)}
+  ];
+  const resourcesHtml=resList.map(r=>{
+    const v=r.value;
+    const bar=Math.min(100,v*25);
+    const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--dim)';
+    return `<div class="res-row" style="margin-bottom:6px;">
+      <span class="res-label" style="flex:0 0 110px;font-size:.8rem;">${r.label}</span>
+      <div class="res-bar" style="height:8px;"><i style="width:${bar}%;background:${color}"></i></div>
+      <span class="res-val" style="flex:0 0 24px;font-size:.82rem;color:${color}">${v}</span>
+    </div>`;
+  }).join('');
+
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
       <div class="scenario-title">☢ Ядерная война · день 1</div>
@@ -840,6 +897,10 @@ function renderScenario(){
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
         <div class="stat"><b>10 лет</b><span>изоляции</span></div>
       </div>
+    </div>
+    <div class="final-section" style="margin-top:0;">
+      <h3>🛠️ Ресурсы бункера (по раскрытым характеристикам)</h3>
+      ${resourcesHtml}
     </div>
   `;
 }
@@ -857,15 +918,27 @@ function renderTurnBanner(){
   const el=$('turnBanner');
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
-  if(phase==='lobby'){el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isHost?'Нажмите «Начать игру».':'Ждём ведущего…'}</div></div>`;return;}
-  if(phase==='pick'){el.innerHTML=`<div class="turn-banner my-turn"><div class="who">🎴 Выбор профессии</div><div class="hint">Выберите одну из трёх карт выше. Выбор окончательный.</div></div>`;return;}
-  if(phase==='quest'){el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест в разгаре</div><div class="hint">Ведущий откроет исход</div></div>`;return;}
-  if(phase==='finished'){el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;return;}
-  if(isHost){
-    const cur=t.order?.[t.turnIndex];
-    const curName=cur?roomData.players?.[cur]?.name:'—';
-    const labels={reveal:'Раскрытие',vote:'Голосование'};
-    el.innerHTML=`<div class="turn-banner"><div class="who">🎬 Ведущий · ${labels[phase]||phase}</div><div class="hint">Раунд ${t.round} · ход: <b style="color:var(--gold)">${esc(curName)}</b></div></div>`;
+  if(phase==='lobby'){
+    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isHost?'Нажмите «Начать игру».':'Ждём ведущего…'}</div></div>`;
+    return;
+  }
+  if(phase==='pick'){
+    const curUid=t.order?.[t.turnIndex];
+    const curName=curUid?roomData.players?.[curUid]?.name:'—';
+    const isMine=curUid===uid;
+    el.innerHTML=`
+      <div class="turn-banner ${isMine?'my-turn':''}">
+        <div class="who">🎴 Выбор профессии${isMine?' — ваш ход':''}</div>
+        <div class="hint">${isMine?'Выберите одну из трёх карт выше':'Сейчас выбирает: <b style="color:var(--gold)">'+esc(curName)+'</b>'}</div>
+      </div>`;
+    return;
+  }
+  if(phase==='quest'){
+    el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест в разгаре</div><div class="hint">Ведущий откроет исход</div></div>`;
+    return;
+  }
+  if(phase==='finished'){
+    el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;
     return;
   }
   const cur=t.order?.[t.turnIndex];
@@ -874,12 +947,12 @@ function renderTurnBanner(){
   el.innerHTML=`
     <div class="turn-banner ${isMyTurn?'my-turn':''}">
       <div class="who">${isMyTurn?'👑 Ваш ход':'Ход: '+esc(curName)}</div>
-      <div class="hint">${isMyTurn?'Вскройте любую характеристику':'Ждите своей очереди'}</div>
+      <div class="hint">${isMyTurn?'Вскройте характеристику':'Ждите своей очереди'}</div>
     </div>
   `;
 }
 function renderPlayers(){
-  const ps=Object.values(roomData?.players||{}).filter(p=>!p.isHost);
+  const ps=Object.values(roomData?.players||{});
   const alive=ps.filter(p=>!p.kicked).length;
   $('aliveBadge').textContent=alive+' живых';
   const t=roomData?.turn;
@@ -895,7 +968,7 @@ function renderPlayers(){
     };
     if(!ch){
       return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
-        <div class="player-name">${esc(p.name)}${me?'<span class="player-tag">вы</span>':''}<span class="player-tag">нет персонажа</span></div>
+        <div class="player-name">${esc(p.name)}${p.isHost?'<span class="player-tag gold">ВЕДУЩИЙ</span>':''}${me?'<span class="player-tag">вы</span>':''}<span class="player-tag">нет персонажа</span></div>
       </div>`;
     }
     const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
@@ -903,6 +976,7 @@ function renderPlayers(){
     return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
       <div class="player-name">
         ${esc(p.name)}
+        ${p.isHost?'<span class="player-tag gold">ВЕДУЩИЙ</span>':''}
         ${isTurn?'<span class="player-tag gold">▶ ХОД</span>':''}
         ${me?'<span class="player-tag">вы</span>':''}
         ${p.kicked?'<span class="player-tag red">мёртв</span>':''}
@@ -929,7 +1003,7 @@ function renderVote(){
     if(v?.finished&&v?.result){
       const r=v.result;
       vc.innerHTML=`<div class="status-box ${r.chosen?'success':''}">
-        <b>${esc(r.label||'Голосование')}:</b> ${r.chosen?`выбран <b>${esc(r.chosenName)}</b> (${r.maxVotes})`:'ничья — никто не выбран'}${r.kick?' · исключён':''}
+        <b>${esc(r.label||'Голосование')}:</b> ${r.chosen?`выбран <b>${esc(r.chosenName)}</b> (${r.maxVotes})`:'никто не выбран'}${r.kick?' · исключён':''}
       </div>`;
     } else {
       vc.innerHTML='<div class="status-box muted">Голосование не начато.</div>';
@@ -940,11 +1014,14 @@ function renderVote(){
   const votes=v.votes||{};
   const counts={};
   for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
-  const canVote=!isHost&&me&&!me.kicked;
+  const canVote=!!me&&!me.kicked;
+  const isQuest = v.type==='quest';
+  const skipKey = '__skip__';
+  const skipCount = counts[skipKey]||0;
   vc.innerHTML=`
     <div class="vote-info">
-      <h3>${v.kick?'🚪 Изгнание игрока':'🎯 '+esc(v.label||'Голосование')}</h3>
-      <p>${v.kick?'Кто покинет бункер навсегда?':'Кто отправится на опасный квест?'}</p>
+      <h3>${v.kick?'🚪 Изгнание игрока':isQuest?'🎯 Отправить на квест?':'🎯 '+esc(v.label||'Голосование')}</h3>
+      <p>${v.kick?'Кто покинет бункер навсегда?':isQuest?'Кто пойдёт на опасный квест? Или пропустить и не рисковать?':'Кто отправится на действие?'}</p>
     </div>
     <div class="vote-list">
       ${candidates.map(c=>{
@@ -954,16 +1031,22 @@ function renderVote(){
         const chosen=myVote===c;
         const self=c===uid;
         return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${(!canVote||self)?'disabled':''}>
-          <span>${esc(p.name)}${self?' (вы)':''}</span>
+          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}</span>
           <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
         </button>`;
       }).join('')}
+      ${isQuest?`
+        <button type="button" class="vote-btn ${myVote===skipKey?'chosen':''}" data-vote="${skipKey}" ${!canVote?'disabled':''}>
+          <span>🚫 Никто не идёт — пропустить квест</span>
+          <span class="count">${skipCount>0?'⚑ '+skipCount:''}</span>
+        </button>
+      `:''}
     </div>
-    <div class="small muted" style="margin-top:10px;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length}${myVote?' · ваш голос отдан':''}</div>
+    <div class="small muted" style="margin-top:10px;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0)}${myVote?' · ваш голос отдан':''}</div>
   `;
 }
 
-/* ---------- ИТОГИ (resources и problems — массивы, без слэшей) ---------- */
+/* ---------- ИТОГИ ---------- */
 function calcBunkerOutcome(winners){
   const tags={};
   for(const w of winners){
@@ -978,8 +1061,6 @@ function calcBunkerOutcome(winners){
     addTags(ch.special);
     if(Array.isArray(ch.inventory)) ch.inventory.forEach(i=>addTags(i));
   }
-
-  // ✅ МАССИВ объектов, а не объект с ключами (Firebase-safe)
   const resources = [
     {key:'food', label:'🍞 Еда', value:(tags.food||0)},
     {key:'medic', label:'💊 Медицина', value:(tags.medic||0)},
@@ -1143,7 +1224,6 @@ function renderFinalSummary(el){
     </div>`;
   }).join('');
 
-  // ✅ resources теперь массив
   const resourcesHtml = o.resources.map(r=>{
     const v=r.value;
     const bar=Math.min(100,v*25);
@@ -1155,7 +1235,6 @@ function renderFinalSummary(el){
     </div>`;
   }).join('');
 
-  // ✅ problems теперь массив
   const problemsHtml = o.problems.filter(p=>p.value>0).map(p=>{
     const v=p.value;
     return `<div class="res-row">
@@ -1247,12 +1326,16 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена');
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
+
+  // Если это ведущий — он уже в комнате, просто слушаем
   if(room.hostUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();return;
   }
+
+  // Обычный игрок
   const players=room.players||{};
-  const playerCount=Object.values(players).filter(p=>!p.isHost).length;
+  const playerCount=Object.values(players).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
 
   const existing=players[uid];
@@ -1285,20 +1368,54 @@ $('confirmPick').onclick=async()=>{
   if(!me||!me.pickOptions)return;
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
   if(myPickedProfession===null)return;
+
+  const t=roomData.turn;
+  if(t?.order?.[t?.turnIndex]!==uid)return setStatus('Сейчас не ваш ход',false);
+
   const prof=me.pickOptions[myPickedProfession];
   const tn=collectTakenIds(roomData.players);
   if(tn.profession.includes(prof.id))return setStatus('Эту профессию только что заняли',false);
+
   const rest=generateRest(roomData.players);
   const character={profession:prof,...rest};
   const revealed={profession:false,biology:false,health:false,hobby:false,phobia:false,inventory:false,special:false};
+
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     character,pickedProfession:prof.name,revealed,pickOptions:null
   });
+
+  const order=t.order||[];
+  const freshSnap=await get(ref(db,`rooms/${roomId}/players`));
+  const playersNow=freshSnap.val()||{};
+  const stillChoosing=order.filter(u=>{
+    if(u===uid)return false;
+    const p=playersNow[u];
+    return p&&!p.character;
+  });
+
+  if(stillChoosing.length===0){
+    await update(ref(db,`rooms/${roomId}/turn`),{
+      order:order.slice(),
+      turnIndex:0,phase:'reveal',round:1
+    });
+    return;
+  }
+
+  let idx=t.turnIndex;
+  for(let i=0;i<order.length;i++){
+    idx=(idx+1)%order.length;
+    const nextUid=order[idx];
+    const p=playersNow[nextUid];
+    if(p&&!p.character)break;
+  }
+  await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx});
 };
 $('rerollPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||me.rerolled)return;
   if(me.character)return setStatus('Вы уже выбрали профессию',false);
+  const t=roomData.turn;
+  if(t?.order?.[t?.turnIndex]!==uid)return setStatus('Сейчас не ваш ход',false);
   const taken=collectTakenIds(roomData.players);
   const opts=threeProfessions(taken.profession);
   myPickedProfession=null;
@@ -1320,17 +1437,25 @@ async function doReveal(key){
     if(!me?.character)return;
     if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
 
+    // Профессия обязательно первой
+    if(!me.revealed?.profession && key!=='profession'){
+      setStatus('Первым нужно вскрыть профессию',false);
+      return;
+    }
+
     await set(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
 
     const aliveOrder=t.order.filter(u=>fresh.players?.[u]&&!fresh.players[u].kicked);
     const snap2=await get(ref(db,`rooms/${roomId}/players`));
     const playersNow=snap2.val()||{};
-    const allRevealed=aliveOrder.every(u=>{
+
+    // Голосование после 2 раскрытых характеристик у всех
+    const allHaveTwo=aliveOrder.every(u=>{
       const r=playersNow[u]?.revealed||{};
-      return REVEAL_KEYS.every(k=>r[k]);
+      return REVEAL_KEYS.filter(k=>r[k]).length>=2;
     });
 
-    if(allRevealed){
+    if(allHaveTwo){
       await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
       await update(ref(db,`rooms/${roomId}/votes`),{
         active:true,type:'quest',label:'Отправить на квест',kick:false,
@@ -1354,7 +1479,6 @@ async function doReveal(key){
 /* ---------- ГОЛОСОВАНИЕ ---------- */
 async function doVote(targetUid){
   try{
-    if(isHost){setStatus('Ведущий не голосует',false);return;}
     const snap=await get(ref(db,`rooms/${roomId}`));
     const fresh=snap.val();
     if(!fresh){setStatus('Комната недоступна',false);return;}
@@ -1363,12 +1487,15 @@ async function doVote(targetUid){
     if(!v?.active)return;
     const me=fresh.players?.[uid];
     if(!me||me.kicked)return;
+    if(targetUid!==uid && targetUid!=='__skip__' && !fresh.players[targetUid]){
+      setStatus('Неверная цель голосования',false);return;
+    }
     if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
     myVote=targetUid;
     await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
     const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
     const votes=snap2.val()||{};
-    const alive=Object.values(fresh.players||{}).filter(p=>!p.isHost&&!p.kicked);
+    const alive=Object.values(fresh.players||{}).filter(p=>!p.kicked);
     if(Object.keys(votes).length>=alive.length)await finishVote();
   }catch(e){
     console.error(e);
@@ -1393,7 +1520,15 @@ async function finishVote(){
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
 
   if(!chosen){
-    const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked).map(p=>p.uid);
+    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
+    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
+    return;
+  }
+
+  if(maxUid==='__skip__'){
+    // Никто не идёт — пропускаем квест
+    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
+    await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:false,data:null,result:null});
     await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
@@ -1402,7 +1537,7 @@ async function finishVote(){
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
     const psSnap=await get(ref(db,`rooms/${roomId}/players`));
     const all=psSnap.val()||{};
-    const players=Object.values(all).filter(p=>!p.isHost);
+    const players=Object.values(all);
     const alive=players.filter(p=>!p.kicked);
     if(alive.length<=2){
       await finalizeGame(alive, players);
@@ -1416,7 +1551,7 @@ async function finishVote(){
   const player=roomData.players[maxUid];
   const questData=prepareQuest(player);
   if(!questData){
-    const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked).map(p=>p.uid);
+    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
     await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
@@ -1427,7 +1562,7 @@ async function finishVote(){
 /* ---------- ПАНЕЛЬ ВЕДУЩЕГО ---------- */
 $('startGameBtn').onclick=async()=>{
   if(!isHost)return;
-  const ps=Object.values(roomData.players||{}).filter(p=>!p.isHost);
+  const ps=Object.values(roomData.players||{});
   if(ps.length<2)return setStatus('Нужно минимум 2 игрока',false);
   if(ps.length>12)return setStatus('Максимум 12 игроков',false);
   const order=ps.map(p=>p.uid);
@@ -1438,14 +1573,14 @@ $('beginRevealBtn').onclick=async()=>{
   if(!isHost)return;
   const t=roomData.turn;
   if(t.phase!=='pick')return;
-  const ps=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
+  const ps=Object.values(roomData.players||{}).filter(p=>!p.kicked);
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus('Не все выбрали профессию: '+without.map(p=>p.name).join(', '),false);
   await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1});
 };
 $('startQuestBtn').onclick=async()=>{
   if(!isHost)return;
-  const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
+  const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked);
   if(alive.length<2)return setStatus('Мало игроков',false);
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
   await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'quest',label:'Отправить на квест',kick:false,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
@@ -1464,7 +1599,7 @@ $('openResultBtn').onclick=async()=>{
   }
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
-  const players=Object.values(all).filter(p=>!p.isHost);
+  const players=Object.values(all);
   const alive=players.filter(p=>!p.kicked);
   if(alive.length<=2){
     await finalizeGame(alive, players);
@@ -1474,7 +1609,7 @@ $('openResultBtn').onclick=async()=>{
 };
 $('startKickBtn').onclick=async()=>{
   if(!isHost)return;
-  const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
+  const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked);
   if(alive.length<=2)return setStatus('Мало игроков',false);
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
   await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'kick',label:'Изгнание',kick:true,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
@@ -1483,7 +1618,6 @@ $('resetGameBtn').onclick=async()=>{
   if(!isHost||!confirm('Сбросить игру?'))return;
   const updates={};
   for(const p of Object.values(roomData.players||{})){
-    if(p.isHost)continue;
     updates[`players/${p.uid}/kicked`]=false;
     updates[`players/${p.uid}/character`]=null;
     updates[`players/${p.uid}/pickOptions`]=null;
@@ -1494,7 +1628,6 @@ $('resetGameBtn').onclick=async()=>{
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
   updates['turn/turnIndex']=0;
-  updates['turn/order']=[];
   updates['bunker/started']=false;
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
