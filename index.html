@@ -158,26 +158,8 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .quest-result.win{background:rgba(74,222,128,.15);border:1px solid var(--green);color:var(--green);}
 .quest-result.lose{background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);}
 
-/* ИТОГИ БУНКЕРА */
-.final-panel{
-  background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);
-  border:2px solid var(--gold);
-  border-radius:16px;
-  padding:26px;
-  margin-top:14px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 0 40px rgba(240,184,74,.15), inset 0 0 80px rgba(0,0,0,.5);
-}
-.final-panel::before{
-  content:'☢';
-  position:absolute;
-  top:-30px;right:-20px;
-  font-size:220px;
-  color:var(--gold);
-  opacity:.04;
-  pointer-events:none;
-}
+.final-panel{background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);border:2px solid var(--gold);border-radius:16px;padding:26px;margin-top:14px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(240,184,74,.15), inset 0 0 80px rgba(0,0,0,.5);}
+.final-panel::before{content:'☢';position:absolute;top:-30px;right:-20px;font-size:220px;color:var(--gold);opacity:.04;pointer-events:none;}
 .final-title{font-size:1.6rem;font-weight:800;text-align:center;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
 .final-subtitle{text-align:center;color:var(--muted);font-style:italic;margin-bottom:20px;}
 .final-verdict{text-align:center;font-size:1.3rem;font-weight:800;letter-spacing:1px;padding:18px;border-radius:12px;margin-bottom:20px;}
@@ -604,6 +586,12 @@ function pickUniqueTwo(pool,takenIds){
   for(let i=0;i<2&&a.length>0;i++)out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
   return out;
 }
+function getSex(ch){
+  const bio=ch?.biology?.id||'';
+  if(bio.startsWith('m'))return 'M';
+  if(bio.startsWith('w'))return 'W';
+  return '?';
+}
 function generateRest(players){
   const taken=collectTakenIds(players);
   const bioPool=biologies.filter(x=>!taken.biology.includes(x.id));
@@ -611,8 +599,25 @@ function generateRest(players){
   const hbPool=hobbies.filter(x=>!taken.hobby.includes(x.id));
   const phPool=phobias.filter(x=>!taken.phobia.includes(x.id));
   const spPool=specials.filter(x=>!taken.special.includes(x.id));
+
+  // === Баланс 50/50 мужчин и женщин ===
+  let menCount=0, womenCount=0;
+  for(const p of Object.values(players||{})){
+    if(p.isHost||!p.character)continue;
+    const sex=getSex(p.character);
+    if(sex==='M')menCount++;
+    else if(sex==='W')womenCount++;
+  }
+  let wantSex;
+  if(menCount===womenCount) wantSex=Math.random()<0.5?'M':'W';
+  else if(menCount<womenCount) wantSex='M';
+  else wantSex='W';
+
+  const genderPool=bioPool.filter(b=>b.id.startsWith(wantSex.toLowerCase()));
+  const biologyPool=genderPool.length?genderPool:(bioPool.length?bioPool:biologies);
+
   return {
-    biology: pick(bioPool.length?bioPool:biologies),
+    biology: pick(biologyPool),
     health: pick(hpPool.length?hpPool:healths),
     hobby: pick(hbPool.length?hbPool:hobbies),
     phobia: pick(phPool.length?phPool:phobias),
@@ -633,13 +638,6 @@ function prepareQuest(player){
   return {questId:q.id,title:q.title,text:q.text,hint:q.hint,requiredTags:q.requiredTags,matchedTags:matched,matchCount,chance,playerUid:player.uid,playerName:player.name};
 }
 
-/* ---------- ПРОВЕРКА ПАРЫ ---------- */
-function getSex(ch){
-  const bio=ch?.biology?.id||'';
-  if(bio.startsWith('m'))return 'M';
-  if(bio.startsWith('w'))return 'W';
-  return '?';
-}
 function canReproduce(ch){
   if(!ch)return false;
   const bio=ch.biology?.id||'';
@@ -652,7 +650,6 @@ function canReproduce(ch){
   if(isWoman&&age>50)return false;
   if(isMan&&age>60)return false;
   if(age<16)return false;
-  // Исключаем тяжёлые болезни (бесплодие)
   const infertile=['h3','h4','h6','h7','h9','h10','h11','h13','h15','h16'];
   if(infertile.includes(healthId))return false;
   return true;
@@ -966,7 +963,7 @@ function renderVote(){
   `;
 }
 
-/* ---------- ИТОГИ ---------- */
+/* ---------- ИТОГИ (resources и problems — массивы, без слэшей) ---------- */
 function calcBunkerOutcome(winners){
   const tags={};
   for(const w of winners){
@@ -981,20 +978,22 @@ function calcBunkerOutcome(winners){
     addTags(ch.special);
     if(Array.isArray(ch.inventory)) ch.inventory.forEach(i=>addTags(i));
   }
-  const resources = {
-    '🍞 Еда': (tags.food||0),
-    '💊 Медицина': (tags.medic||0),
-    '🔧 Техника/ремонт': (tags.tech||0)+(tags.craft||0),
-    '⚔️ Боевая мощь': (tags.combat||0)+(tags.strong||0),
-    '🧭 Выживание': (tags.survival||0),
-    '💬 Социальные': (tags.social||0),
-    '🧠 Интеллект': (tags.smart||0),
-    '💪 Здоровье': (tags.healthy||0)
-  };
-  const problems = {
-    '🤢 Больные': (tags.sick||0),
-    '😱 Фобии': (tags.fear||0)
-  };
+
+  // ✅ МАССИВ объектов, а не объект с ключами (Firebase-safe)
+  const resources = [
+    {key:'food', label:'🍞 Еда', value:(tags.food||0)},
+    {key:'medic', label:'💊 Медицина', value:(tags.medic||0)},
+    {key:'tech', label:'🔧 Техника и ремонт', value:(tags.tech||0)+(tags.craft||0)},
+    {key:'combat', label:'⚔️ Боевая мощь', value:(tags.combat||0)+(tags.strong||0)},
+    {key:'survival', label:'🧭 Выживание', value:(tags.survival||0)},
+    {key:'social', label:'💬 Социальные', value:(tags.social||0)},
+    {key:'smart', label:'🧠 Интеллект', value:(tags.smart||0)},
+    {key:'healthy', label:'💪 Здоровье', value:(tags.healthy||0)}
+  ];
+  const problems = [
+    {key:'sick', label:'🤢 Больные', value:(tags.sick||0)},
+    {key:'fear', label:'😱 Фобии', value:(tags.fear||0)}
+  ];
 
   const men = winners.filter(w=>getSex(w.character)==='M');
   const women = winners.filter(w=>getSex(w.character)==='W');
@@ -1004,18 +1003,18 @@ function calcBunkerOutcome(winners){
   const hasMan = menCanRepro.length>0;
   const hasWoman = womenCanRepro.length>0;
   const exactlyTwo = winners.length===2;
-  const canContinue = exactlyTwo && hasMan && hasWoman;
 
+  const getVal = (key) => (resources.find(r=>r.key===key)?.value)||0;
   let score=0;
-  score += Math.min(resources['🍞 Еда'],3)*4;
-  score += Math.min(resources['💊 Медицина'],3)*4;
-  score += Math.min(resources['🔧 Техника/ремонт'],3)*3;
-  score += Math.min(resources['⚔️ Боевая мощь'],3)*3;
-  score += Math.min(resources['🧭 Выживание'],3)*3;
-  score += Math.min(resources['💬 Социальные'],3)*2;
-  score += Math.min(resources['🧠 Интеллект'],3)*2;
-  score -= problems['🤢 Больные']*2;
-  score -= problems['😱 Фобии']*1;
+  score += Math.min(getVal('food'),3)*4;
+  score += Math.min(getVal('medic'),3)*4;
+  score += Math.min(getVal('tech'),3)*3;
+  score += Math.min(getVal('combat'),3)*3;
+  score += Math.min(getVal('survival'),3)*3;
+  score += Math.min(getVal('social'),3)*2;
+  score += Math.min(getVal('smart'),3)*2;
+  score -= (problems.find(p=>p.key==='sick')?.value||0)*2;
+  score -= (problems.find(p=>p.key==='fear')?.value||0)*1;
 
   let verdict, verdictType, reason;
   if(!exactlyTwo){
@@ -1052,9 +1051,7 @@ function calcBunkerOutcome(winners){
     score: Math.round(score),
     verdict, verdictType, reason,
     resources, problems,
-    hasMan, hasWoman, exactlyTwo, canContinue,
-    menNames: men.map(w=>w.name),
-    womenNames: women.map(w=>w.name),
+    hasMan, hasWoman, exactlyTwo,
     winners: winners.map(w=>({
       uid:w.uid,
       name:w.name,
@@ -1067,15 +1064,11 @@ function calcBunkerOutcome(winners){
 async function finalizeGame(alive, allPlayers){
   const dead = allPlayers.filter(p=>p.kicked);
   const outcome = calcBunkerOutcome(alive);
-  const finalData = {
-    finished:true,
-    capacity: 2,
+  await update(ref(db,`rooms/${roomId}/bunker`),{
+    started:true, finished:true,
     winners: alive.map(p=>({uid:p.uid,name:p.name})),
     dead: dead.map(p=>({uid:p.uid,name:p.name})),
     outcome
-  };
-  await update(ref(db,`rooms/${roomId}/bunker`),{
-    started:true, finished:true, winners:finalData.winners, outcome
   });
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
 }
@@ -1150,23 +1143,27 @@ function renderFinalSummary(el){
     </div>`;
   }).join('');
 
-  const resourcesHtml = Object.entries(o.resources).map(([k,v])=>{
+  // ✅ resources теперь массив
+  const resourcesHtml = o.resources.map(r=>{
+    const v=r.value;
     const bar=Math.min(100,v*25);
     const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--red)';
     return `<div class="res-row">
-      <span class="res-label">${k}</span>
+      <span class="res-label">${r.label}</span>
       <div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div>
       <span class="res-val" style="color:${color}">${v}</span>
     </div>`;
   }).join('');
 
-  const problemsHtml = Object.entries(o.problems).filter(([k,v])=>v>0).map(([k,v])=>
-    `<div class="res-row">
-      <span class="res-label">${k}</span>
+  // ✅ problems теперь массив
+  const problemsHtml = o.problems.filter(p=>p.value>0).map(p=>{
+    const v=p.value;
+    return `<div class="res-row">
+      <span class="res-label">${p.label}</span>
       <div class="res-bar"><i style="width:${Math.min(100,v*25)}%;background:var(--red)"></i></div>
       <span class="res-val" style="color:var(--red)">${v}</span>
-    </div>`
-  ).join('') || '<p class="muted small">Проблем нет — отличная команда!</p>';
+    </div>`;
+  }).join('') || '<p class="muted small">Проблем нет — отличная команда!</p>';
 
   const deadHtml = (b.dead||[]).length
     ? b.dead.map(p=>`<span class="dead-chip">💀 ${esc(p.name)}</span>`).join('')
@@ -1210,7 +1207,7 @@ function renderFinalSummary(el){
         ${resourcesHtml}
       </div>
 
-      ${Object.values(o.problems).some(v=>v>0)?`
+      ${o.problems.some(p=>p.value>0)?`
       <div class="final-section">
         <h3>⚠️ Проблемы</h3>
         ${problemsHtml}
@@ -1502,6 +1499,7 @@ $('resetGameBtn').onclick=async()=>{
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
   updates['bunker/outcome']=null;
+  updates['bunker/dead']=null;
   updates['bunker/capacity']=2;
   updates['votes/active']=false;
   updates['votes/votes']={};
