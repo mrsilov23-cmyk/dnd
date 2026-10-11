@@ -8,26 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b0f19;
-  --bg2:#111726;
-  --card:#161d2e;
-  --card2:#1c2437;
-  --border:#232c42;
-  --border2:#2c3750;
-  --text:#e8edf7;
-  --muted:#8792a8;
-  --dim:#5a6478;
-  --gold:#f0b84a;
-  --gold2:#ffcc6b;
-  --green:#4ade80;
-  --green2:#22c55e;
-  --red:#f87171;
-  --red2:#ef4444;
-  --blue:#60a5fa;
-  --blue2:#3b82f6;
-  --purple:#a78bfa;
-  --orange:#fb923c;
-  --accent:var(--gold);
+  --bg:#0b0f19;--bg2:#111726;--card:#161d2e;--card2:#1c2437;
+  --border:#232c42;--border2:#2c3750;--text:#e8edf7;--muted:#8792a8;--dim:#5a6478;
+  --gold:#f0b84a;--gold2:#ffcc6b;--green:#4ade80;--red:#f87171;--red2:#ef4444;
+  --blue:#60a5fa;--blue2:#3b82f6;--purple:#a78bfa;--orange:#fb923c;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -38,95 +22,49 @@ body{
     var(--bg);
   color:var(--text);
   font:15px/1.55 'Manrope', -apple-system, system-ui, sans-serif;
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
+  min-height:100vh;-webkit-font-smoothing:antialiased;
 }
 header{
-  padding:20px 24px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  background:rgba(11,15,25,.75);
-  backdrop-filter:blur(12px);
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  background:rgba(11,15,25,.75);backdrop-filter:blur(12px);
   position:sticky;top:0;z-index:50;
 }
 .brand{display:flex;align-items:center;gap:14px;}
-.brand-icon{
-  font-size:32px;
-  filter:drop-shadow(0 0 20px rgba(240,184,74,.4));
-}
-.brand h1{
-  margin:0;
-  font-size:1.35rem;
-  font-weight:800;
-  letter-spacing:.5px;
+.brand-icon{font-size:32px;filter:drop-shadow(0 0 20px rgba(240,184,74,.4));}
+.brand h1{margin:0;font-size:1.35rem;font-weight:800;letter-spacing:.5px;
   background:linear-gradient(135deg,var(--gold2),var(--gold));
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 .brand p{margin:2px 0 0;color:var(--muted);font-size:.82rem;}
 .hdr-status{
-  font-size:.85rem;
-  padding:8px 14px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  color:var(--muted);
+  font-size:.85rem;padding:8px 14px;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;color:var(--muted);
   display:flex;align-items:center;gap:8px;
 }
-.dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--dim);
-  box-shadow:0 0 8px currentColor;
-}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim);box-shadow:0 0 8px currentColor;}
 .dot.green{background:var(--green);box-shadow:0 0 8px var(--green);}
 .dot.red{background:var(--red);box-shadow:0 0 8px var(--red);}
-
 main{
-  max-width:1320px;
-  margin:0 auto;
-  padding:24px 20px 60px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
+  max-width:1320px;margin:0 auto;padding:24px 20px 60px;
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
 }
 .card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:20px;
-  min-width:0;
-  transition:border-color .2s;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:20px;min-width:0;transition:border-color .2s;
 }
 .card:hover{border-color:var(--border2);}
 .card-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px;
-  padding-bottom:12px;
-  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);
 }
 .card-header h2{
-  margin:0;
-  font-size:.95rem;
-  font-weight:700;
-  letter-spacing:.5px;
-  color:var(--text);
-  display:flex;align-items:center;gap:8px;
+  margin:0;font-size:.95rem;font-weight:700;letter-spacing:.5px;
+  color:var(--text);display:flex;align-items:center;gap:8px;
 }
-.card-header .badge{
-  font-family:'JetBrains Mono', monospace;
-  font-size:.72rem;
-  font-weight:700;
-  padding:3px 9px;
-  border-radius:20px;
-  background:rgba(96,165,250,.15);
-  color:var(--blue);
+.badge{
+  font-family:'JetBrains Mono', monospace;font-size:.72rem;font-weight:700;
+  padding:3px 9px;border-radius:20px;
+  background:rgba(96,165,250,.15);color:var(--blue);
   border:1px solid rgba(96,165,250,.3);
 }
 .badge.gold{background:rgba(240,184,74,.15);color:var(--gold);border-color:rgba(240,184,74,.3);}
@@ -134,220 +72,96 @@ main{
 .badge.green{background:rgba(74,222,128,.15);color:var(--green);border-color:rgba(74,222,128,.3);}
 
 label{
-  display:block;
-  font-size:.78rem;
-  font-weight:600;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.5px;
-  margin:12px 0 6px;
+  display:block;font-size:.78rem;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;
 }
 input,select,button{
-  font:inherit;
-  border-radius:10px;
-  border:1px solid var(--border2);
-  padding:11px 14px;
-  outline:none;
-  transition:.15s;
+  font:inherit;border-radius:10px;border:1px solid var(--border2);
+  padding:11px 14px;outline:none;transition:.15s;
 }
-input,select{
-  background:var(--bg2);
-  color:var(--text);
-  width:100%;
-  font-size:.95rem;
-}
-input:focus,select:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(96,165,250,.15);
-}
+input,select{background:var(--bg2);color:var(--text);width:100%;font-size:.95rem;}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(96,165,250,.15);}
 button{
-  cursor:pointer;
-  background:linear-gradient(180deg,var(--gold2),var(--gold));
-  color:#111;
-  font-weight:700;
-  border-color:var(--gold);
-  font-size:.9rem;
-  letter-spacing:.3px;
+  cursor:pointer;background:linear-gradient(180deg,var(--gold2),var(--gold));
+  color:#111;font-weight:700;border-color:var(--gold);
+  font-size:.9rem;letter-spacing:.3px;
 }
 button:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px);}
 button:active:not(:disabled){transform:translateY(0);}
 button:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-button.secondary{
-  background:var(--card2);
-  color:var(--text);
-  border-color:var(--border2);
-}
+button.secondary{background:var(--card2);color:var(--text);border-color:var(--border2);}
 button.secondary:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
-button.danger{
-  background:linear-gradient(180deg,var(--red),var(--red2));
-  color:#fff;
-  border-color:var(--red);
-}
-button.ghost{
-  background:transparent;
-  border-color:var(--border2);
-  color:var(--muted);
-}
+button.danger{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;border-color:var(--red);}
+button.ghost{background:transparent;border-color:var(--border2);color:var(--muted);}
 button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 
 .row{display:flex;gap:10px;align-items:flex-end;}
 .row>*{flex:1;min-width:0;}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
 .actions button{flex:1;min-width:120px;}
-
 .hidden{display:none!important;}
 .muted{color:var(--muted);}
 .small{font-size:.82rem;}
-.mono{font-family:'JetBrains Mono', monospace;}
 
 .status-box{
-  padding:12px 14px;
-  border-radius:10px;
-  background:var(--card2);
-  border:1px solid var(--border2);
-  margin:10px 0;
-  font-size:.9rem;
+  padding:12px 14px;border-radius:10px;background:var(--card2);
+  border:1px solid var(--border2);margin:10px 0;font-size:.9rem;
 }
 .status-box.success{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:var(--green);}
 .status-box.error{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red);}
 .status-box.warn{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);color:var(--orange);}
 
-hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
-
-/* SCENARIO */
 .scenario{
   background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));
-  border:1px solid rgba(251,146,60,.25);
-  border-radius:12px;
-  padding:18px;
-  margin-bottom:14px;
-  position:relative;
-  overflow:hidden;
+  border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:18px;
+  margin-bottom:14px;position:relative;overflow:hidden;
 }
 .scenario::after{
-  content:'☢';
-  position:absolute;
-  top:-20px;right:-10px;
-  font-size:110px;
-  color:var(--orange);
-  opacity:.06;
-  pointer-events:none;
+  content:'☢';position:absolute;top:-20px;right:-10px;
+  font-size:110px;color:var(--orange);opacity:.06;pointer-events:none;
 }
-.scenario-title{
-  font-weight:800;
-  color:var(--orange);
-  font-size:1.05rem;
-  letter-spacing:.5px;
-  margin-bottom:8px;
-}
+.scenario-title{font-weight:800;color:var(--orange);font-size:1.05rem;letter-spacing:.5px;margin-bottom:8px;}
 .scenario-text{color:var(--text);line-height:1.65;white-space:pre-wrap;font-size:.92rem;}
-.scenario-stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-top:14px;
-}
-.stat{
-  background:rgba(0,0,0,.25);
-  border:1px solid var(--border2);
-  border-radius:8px;
-  padding:10px;
-  text-align:center;
-}
+.scenario-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.stat{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:8px;padding:10px;text-align:center;}
 .stat b{display:block;color:var(--orange);font-size:1.25rem;font-family:'JetBrains Mono',monospace;}
 .stat span{color:var(--muted);font-size:.75rem;}
 
-/* CHARACTER */
 .char-header{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:14px;
+  display:flex;align-items:center;gap:14px;padding:14px;
   background:linear-gradient(135deg,var(--card2),var(--bg2));
-  border-radius:12px;
-  margin-bottom:14px;
-  border:1px solid var(--border2);
+  border-radius:12px;margin-bottom:14px;border:1px solid var(--border2);
 }
 .char-avatar{
-  font-size:2.8rem;
-  width:64px;height:64px;
+  font-size:2.8rem;width:64px;height:64px;
   display:flex;align-items:center;justify-content:center;
-  background:var(--bg2);
-  border-radius:12px;
-  border:1px solid var(--border2);
-  flex-shrink:0;
+  background:var(--bg2);border-radius:12px;border:1px solid var(--border2);flex-shrink:0;
 }
 .char-info h3{margin:0;font-size:1.05rem;font-weight:700;}
 .char-info p{margin:2px 0 0;color:var(--muted);font-size:.85rem;}
 
 .traits{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .trait{
-  background:var(--bg2);
-  border:1px solid var(--border2);
-  border-radius:10px;
-  padding:11px 13px;
-  transition:.2s;
-  position:relative;
-  overflow:hidden;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:10px;padding:11px 13px;transition:.2s;position:relative;overflow:hidden;
 }
-.trait.revealed{
-  background:linear-gradient(135deg,rgba(240,184,74,.06),var(--bg2));
-  border-color:rgba(240,184,74,.3);
-}
-.trait.revealed::before{
-  content:'';
-  position:absolute;
-  left:0;top:0;bottom:0;
-  width:3px;
-  background:var(--gold);
-}
-.trait-label{
-  font-size:.7rem;
-  font-weight:700;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.5px;
-  margin-bottom:4px;
-}
-.trait-value{
-  color:var(--text);
-  font-size:.9rem;
-  line-height:1.4;
-}
-.trait.locked .trait-value{
-  color:var(--dim);
-  font-family:'JetBrains Mono',monospace;
-  letter-spacing:2px;
-  font-size:1rem;
-}
+.trait.revealed{background:linear-gradient(135deg,rgba(240,184,74,.06),var(--bg2));border-color:rgba(240,184,74,.3);}
+.trait.revealed::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold);}
+.trait-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.trait-value{color:var(--text);font-size:.9rem;line-height:1.4;}
+.trait.locked .trait-value{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:2px;font-size:1rem;}
 
-/* CARD PICKER */
-.pick-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin:14px 0;
-}
+/* PICK GRID */
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
 .pick-card{
   background:linear-gradient(160deg,var(--card2),var(--bg2));
-  border:2px solid var(--border2);
-  border-radius:12px;
-  padding:18px 14px;
-  text-align:center;
-  cursor:pointer;
-  transition:.2s;
-  position:relative;
+  border:2px solid var(--border2);border-radius:12px;padding:18px 14px;
+  text-align:center;cursor:pointer;transition:.2s;position:relative;
 }
-.pick-card:hover{
-  border-color:var(--gold);
-  transform:translateY(-3px);
-  box-shadow:0 8px 24px rgba(240,184,74,.15);
-}
-.pick-card.chosen{
-  border-color:var(--gold);
-  background:linear-gradient(160deg,rgba(240,184,74,.15),var(--bg2));
-  box-shadow:0 0 0 3px rgba(240,184,74,.2);
-}
+.pick-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(240,184,74,.15);}
+.pick-card.chosen{border-color:var(--gold);background:linear-gradient(160deg,rgba(240,184,74,.15),var(--bg2));box-shadow:0 0 0 3px rgba(240,184,74,.2);}
+.pick-card.taken{opacity:.35;cursor:not-allowed;border-color:var(--red);}
+.pick-card.taken::after{content:'занято';position:absolute;top:8px;right:8px;font-size:.7rem;color:var(--red);font-weight:700;}
 .pick-card .emoji{font-size:2.4rem;display:block;margin-bottom:8px;}
 .pick-card .name{font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px;}
 .pick-card .bonus{color:var(--muted);font-size:.8rem;}
@@ -355,181 +169,75 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 /* PLAYERS */
 .players-list{display:flex;flex-direction:column;gap:10px;}
 .player{
-  background:var(--bg2);
-  border:1px solid var(--border2);
-  border-radius:11px;
-  padding:12px 14px;
-  transition:.2s;
-  position:relative;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:11px;padding:12px 14px;transition:.2s;position:relative;
 }
-.player.turn{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(240,184,74,.15);
-  background:linear-gradient(135deg,rgba(240,184,74,.08),var(--bg2));
-}
-.player.kicked{
-  opacity:.35;
-  border-color:var(--red);
-}
-.player.kicked::after{
-  content:'ИЗГНАН';
-  position:absolute;
-  top:12px;right:14px;
-  font-size:.7rem;
-  font-weight:800;
-  color:var(--red);
-  letter-spacing:1.5px;
-  font-family:'JetBrains Mono',monospace;
-}
-.player-name{
-  font-weight:700;
-  font-size:.95rem;
-  margin-bottom:6px;
-  display:flex;align-items:center;gap:6px;
-}
-.player-tag{
-  font-size:.65rem;
-  font-weight:700;
-  padding:2px 7px;
-  border-radius:20px;
-  background:rgba(96,165,250,.15);
-  color:var(--blue);
-  letter-spacing:.5px;
-  text-transform:uppercase;
-}
+.player.turn{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,184,74,.15);background:linear-gradient(135deg,rgba(240,184,74,.08),var(--bg2));}
+.player.kicked{opacity:.35;border-color:var(--red);}
+.player.kicked::after{content:'ИЗГНАН';position:absolute;top:12px;right:14px;font-size:.7rem;font-weight:800;color:var(--red);letter-spacing:1.5px;font-family:'JetBrains Mono',monospace;}
+.player-name{font-weight:700;font-size:.95rem;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.player-tag{font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(96,165,250,.15);color:var(--blue);letter-spacing:.5px;text-transform:uppercase;}
 .player-tag.gold{background:rgba(240,184,74,.15);color:var(--gold);}
 .player-tag.red{background:rgba(248,113,113,.15);color:var(--red);}
-.player-traits{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:4px 12px;
-  font-size:.82rem;
-}
-.player-traits .pt{
-  color:var(--muted);
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.player-traits .pt b{
-  color:var(--text);
-  font-weight:500;
-}
+.player-tag.green{background:rgba(74,222,128,.15);color:var(--green);}
+.player-traits{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:.82rem;}
+.player-traits .pt{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.player-traits .pt b{color:var(--text);font-weight:500;}
 .player-traits .pt.locked b{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
 
 /* VOTE */
-.vote-info{
-  background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));
-  border:1px solid rgba(248,113,113,.3);
-  border-radius:11px;
-  padding:14px;
-  margin-bottom:12px;
-}
+.vote-info{background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));border:1px solid rgba(248,113,113,.3);border-radius:11px;padding:14px;margin-bottom:12px;}
 .vote-info h3{margin:0 0 4px;color:var(--red);font-size:.95rem;}
 .vote-info p{margin:0;color:var(--muted);font-size:.85rem;}
 .vote-list{display:flex;flex-direction:column;gap:8px;}
 .vote-btn{
-  background:var(--card2);
-  border:1px solid var(--border2);
-  border-radius:10px;
-  padding:12px 14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:var(--text);
-  font-weight:500;
-  font-size:.92rem;
-  text-transform:none;
-  letter-spacing:0;
-  transition:.15s;
-  cursor:pointer;
+  background:var(--card2);border:1px solid var(--border2);border-radius:10px;
+  padding:12px 14px;display:flex;justify-content:space-between;align-items:center;
+  color:var(--text);font-weight:500;font-size:.92rem;text-transform:none;letter-spacing:0;
+  transition:.15s;cursor:pointer;
 }
 .vote-btn:hover:not(:disabled){border-color:var(--red);background:rgba(248,113,113,.06);}
 .vote-btn.chosen{border-color:var(--red);background:rgba(248,113,113,.1);}
 .vote-btn.self{opacity:.5;cursor:not-allowed;}
-.vote-btn .count{
-  font-family:'JetBrains Mono',monospace;
-  font-weight:700;
-  color:var(--red);
-  font-size:.9rem;
-}
+.vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.9rem;}
 
-/* TURN BANNER */
 .turn-banner{
-  padding:14px 18px;
-  border-radius:12px;
-  background:var(--card2);
-  border:1px solid var(--border2);
-  text-align:center;
-  margin-bottom:14px;
-  transition:.3s;
+  padding:14px 18px;border-radius:12px;background:var(--card2);
+  border:1px solid var(--border2);text-align:center;margin-bottom:14px;transition:.3s;
 }
 .turn-banner.my-turn{
   background:linear-gradient(135deg,rgba(240,184,74,.12),rgba(240,184,74,.04));
-  border-color:var(--gold);
-  animation:pulse 2s infinite;
+  border-color:var(--gold);animation:pulse 2s infinite;
 }
 @keyframes pulse{
   0%,100%{box-shadow:0 0 0 0 rgba(240,184,74,.3);}
   50%{box-shadow:0 0 0 12px rgba(240,184,74,0);}
 }
-.turn-banner .who{
-  font-weight:700;
-  font-size:1rem;
-  color:var(--text);
-  margin-bottom:4px;
-}
+.turn-banner .who{font-weight:700;font-size:1rem;color:var(--text);margin-bottom:4px;}
 .turn-banner.my-turn .who{color:var(--gold);}
 .turn-banner .hint{color:var(--muted);font-size:.85rem;}
 
-/* FEED */
 #feed{
-  height:220px;
-  overflow-y:auto;
-  background:var(--bg2);
-  border:1px solid var(--border2);
-  border-radius:10px;
-  padding:12px;
-  font-size:.88rem;
+  height:220px;overflow-y:auto;background:var(--bg2);
+  border:1px solid var(--border2);border-radius:10px;padding:12px;font-size:.88rem;
 }
 #feed::-webkit-scrollbar{width:8px;}
 #feed::-webkit-scrollbar-track{background:var(--bg2);}
 #feed::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
-.entry{
-  padding:7px 0;
-  border-bottom:1px solid var(--border);
-  overflow-wrap:anywhere;
-  line-height:1.5;
-}
+.entry{padding:7px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere;line-height:1.5;}
 .entry:last-child{border-bottom:0;}
 .entry .time{color:var(--dim);font-size:.75rem;margin-right:6px;font-family:'JetBrains Mono',monospace;}
 .entry .who{color:var(--blue);font-weight:600;}
 .entry .system{color:var(--gold);font-weight:700;}
 
-.win-panel{
-  background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(74,222,128,.03));
-  border:1px solid rgba(74,222,128,.4);
-  border-radius:12px;
-  padding:20px;
-  text-align:center;
-}
-.win-panel h3{
-  margin:0 0 14px;
-  color:var(--green);
-  font-size:1.2rem;
-  letter-spacing:1px;
-}
+.win-panel{background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(74,222,128,.03));border:1px solid rgba(74,222,128,.4);border-radius:12px;padding:20px;text-align:center;}
+.win-panel h3{margin:0 0 14px;color:var(--green);font-size:1.2rem;letter-spacing:1px;}
 .win-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-.win-item{
-  background:rgba(0,0,0,.3);
-  border:1px solid rgba(74,222,128,.3);
-  border-radius:9px;
-  padding:10px 14px;
-  min-width:150px;
-  text-align:left;
-}
+.win-item{background:rgba(0,0,0,.3);border:1px solid rgba(74,222,128,.3);border-radius:9px;padding:10px 14px;min-width:150px;text-align:left;}
 .win-item b{display:block;color:var(--green);font-size:.95rem;}
 .win-item small{color:var(--muted);font-size:.78rem;}
+
+hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:16px 12px 40px;}
@@ -545,7 +253,7 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
     <span class="brand-icon">☢</span>
     <div>
       <h1>БУНКЕР</h1>
-      <p>Игра на выживание · 5–12 игроков</p>
+      <p>Игра на выживание · 2–12 игроков</p>
     </div>
   </div>
   <div class="hdr-status" id="hdrStatus">
@@ -556,8 +264,8 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 
 <main>
 
-<!-- ЛОББИ / ПОДКЛЮЧЕНИЕ -->
-<section class="card" id="lobbyCard">
+<!-- ЛОББИ -->
+<section class="card">
   <div class="card-header">
     <h2>🚪 Комната</h2>
     <span class="badge" id="roomBadge">—</span>
@@ -595,7 +303,7 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
     <h2>🎴 Выбор профессии</h2>
     <span class="badge gold">1 из 3</span>
   </div>
-  <p class="muted small" style="margin-top:0;">Судьба даёт вам три пути. Выберите один — остальные характеристики выпадут случайно.</p>
+  <p class="muted small" style="margin-top:0;">Судьба даёт вам три пути. Выберите один — остальные характеристики выпадут случайно и будут уникальными.</p>
   <div class="pick-grid" id="pickGrid"></div>
   <div class="actions">
     <button id="confirmPick" disabled>Подтвердить выбор</button>
@@ -611,6 +319,7 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
   </div>
   <div id="myChar"></div>
   <div class="actions" id="myActions"></div>
+  <p class="muted small" style="margin-top:10px;">Свои характеристики вы видите всегда. Другие увидят их только после вскрытия.</p>
 </section>
 
 <!-- СЦЕНАРИЙ -->
@@ -632,7 +341,8 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
     <div class="actions">
       <button id="startGameBtn">▶️ Начать игру</button>
       <button id="nextPhaseBtn" class="secondary">⏭️ Следующая фаза</button>
-      <button id="resetGameBtn" class="danger">🔄 Сброс</button>
+      <button id="startKickBtn" class="danger">🚪 Голосование за изгнание</button>
+      <button id="resetGameBtn" class="ghost">🔄 Сброс</button>
     </div>
   </div>
 </section>
@@ -678,7 +388,7 @@ hr{border:0;border-top:1px solid var(--border);margin:16px 0;}
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* ---------- FIREBASE ---------- */
+/* ---------- FIREBASE (ваш конфиг) ---------- */
 let initializeApp, getAuth, signInAnonymously, onAuthStateChanged;
 let getDatabase, ref, set, get, update, push, onValue;
 try{
@@ -689,7 +399,6 @@ try{
   alert('Ошибка загрузки Firebase: '+e.message+'\nОткройте через localhost, а не file://');
   throw e;
 }
-
 const firebaseConfig = {
   apiKey: "AIzaSyDIkOkge0LtsNqMIVGQLi-YV43awOyS_iA",
   authDomain: "dnd-gay.firebaseapp.com",
@@ -700,13 +409,14 @@ const firebaseConfig = {
   appId: "1:610307220921:web:acad740979400b20a60268",
   measurementId: "G-ELWNLG3S4N"
 };
-let app,auth,db,uid=null,roomId=null,roomData=null;
+const app1=initializeApp(firebaseConfig);
+const auth=getAuth(app1);
+const db=getDatabase(app1);
+
+let uid=null,roomId=null,roomData=null;
 let isHost=false,unsubRoom=null,unsubLog=null;
 let myVote=null,myPickOptions=null,myPickedProfession=null;
 
-const app1=initializeApp(firebaseConfig);
-auth=getAuth(app1);
-db=getDatabase(app1);
 signInAnonymously(auth).catch(e=>setStatus('Ошибка входа: '+e.code,false));
 onAuthStateChanged(auth,user=>{
   if(!user)return;
@@ -717,92 +427,214 @@ onAuthStateChanged(auth,user=>{
 
 /* ---------- ДАННЫЕ ---------- */
 const professions = [
-  {name:'Врач',emoji:'⚕️',bonus:'лечит болезни'},
-  {name:'Инженер',emoji:'🔧',bonus:'чинит оборудование'},
-  {name:'Военный',emoji:'🎖️',bonus:'защищает бункер'},
-  {name:'Учитель',emoji:'📚',bonus:'обучает детей'},
-  {name:'Повар',emoji:'🍳',bonus:'экономит еду'},
-  {name:'Фермер',emoji:'🌾',bonus:'выращивает еду'},
-  {name:'Электрик',emoji:'⚡',bonus:'энергоснабжение'},
-  {name:'Химик',emoji:'🧪',bonus:'очищает воду'},
-  {name:'Психолог',emoji:'🧠',bonus:'снимает стресс'},
-  {name:'Охотник',emoji:'🏹',bonus:'добывает еду'},
-  {name:'Строитель',emoji:'🔨',bonus:'укрепляет стены'},
-  {name:'Медсестра',emoji:'💉',bonus:'первая помощь'},
-  {name:'Программист',emoji:'💻',bonus:'связь и системы'},
-  {name:'Священник',emoji:'✝️',bonus:'моральный дух'},
-  {name:'Пожарный',emoji:'🚒',bonus:'борьба с огнём'},
-  {name:'Биолог',emoji:'🧬',bonus:'анализ образцов'},
-  {name:'Полицейский',emoji:'🚔',bonus:'порядок в бункере'},
-  {name:'Механик',emoji:'⚙️',bonus:'починка техники'},
-  {name:'Ветеринар',emoji:'🐾',bonus:'уход за животными'},
-  {name:'Швея',emoji:'🧵',bonus:'пошив одежды'}
+  {id:'doctor',name:'Врач',emoji:'⚕️',bonus:'лечит болезни'},
+  {id:'engineer',name:'Инженер',emoji:'🔧',bonus:'чинит оборудование'},
+  {id:'soldier',name:'Военный',emoji:'🎖️',bonus:'защищает бункер'},
+  {id:'teacher',name:'Учитель',emoji:'📚',bonus:'обучает детей'},
+  {id:'cook',name:'Повар',emoji:'🍳',bonus:'экономит еду'},
+  {id:'farmer',name:'Фермер',emoji:'🌾',bonus:'выращивает еду'},
+  {id:'electric',name:'Электрик',emoji:'⚡',bonus:'энергоснабжение'},
+  {id:'chemist',name:'Химик',emoji:'🧪',bonus:'очищает воду'},
+  {id:'psych',name:'Психолог',emoji:'🧠',bonus:'снимает стресс'},
+  {id:'hunter',name:'Охотник',emoji:'🏹',bonus:'добывает еду'},
+  {id:'builder',name:'Строитель',emoji:'🔨',bonus:'укрепляет стены'},
+  {id:'nurse',name:'Медсестра',emoji:'💉',bonus:'первая помощь'},
+  {id:'coder',name:'Программист',emoji:'💻',bonus:'связь и системы'},
+  {id:'priest',name:'Священник',emoji:'✝️',bonus:'моральный дух'},
+  {id:'fireman',name:'Пожарный',emoji:'🚒',bonus:'борьба с огнём'},
+  {id:'biologist',name:'Биолог',emoji:'🧬',bonus:'анализ образцов'},
+  {id:'police',name:'Полицейский',emoji:'🚔',bonus:'порядок в бункере'},
+  {id:'mechanic',name:'Механик',emoji:'⚙️',bonus:'починка техники'},
+  {id:'vet',name:'Ветеринар',emoji:'🐾',bonus:'уход за животными'},
+  {id:'tailor',name:'Швея',emoji:'🧵',bonus:'пошив одежды'}
 ];
 const biologies = [
-  'Мужчина, 25 лет','Женщина, 32 года','Мужчина, 45 лет','Женщина, 19 лет',
-  'Мужчина, 60 лет','Женщина, 50 лет','Мужчина, 30 лет','Женщина, 27 лет',
-  'Мужчина, 38 лет','Женщина, 22 года','Мужчина, 52 года','Женщина, 41 год',
-  'Мужчина, 35 лет','Женщина, 28 лет','Мужчина, 33 года','Женщина, 36 лет'
+  {id:'m25',text:'Мужчина, 25 лет'},
+  {id:'w32',text:'Женщина, 32 года'},
+  {id:'m45',text:'Мужчина, 45 лет'},
+  {id:'w19',text:'Женщина, 19 лет'},
+  {id:'m60',text:'Мужчина, 60 лет'},
+  {id:'w50',text:'Женщина, 50 лет'},
+  {id:'m30',text:'Мужчина, 30 лет'},
+  {id:'w27',text:'Женщина, 27 лет'},
+  {id:'m38',text:'Мужчина, 38 лет'},
+  {id:'w22',text:'Женщина, 22 года'},
+  {id:'m52',text:'Мужчина, 52 года'},
+  {id:'w41',text:'Женщина, 41 год'},
+  {id:'m35',text:'Мужчина, 35 лет'},
+  {id:'w28',text:'Женщина, 28 лет'},
+  {id:'m33',text:'Мужчина, 33 года'},
+  {id:'w36',text:'Женщина, 36 лет'}
 ];
 const healths = [
-  {text:'Абсолютно здоров'},{text:'Аллергия на пыль'},{text:'Диабет 2 типа'},
-  {text:'Астма'},{text:'Близорукость -6'},{text:'Зависимость от алкоголя'},
-  {text:'Клаустрофобия'},{text:'Идеальное здоровье'},{text:'Хроническая бессонница'},
-  {text:'Аллергия на антибиотики'},{text:'Протез ноги'},{text:'Заикание'},
-  {text:'Гипертония'},{text:'Крепкое здоровье'},{text:'Панические атаки'},
-  {text:'Никотиновая зависимость'}
+  {id:'h1',text:'Абсолютно здоров'},
+  {id:'h2',text:'Аллергия на пыль'},
+  {id:'h3',text:'Диабет 2 типа'},
+  {id:'h4',text:'Астма'},
+  {id:'h5',text:'Близорукость -6'},
+  {id:'h6',text:'Зависимость от алкоголя'},
+  {id:'h7',text:'Клаустрофобия'},
+  {id:'h8',text:'Идеальное здоровье'},
+  {id:'h9',text:'Хроническая бессонница'},
+  {id:'h10',text:'Аллергия на антибиотики'},
+  {id:'h11',text:'Протез ноги'},
+  {id:'h12',text:'Заикание'},
+  {id:'h13',text:'Гипертония'},
+  {id:'h14',text:'Крепкое здоровье'},
+  {id:'h15',text:'Панические атаки'},
+  {id:'h16',text:'Никотиновая зависимость'}
 ];
 const hobbies = [
-  'Разведение кур','Стрельба из лука','Выращивание овощей','Рыбалка',
-  'Ремонт техники','Медитация','Кулинария','Шитьё','Плотничество',
-  'Изучение языков','Шахматы','Пчеловодство','Игра на гитаре','Скалолазание',
-  'Собирательство трав','Вязание','Радиолюбительство','Гончарное дело'
+  {id:'ho1',text:'Разведение кур'},
+  {id:'ho2',text:'Стрельба из лука'},
+  {id:'ho3',text:'Выращивание овощей'},
+  {id:'ho4',text:'Рыбалка'},
+  {id:'ho5',text:'Ремонт техники'},
+  {id:'ho6',text:'Медитация'},
+  {id:'ho7',text:'Кулинария'},
+  {id:'ho8',text:'Шитьё'},
+  {id:'ho9',text:'Плотничество'},
+  {id:'ho10',text:'Изучение языков'},
+  {id:'ho11',text:'Шахматы'},
+  {id:'ho12',text:'Пчеловодство'},
+  {id:'ho13',text:'Игра на гитаре'},
+  {id:'ho14',text:'Скалолазание'},
+  {id:'ho15',text:'Собирательство трав'},
+  {id:'ho16',text:'Вязание'},
+  {id:'ho17',text:'Радиолюбительство'},
+  {id:'ho18',text:'Гончарное дело'}
 ];
 const phobias = [
-  'Боязнь темноты','Боязнь замкнутых пространств','Боязнь крови',
-  'Боязнь насекомых','Боязнь воды','Клаустрофобия','Боязнь одиночества',
-  'Нет фобий','Боязнь громких звуков','Боязнь огня','Социофобия',
-  'Боязнь микробов','Акрофобия','Стальные нервы','Боязнь животных'
+  {id:'ph1',text:'Боязнь темноты'},
+  {id:'ph2',text:'Боязнь замкнутых пространств'},
+  {id:'ph3',text:'Боязнь крови'},
+  {id:'ph4',text:'Боязнь насекомых'},
+  {id:'ph5',text:'Боязнь воды'},
+  {id:'ph6',text:'Клаустрофобия'},
+  {id:'ph7',text:'Боязнь одиночества'},
+  {id:'ph8',text:'Нет фобий'},
+  {id:'ph9',text:'Боязнь громких звуков'},
+  {id:'ph10',text:'Боязнь огня'},
+  {id:'ph11',text:'Социофобия'},
+  {id:'ph12',text:'Боязнь микробов'},
+  {id:'ph13',text:'Акрофобия'},
+  {id:'ph14',text:'Стальные нервы'},
+  {id:'ph15',text:'Боязнь животных'}
 ];
 const inventories = [
-  'Аптечка','Набор инструментов','Семена овощей','Ружьё + 20 патронов',
-  'Радиостанция','Солнечная батарея','Фильтр для воды','10 банок тушёнки',
-  'Канистра бензина','Книга «Медицина без лекарств»','Спальный мешок','Мультитул',
-  'Фонарик + батарейки','Противорадиационный костюм','Дозиметр','Гитара',
-  'Топор','Лук и 30 стрел','Антибиотики','Генератор','Фотографии семьи',
-  'Учебник физики','Маска с фильтром','Палатка','Набор для шитья',
-  'Коза (живая)','Курица (живая)','Пистолет + 15 патронов','Семена пшеницы','Швейная машинка'
+  {id:'i1',text:'Аптечка'},
+  {id:'i2',text:'Набор инструментов'},
+  {id:'i3',text:'Семена овощей'},
+  {id:'i4',text:'Ружьё + 20 патронов'},
+  {id:'i5',text:'Радиостанция'},
+  {id:'i6',text:'Солнечная батарея'},
+  {id:'i7',text:'Фильтр для воды'},
+  {id:'i8',text:'10 банок тушёнки'},
+  {id:'i9',text:'Канистра бензина'},
+  {id:'i10',text:'Книга «Медицина без лекарств»'},
+  {id:'i11',text:'Спальный мешок'},
+  {id:'i12',text:'Мультитул'},
+  {id:'i13',text:'Фонарик + батарейки'},
+  {id:'i14',text:'Противорадиационный костюм'},
+  {id:'i15',text:'Дозиметр'},
+  {id:'i16',text:'Гитара'},
+  {id:'i17',text:'Топор'},
+  {id:'i18',text:'Лук и 30 стрел'},
+  {id:'i19',text:'Антибиотики'},
+  {id:'i20',text:'Генератор'},
+  {id:'i21',text:'Фотографии семьи'},
+  {id:'i22',text:'Учебник физики'},
+  {id:'i23',text:'Маска с фильтром'},
+  {id:'i24',text:'Палатка'},
+  {id:'i25',text:'Набор для шитья'},
+  {id:'i26',text:'Коза (живая)'},
+  {id:'i27',text:'Курица (живая)'},
+  {id:'i28',text:'Пистолет + 15 патронов'},
+  {id:'i29',text:'Семена пшеницы'},
+  {id:'i30',text:'Швейная машинка'}
 ];
 const specials = [
-  'Иммунитет к радиации','Опыт выживания в дикой природе','Знает дорогу к городу',
-  'Разбирается в оружии','Добывает огонь без спичек','Хорошо ладит с людьми',
-  'Медицинские знания','Очищает воду подручными средствами','Умеет охотиться',
-  'Не боится крови','Мастер на все руки','Знает язык жестов',
-  'Фотографическая память','Готовит из чего угодно','Лечит животных',
-  'Основы электротехники','Отличный рассказчик','Быстро бегает','Хорошо стреляет',
-  'Шьёт и вяжет'
+  {id:'s1',text:'Иммунитет к радиации'},
+  {id:'s2',text:'Опыт выживания в дикой природе'},
+  {id:'s3',text:'Знает дорогу к городу'},
+  {id:'s4',text:'Разбирается в оружии'},
+  {id:'s5',text:'Добывает огонь без спичек'},
+  {id:'s6',text:'Хорошо ладит с людьми'},
+  {id:'s7',text:'Медицинские знания'},
+  {id:'s8',text:'Очищает воду подручными средствами'},
+  {id:'s9',text:'Умеет охотиться'},
+  {id:'s10',text:'Не боится крови'},
+  {id:'s11',text:'Мастер на все руки'},
+  {id:'s12',text:'Знает язык жестов'},
+  {id:'s13',text:'Фотографическая память'},
+  {id:'s14',text:'Готовит из чего угодно'},
+  {id:'s15',text:'Лечит животных'},
+  {id:'s16',text:'Основы электротехники'},
+  {id:'s17',text:'Отличный рассказчик'},
+  {id:'s18',text:'Быстро бегает'},
+  {id:'s19',text:'Хорошо стреляет'},
+  {id:'s20',text:'Шьёт и вяжет'}
 ];
 
 const pick = a => a[Math.floor(Math.random()*a.length)];
-const pickTwo = a => {const b=[...a];const r=[];for(let i=0;i<2;i++){r.push(b.splice(Math.floor(Math.random()*b.length),1)[0]);}return r;};
 
-/* Три случайных профессии для выбора */
-function threeProfessions(){
-  const arr=[...professions];
+/* Возвращает 3 случайные профессии, которых нет в takenIds */
+function threeProfessions(takenIds){
+  const pool = professions.filter(p=>!takenIds.includes(p.id));
   const out=[];
-  for(let i=0;i<3;i++) out.push(arr.splice(Math.floor(Math.random()*arr.length),1)[0]);
+  const a=[...pool];
+  for(let i=0;i<3&&a.length>0;i++){
+    out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
+  }
   return out;
 }
 
-/* Генерация "остального" после выбора профессии */
-function generateRest(){
+/* Собирает все занятые id характеристик из players */
+function collectTakenIds(players){
+  const taken={
+    profession:[],biology:[],health:[],hobby:[],
+    phobia:[],inventory:[],special:[]
+  };
+  for(const p of Object.values(players||{})){
+    if(p.isHost||!p.character)continue;
+    const c=p.character;
+    if(c.profession?.id)taken.profession.push(c.profession.id);
+    if(c.biology?.id)taken.biology.push(c.biology.id);
+    if(c.health?.id)taken.health.push(c.health.id);
+    if(c.hobby?.id)taken.hobby.push(c.hobby.id);
+    if(c.phobia?.id)taken.phobia.push(c.phobia.id);
+    if(c.special?.id)taken.special.push(c.special.id);
+    if(Array.isArray(c.inventory))c.inventory.forEach(i=>{if(i?.id)taken.inventory.push(i.id);});
+  }
+  return taken;
+}
+
+/* Собирает все занятые предметы инвентаря (id) */
+function pickUniqueTwo(pool,takenIds){
+  const available=pool.filter(x=>!takenIds.includes(x.id));
+  const out=[];
+  const a=[...available];
+  for(let i=0;i<2&&a.length>0;i++){
+    out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]);
+  }
+  return out;
+}
+
+/* Генерация остальных характеристик для игрока с уникальностью */
+function generateRest(players){
+  const taken=collectTakenIds(players);
+  const bioPool=biologies.filter(x=>!taken.biology.includes(x.id));
+  const hpPool=healths.filter(x=>!taken.health.includes(x.id));
+  const hbPool=hobbies.filter(x=>!taken.hobby.includes(x.id));
+  const phPool=phobias.filter(x=>!taken.phobia.includes(x.id));
+  const spPool=specials.filter(x=>!taken.special.includes(x.id));
   return {
-    biology:pick(biologies),
-    health:pick(healths),
-    hobby:pick(hobbies),
-    phobia:pick(phobias),
-    inventory:pickTwo(inventories),
-    special:pick(specials)
+    biology: pick(bioPool.length?bioPool:biologies),
+    health: pick(hpPool.length?hpPool:healths),
+    hobby: pick(hbPool.length?hbPool:hobbies),
+    phobia: pick(phPool.length?phPool:phobias),
+    inventory: pickUniqueTwo(inventories,taken.inventory),
+    special: pick(spPool.length?spPool:specials)
   };
 }
 
@@ -814,20 +646,17 @@ function defaultRoom(hostUid,name){
     players:{
       [hostUid]:{
         uid:hostUid,name,joinedAt:Date.now(),
-        isHost:true,kicked:false,
-        character:null,
-        pickOptions:null,
-        pickedProfession:null,
-        rerolled:false,
-        revealed:null
+        isHost:true,kicked:false,character:null,
+        pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
       }
     },
     turn:{order:[],turnIndex:0,phase:'lobby',round:0,revealIndex:0},
     bunker:{capacity:0,started:false,finished:false,winners:[]},
-    votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null}
+    votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false}
   };
 }
 
+/* ---------- СЛУШАТЕЛИ ---------- */
 function startListeners(){
   for(const u of [unsubRoom,unsubLog])if(u)u();
   unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
@@ -883,23 +712,36 @@ function renderPick(){
     return;
   }
   pc.style.display='';
-  // если ещё не сгенерированы варианты — генерим
   if(!me.pickOptions){
-    const opts=threeProfessions();
+    // первый раз — генерим 3 с учётом занятых
+    const taken=collectTakenIds(roomData.players);
+    const opts=threeProfessions(taken.profession);
     update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts});
     return;
   }
-  $('pickGrid').innerHTML=me.pickOptions.map((p,i)=>`
-    <div class="pick-card ${myPickedProfession===i?'chosen':''}" data-idx="${i}">
+  // узнаём, какие профессии уже заняты другими
+  const taken=collectTakenIds(roomData.players);
+  $('pickGrid').innerHTML=me.pickOptions.map((p,i)=>{
+    const isTaken=taken.profession.includes(p.id);
+    return `<div class="pick-card ${myPickedProfession===i?'chosen':''} ${isTaken?'taken':''}" data-idx="${i}">
       <span class="emoji">${p.emoji}</span>
       <div class="name">${esc(p.name)}</div>
       <div class="bonus">${esc(p.bonus)}</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   document.querySelectorAll('.pick-card').forEach(el=>{
-    el.onclick=()=>{myPickedProfession=Number(el.dataset.idx);renderPick();};
+    el.onclick=()=>{
+      const idx=Number(el.dataset.idx);
+      const p=me.pickOptions[idx];
+      const takenNow=collectTakenIds(roomData.players);
+      if(takenNow.profession.includes(p.id))return setStatus('Эта профессия уже занята',false);
+      myPickedProfession=idx;renderPick();
+    };
   });
-  $('confirmPick').disabled=(myPickedProfession===null);
+  const curPicked=myPickedProfession!==null?me.pickOptions[myPickedProfession]:null;
+  const takenNow=collectTakenIds(roomData.players);
+  const canConfirm=curPicked&&!takenNow.profession.includes(curPicked.id);
+  $('confirmPick').disabled=!canConfirm;
   $('rerollPick').disabled=me.rerolled;
 }
 function renderMyChar(){
@@ -917,22 +759,23 @@ function renderMyChar(){
   $('revealProgress').textContent=`${revealedCount} / 7`;
   const labels={
     profession:'Профессия',biology:'Биология',health:'Здоровье',
-    hobby:'Хобби',phobia:'Фобия',inventory:'Инвентарь',special:'Спецусловие'
+    hobby:'Хобби',phobia:'Фобия',inventory:'Багаж',special:'Спецусловие'
   };
   const values={
     profession:ch.profession.emoji+' '+ch.profession.name+' ('+ch.profession.bonus+')',
-    biology:ch.biology,
+    biology:ch.biology.text,
     health:ch.health.text,
-    hobby:ch.hobby,
-    phobia:ch.phobia,
-    inventory:Array.isArray(ch.inventory)?ch.inventory.join(' · '):ch.inventory,
-    special:ch.special
+    hobby:ch.hobby.text,
+    phobia:ch.phobia.text,
+    inventory:Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'',
+    special:ch.special.text
   };
+  // свои всегда видны
   const traits=keys.map(k=>{
     const open=!!revealed[k];
-    return `<div class="trait ${open?'revealed':'locked'}">
-      <div class="trait-label">${labels[k]}</div>
-      <div class="trait-value">${open?esc(values[k]):'???'}</div>
+    return `<div class="trait revealed">
+      <div class="trait-label">${labels[k]}${open?' ✓':''}</div>
+      <div class="trait-value">${esc(values[k])}</div>
     </div>`;
   }).join('');
   $('myChar').innerHTML=`
@@ -940,27 +783,32 @@ function renderMyChar(){
       <div class="char-avatar">${ch.profession.emoji}</div>
       <div class="char-info">
         <h3>${esc(me.name)}</h3>
-        <p>${esc(ch.profession.name)}${revealed.biology?' · '+esc(ch.biology):''}</p>
+        <p>${esc(ch.profession.name)} · ${esc(ch.biology.text)}</p>
       </div>
     </div>
     <div class="traits">${traits}</div>
   `;
-  // кнопки действий
-  const myTurn=roomData.turn?.order?.[roomData.turn?.turnIndex]===uid;
-  const phase=roomData.turn?.phase;
+  // кнопки
+  const t=roomData.turn;
+  const myTurn=t?.order?.[t?.turnIndex]===uid;
+  const phase=t?.phase;
   const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
-  const nextKey=keys[roomData.turn?.revealIndex||0];
-  $('myActions').innerHTML=`
-    <button id="revealBtn" ${canReveal?'':'disabled'}>
-      ${canReveal?`🔓 Открыть: ${labels[nextKey]}`:'Ждите своего хода'}
-    </button>
-  `;
+  // Какая характеристика следующая по счёту в этом раунде
+  const nextIdx=(t?.revealIndex||0);
+  const nextKey=keys[nextIdx]||keys[0];
+  const alreadyRevealed=revealed[nextKey];
+  let label;
+  if(phase!=='reveal')label='Ждите фазы раскрытия';
+  else if(!myTurn)label='Ждите своего хода';
+  else if(alreadyRevealed)label=`«${labels[nextKey]}» уже открыта`;
+  else label=`🔓 Открыть: ${labels[nextKey]}`;
+  $('myActions').innerHTML=`<button id="revealBtn" ${canReveal&&!alreadyRevealed?'':'disabled'}>${label}</button>`;
   const rb=$('revealBtn');
-  if(rb)rb.onclick=()=>doReveal(nextKey);
+  if(rb&&canReveal&&!alreadyRevealed)rb.onclick=()=>doReveal(nextKey);
 }
 function renderScenario(){
   const ps=Object.values(roomData?.players||{}).filter(p=>!p.isHost);
-  const n=ps.length||5;
+  const n=ps.length||2;
   const capacity=Math.max(1,n-2);
   const t=roomData?.turn;
   const inGame=t?.phase!=='lobby'&&t?.phase!=='finished';
@@ -973,7 +821,7 @@ function renderScenario(){
 
 Каждый хочет жить. Каждый готов спорить. Слабые останутся снаружи.
 
-Говорите. Голосуйте. Выживайте.</div>
+Говорите. Вскрывайте карты. Голосуйте. Выживайте.</div>
       <div class="scenario-stats">
         <div class="stat"><b>${capacity}</b><span>мест</span></div>
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
@@ -1006,10 +854,12 @@ function renderTurnBanner(){
   const cur=t.order?.[t.turnIndex];
   const isMyTurn=cur===uid;
   const curName=cur?roomData.players?.[cur]?.name:'—';
+  const keys=['Профессия','Биология','Здоровье','Хобби','Фобия','Багаж','Спецусловие'];
+  const nextKey=keys[t.revealIndex||0]||'—';
   el.innerHTML=`
     <div class="turn-banner ${isMyTurn?'my-turn':''}">
       <div class="who">${isMyTurn?'👑 Ваш ход':'Ход: '+esc(curName)}</div>
-      <div class="hint">${isMyTurn?'Откройте характеристику':'Раунд '+t.round+' · ждите своей очереди'}</div>
+      <div class="hint">${isMyTurn?'Откройте: '+nextKey:'Раунд '+t.round+' · ждите своей очереди'}</div>
     </div>
   `;
 }
@@ -1023,31 +873,34 @@ function renderPlayers(){
     const isTurn=t?.order?.[t?.turnIndex]===p.uid;
     const showAll=p.kicked||t?.phase==='finished';
     const r=p.revealed||{};
+    const me=p.uid===uid;
     const row=(label,val,key)=>{
-      const open=showAll||r[key];
+      // свои видим всегда; чужие — только если вскрыты
+      const open=me||showAll||r[key];
       return `<span class="pt ${open?'':'locked'}">${label}: <b>${open?esc(val):'—'}</b></span>`;
     };
     if(!ch){
       return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
-        <div class="player-name">${esc(p.name)}<span class="player-tag">выбирает профессию</span></div>
+        <div class="player-name">${esc(p.name)}${me?'<span class="player-tag">вы</span>':''}<span class="player-tag">выбирает профессию</span></div>
         <div class="small muted">Персонаж ещё не сформирован</div>
       </div>`;
     }
-    const invText=Array.isArray(ch.inventory)?ch.inventory.join(', '):ch.inventory;
+    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
     return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
       <div class="player-name">
         ${esc(p.name)}
         ${isTurn?'<span class="player-tag gold">▶ ХОД</span>':''}
-        ${p.uid===uid?'<span class="player-tag">вы</span>':''}
+        ${me?'<span class="player-tag">вы</span>':''}
+        ${p.kicked?'<span class="player-tag red">изгнан</span>':''}
       </div>
       <div class="player-traits">
         ${row('Проф',ch.profession.name,'profession')}
-        ${row('Био',ch.biology,'biology')}
+        ${row('Био',ch.biology.text,'biology')}
         ${row('Здор',ch.health.text,'health')}
-        ${row('Хобби',ch.hobby,'hobby')}
-        ${row('Фобия',ch.phobia,'phobia')}
-        ${row('Инв',invText,'inventory')}
-        ${row('Спец',ch.special,'special')}
+        ${row('Хобби',ch.hobby.text,'hobby')}
+        ${row('Фобия',ch.phobia.text,'phobia')}
+        ${row('Багаж',invText,'inventory')}
+        ${row('Спец',ch.special.text,'special')}
       </div>
     </div>`;
   }).join('')||'<p class="muted small">Пока никого нет</p>';
@@ -1156,7 +1009,10 @@ $('confirmPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
   const prof=me.pickOptions[myPickedProfession];
-  const rest=generateRest();
+  // проверка на занятость (мог кто-то опередить)
+  const takenNow=collectTakenIds(roomData.players);
+  if(takenNow.profession.includes(prof.id))return setStatus('Эту профессию только что заняли',false);
+  const rest=generateRest(roomData.players);
   const character={profession:prof,...rest};
   const revealed={profession:false,biology:false,health:false,hobby:false,phobia:false,inventory:false,special:false};
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
@@ -1167,7 +1023,8 @@ $('confirmPick').onclick=async()=>{
 $('rerollPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||me.rerolled)return;
-  const opts=threeProfessions();
+  const taken=collectTakenIds(roomData.players);
+  const opts=threeProfessions(taken.profession);
   myPickedProfession=null;
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts,rerolled:true});
   await addLog('перебросил варианты профессий',me.name);
@@ -1182,22 +1039,27 @@ async function doReveal(key){
   if(!me?.character)return;
   if(me.revealed?.[key])return setStatus('Уже открыто',false);
   await update(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
-  await addLog(`открывает «${key}»`,me.name);
-  // следующий
+  const labels={profession:'Профессию',biology:'Биологию',health:'Здоровье',hobby:'Хобби',phobia:'Фобию',inventory:'Багаж',special:'Спецусловие'};
+  await addLog(`вскрывает: ${labels[key]||key}`,me.name);
+  // следующий живой
   const aliveOrder=t.order.filter(u=>roomData.players?.[u]&&!roomData.players[u].kicked);
   const curAliveIdx=aliveOrder.indexOf(uid);
   const nextReveal=t.revealIndex+1;
-  if(curAliveIdx===aliveOrder.length-1||nextReveal>=7){
-    // раунд раскрытия закончен — голосование
+  // если это был последний живой ИЛИ все 7 характеристик открыты — фаза голосования
+  const allRevealed=aliveOrder.every(u=>{
+    const p=roomData.players[u];
+    const r=p.revealed||{};
+    return r.profession&&r.biology&&r.health&&r.hobby&&r.phobia&&r.inventory&&r.special;
+  });
+  if(allRevealed||nextReveal>=7){
     const candidates=aliveOrder;
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
     await update(ref(db,`rooms/${roomId}/votes`),{
-      active:true,type:'action',label:'Проверка бункера',
-      kick:false,candidates,votes:{},finished:false,result:null
+      active:true,type:'action',label:'Проверка бункера',kick:false,
+      candidates,votes:{},finished:false,result:null
     });
-    await addLog(`Раунд ${t.round}: голосование — кто проведёт проверку бункера?`);
+    await addLog(`Раунд ${t.round}: голосование — кто проведёт проверку бункера?`,'system');
   } else {
-    // следующий живой
     let idx=t.turnIndex;
     for(let i=0;i<aliveOrder.length;i++){
       idx=(idx+1)%t.order.length;
@@ -1248,7 +1110,7 @@ async function finishVote(){
   } else {
     await addLog('🤝 Ничья — никто не выбран','system');
   }
-  // проверка на конец игры
+  // проверка на конец
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
   const players=Object.values(all).filter(p=>!p.isHost);
@@ -1261,18 +1123,20 @@ async function finishVote(){
     await addLog(`🏆 Игра окончена! Выжившие: ${winners.map(w=>w.name).join(', ')}`,'system');
     return;
   }
-  // если было изгнание — начинаем новый раунд
+  // следующий раунд или продолжение
+  const newOrder=alive.map(p=>p.uid);
   if(v.kick){
-    const newOrder=alive.map(p=>p.uid);
+    // после изгнания — новый раунд с начала
     await update(ref(db,`rooms/${roomId}/turn`),{
       order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1,revealIndex:0
     });
+    // сбрасываем revealed? нет — характеристики уже открыты у оставшихся
+    // сбрасываем только того, кого изгнали — не нужно
   } else {
-    // обычное голосование за действие — продолжаем
-    const curRound=roomData.turn?.round||1;
-    const newOrder=alive.map(p=>p.uid);
+    // обычное действие — продолжаем текущий раунд
     await update(ref(db,`rooms/${roomId}/turn`),{
-      order:newOrder,turnIndex:0,phase:'reveal',round:curRound,revealIndex:roomData.turn?.revealIndex||0
+      order:newOrder,turnIndex:0,phase:'reveal',
+      round:roomData.turn?.round||1,revealIndex:roomData.turn?.revealIndex||0
     });
   }
 }
@@ -1281,7 +1145,7 @@ async function finishVote(){
 $('startGameBtn').onclick=async()=>{
   if(!isHost)return;
   const ps=Object.values(roomData.players||{}).filter(p=>!p.isHost);
-  if(ps.length<5)return setStatus('Нужно минимум 5 игроков',false);
+  if(ps.length<2)return setStatus('Нужно минимум 2 игрока',false);
   if(ps.length>12)return setStatus('Максимум 12 игроков',false);
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus(`Ещё не выбрали профессию: ${without.map(p=>p.name).join(', ')}`,false);
@@ -1308,6 +1172,17 @@ $('nextPhaseBtn').onclick=async()=>{
   } else if(t.phase==='vote'){
     await finishVote();
   }
+};
+$('startKickBtn').onclick=async()=>{
+  if(!isHost)return;
+  const alive=Object.values(roomData.players||{}).filter(p=>!p.isHost&&!p.kicked);
+  if(alive.length<=2)return setStatus('Слишком мало игроков для изгнания',false);
+  await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
+  await update(ref(db,`rooms/${roomId}/votes`),{
+    active:true,type:'kick',label:'Изгнание',kick:true,
+    candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null
+  });
+  await addLog('🚪 Голосование за изгнание игрока!','system');
 };
 $('resetGameBtn').onclick=async()=>{
   if(!isHost||!confirm('Сбросить игру? Все вернутся в лобби.'))return;
