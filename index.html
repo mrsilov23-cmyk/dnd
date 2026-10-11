@@ -9,10 +9,7 @@
 <style>
 :root{
   --ink:#1a1408;
-  --parchment:#e8d9b8;
-  --parchment-dark:#c9b48a;
   --bg-deep:#0a0806;
-  --bg:#151109;
   --bg2:#1e180e;
   --panel:#241c10;
   --panel2:#2e2515;
@@ -23,7 +20,6 @@
   --blood-bright:#c34a4a;
   --emerald:#5a8a5a;
   --emerald-bright:#7fb87f;
-  --shadow:#000;
   --text:#e8dcc0;
   --muted:#9a8b6a;
   --purple:#9a7ac9;
@@ -73,95 +69,43 @@ h1{
   color:var(--gold-bright);
   font-size:clamp(1.5rem,4.5vw,2.6rem);
   letter-spacing:2px;
-  text-shadow:0 0 30px rgba(212,169,74,.35), 0 2px 4px var(--shadow);
+  text-shadow:0 0 30px rgba(212,169,74,.35), 0 2px 4px #000;
 }
-header p{
-  color:var(--muted);
-  margin:8px 0 0;
-  font-style:italic;
-  letter-spacing:1px;
-}
+header p{color:var(--muted);margin:8px 0 0;font-style:italic;letter-spacing:1px;}
 main{
-  max-width:1240px;
-  margin:24px auto;
-  padding:0 14px 40px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-  position:relative;
-  z-index:1;
+  max-width:1240px;margin:24px auto;padding:0 14px 40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
+  position:relative;z-index:1;
 }
 .panel{
   background:linear-gradient(160deg, var(--panel), var(--bg2));
   border:1px solid var(--gold-dim);
-  border-radius:4px;
-  padding:20px;
-  min-width:0;
-  position:relative;
+  border-radius:4px;padding:20px;min-width:0;position:relative;
   box-shadow:inset 0 0 60px rgba(0,0,0,.6), 0 4px 20px rgba(0,0,0,.5);
 }
 .panel::before{
-  content:'';
-  position:absolute;inset:6px;
-  border:1px solid rgba(212,169,74,.15);
-  border-radius:2px;
-  pointer-events:none;
+  content:'';position:absolute;inset:6px;
+  border:1px solid rgba(212,169,74,.15);border-radius:2px;pointer-events:none;
 }
 h2{
-  font-family:'Cinzel', serif;
-  font-size:1.1rem;
-  color:var(--gold-bright);
-  margin:0 0 14px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  border-bottom:1px solid var(--gold-dim);
-  padding-bottom:8px;
+  font-family:'Cinzel', serif;font-size:1.1rem;color:var(--gold-bright);
+  margin:0 0 14px;letter-spacing:2px;text-transform:uppercase;
+  border-bottom:1px solid var(--gold-dim);padding-bottom:8px;
   display:flex;align-items:center;gap:8px;
 }
-h3{
-  font-family:'Cinzel', serif;
-  font-size:.95rem;
-  color:var(--gold);
-  margin:16px 0 8px;
-  letter-spacing:1.5px;
-}
-label{
-  display:block;
-  color:var(--muted);
-  font-size:.85rem;
-  margin:10px 0 4px;
-  font-style:italic;
-  letter-spacing:.5px;
-}
+h3{font-family:'Cinzel', serif;font-size:.95rem;color:var(--gold);margin:16px 0 8px;letter-spacing:1.5px;}
+label{display:block;color:var(--muted);font-size:.85rem;margin:10px 0 4px;font-style:italic;letter-spacing:.5px;}
 input,select,button{
-  font:inherit;
-  border-radius:3px;
-  border:1px solid var(--gold-dim);
-  padding:10px 12px;
-  font-family:'Cormorant Garamond', serif;
+  font:inherit;border-radius:3px;border:1px solid var(--gold-dim);
+  padding:10px 12px;font-family:'Cormorant Garamond', serif;
 }
-input,select{
-  background:#0d0a06;
-  color:var(--text);
-  width:100%;
-  font-size:1rem;
-}
-input:focus,select:focus{
-  outline:none;
-  border-color:var(--gold);
-  box-shadow:0 0 0 2px rgba(212,169,74,.2);
-}
+input,select{background:#0d0a06;color:var(--text);width:100%;font-size:1rem;}
+input:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,169,74,.2);}
 button{
-  cursor:pointer;
-  background:linear-gradient(180deg, var(--gold), var(--gold-dim));
-  color:var(--ink);
-  font-weight:600;
-  border:1px solid var(--gold-bright);
-  letter-spacing:.5px;
-  transition:.2s;
-  font-family:'Cinzel', serif;
-  font-size:.85rem;
-  text-transform:uppercase;
+  cursor:pointer;background:linear-gradient(180deg, var(--gold), var(--gold-dim));
+  color:var(--ink);font-weight:600;border:1px solid var(--gold-bright);
+  letter-spacing:.5px;transition:.2s;
+  font-family:'Cinzel', serif;font-size:.85rem;text-transform:uppercase;
 }
 button:hover:not(:disabled){
   background:linear-gradient(180deg, var(--gold-bright), var(--gold));
@@ -170,19 +114,16 @@ button:hover:not(:disabled){
 button:disabled{opacity:.35;cursor:not-allowed}
 button.secondary{
   background:linear-gradient(180deg, var(--panel2), var(--panel));
-  color:var(--text);
-  border:1px solid var(--gold-dim);
+  color:var(--text);border:1px solid var(--gold-dim);
 }
 button.secondary:hover:not(:disabled){
-  border-color:var(--gold);
-  color:var(--gold-bright);
+  border-color:var(--gold);color:var(--gold-bright);
   background:linear-gradient(180deg, var(--panel2), #1a1408);
   box-shadow:0 0 12px rgba(212,169,74,.2);
 }
 button.danger{
   background:linear-gradient(180deg, var(--blood-bright), var(--blood));
-  color:#ffe0e0;
-  border-color:var(--blood-bright);
+  color:#ffe0e0;border-color:var(--blood-bright);
 }
 .row{display:flex;gap:10px;align-items:end}
 .row>*{flex:1;min-width:0}
@@ -190,44 +131,22 @@ button.danger{
 .actions button{flex:1;min-width:110px}
 .muted{color:var(--muted)}
 .small{font-size:.85rem}
-.status{
-  padding:10px 12px;
-  border-radius:3px;
-  background:rgba(212,169,74,.06);
-  border:1px solid var(--gold-dim);
-  margin:10px 0;
-  font-style:italic;
-}
+.status{padding:10px 12px;border-radius:3px;background:rgba(212,169,74,.06);border:1px solid var(--gold-dim);margin:10px 0;font-style:italic;}
 .good{color:var(--emerald-bright)}
 .bad{color:var(--blood-bright)}
 
-#diag{
-  margin:14px auto 0;
-  max-width:920px;
-  text-align:left;
-  background:#050402;
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:12px;
-  font:12px/1.6 'Courier New', monospace;
-  color:var(--muted);
-}
+#diag{margin:14px auto 0;max-width:920px;text-align:left;background:#050402;border:1px solid var(--gold-dim);border-radius:3px;padding:12px;font:12px/1.6 'Courier New', monospace;color:var(--muted);}
 #diag b{color:var(--gold)}
 
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .hero{
   background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:12px;
-  cursor:pointer;
-  transition:.2s;
-  position:relative;
+  border:1px solid var(--gold-dim);border-radius:3px;padding:12px;
+  cursor:pointer;transition:.2s;position:relative;
 }
 .hero:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(212,169,74,.2)}
 .hero.active{
-  border:2px solid var(--gold-bright);
-  padding:11px;
+  border:2px solid var(--gold-bright);padding:11px;
   background:linear-gradient(160deg, #3a2e18, var(--panel2));
   box-shadow:0 0 24px rgba(212,169,74,.4), inset 0 0 20px rgba(212,169,74,.1);
 }
@@ -235,58 +154,60 @@ button.danger{
 .hero small{color:var(--muted);font-size:.82rem}
 
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.stat{
-  text-align:center;
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:10px 6px;
-}
+.stat{text-align:center;background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);border-radius:3px;padding:10px 6px;}
 .stat b{display:block;color:var(--gold-bright);font-size:1.3rem;font-family:'Cinzel', serif}
 
+/* КАРТИНКА ЛОКАЦИИ */
 .scene{
   background:linear-gradient(160deg, #2a2011 0%, #1a1409 100%);
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:22px;
-  margin-bottom:14px;
-  position:relative;
+  border:1px solid var(--gold-dim);border-radius:3px;
+  margin-bottom:14px;position:relative;
   box-shadow:inset 0 0 40px rgba(0,0,0,.5);
+  overflow:hidden;
 }
-.scene::before{content:'❧';position:absolute;top:6px;left:10px;color:var(--gold-dim);font-size:14px;}
-.scene::after{content:'❧';position:absolute;bottom:6px;right:10px;color:var(--gold-dim);font-size:14px;transform:scaleX(-1);}
-.scene-title{
+.scene-illustration{
+  width:100%;height:280px;
+  position:relative;overflow:hidden;
+  border-bottom:2px solid var(--gold-dim);
+  background:#0a0806;
+}
+.scene-illustration svg{
+  width:100%;height:100%;display:block;
+}
+.scene-illustration::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(10,8,6,.9));
+  pointer-events:none;
+}
+.scene-title-overlay{
+  position:absolute;
+  bottom:12px;left:0;right:0;
+  text-align:center;
   font-family:'Cinzel', serif;
   color:var(--gold-bright);
-  font-size:1.15rem;
-  letter-spacing:2px;
-  margin-bottom:12px;
-  text-align:center;
-  border-bottom:1px solid var(--gold-dim);
-  padding-bottom:8px;
+  font-size:1.35rem;
+  letter-spacing:3px;
+  text-shadow:0 0 20px rgba(212,169,74,.8), 0 2px 6px #000;
+  z-index:2;
+  padding:0 12px;
 }
+.scene-content{padding:22px;position:relative}
+.scene-content::before{content:'❧';position:absolute;top:6px;left:10px;color:var(--gold-dim);font-size:14px;}
+.scene-content::after{content:'❧';position:absolute;bottom:6px;right:10px;color:var(--gold-dim);font-size:14px;transform:scaleX(-1);}
 .scene-text{color:var(--text);line-height:1.7;white-space:pre-wrap;font-size:1.05rem;font-style:italic;margin-bottom:16px;}
 .choices{display:flex;flex-direction:column;gap:10px}
 .choice{
   background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:14px 16px;
-  cursor:pointer;
-  text-align:left;
-  color:var(--text);
-  font-weight:400;
-  font-family:'Cormorant Garamond', serif;
-  font-size:1.02rem;
-  transition:.2s;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  text-transform:none;
-  letter-spacing:0;
+  border:1px solid var(--gold-dim);border-radius:3px;
+  padding:14px 16px;cursor:pointer;text-align:left;color:var(--text);
+  font-weight:400;font-family:'Cormorant Garamond', serif;font-size:1.02rem;
+  transition:.2s;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  text-transform:none;letter-spacing:0;
 }
-.choice:hover:not(:disabled){border-color:var(--gold);background:linear-gradient(160deg, #3a2e18, var(--panel2));box-shadow:0 0 16px rgba(212,169,74,.25);}
+.choice:hover:not(:disabled){
+  border-color:var(--gold);background:linear-gradient(160deg, #3a2e18, var(--panel2));
+  box-shadow:0 0 16px rgba(212,169,74,.25);
+}
 .choice:disabled{opacity:.4;cursor:not-allowed}
 .choice .check{font-size:.8rem;color:var(--purple);white-space:nowrap;font-family:'Cinzel', serif;letter-spacing:1px;}
 .choice .arrow{color:var(--gold);font-size:1.2rem}
@@ -295,12 +216,8 @@ button.danger{
   background:
     linear-gradient(90deg, transparent, rgba(212,169,74,.15), transparent),
     linear-gradient(160deg, var(--panel2), var(--bg2));
-  border-top:1px solid var(--gold);
-  border-bottom:1px solid var(--gold);
-  padding:14px 18px;
-  margin-bottom:14px;
-  text-align:center;
-  position:relative;
+  border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);
+  padding:14px 18px;margin-bottom:14px;text-align:center;position:relative;
 }
 .turn-banner .who{font-family:'Cinzel', serif;color:var(--gold-bright);font-size:1.1rem;letter-spacing:2px;}
 .turn-banner .hint{color:var(--muted);font-style:italic;font-size:.9rem;margin-top:4px;}
@@ -324,12 +241,10 @@ button.danger{
 .turn-banner .crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);color:var(--gold-bright);background:var(--bg-deep);padding:0 10px;font-size:18px;}
 .turn-banner.enemy-turn .crown{color:var(--blood-bright)}
 
+/* КУБИК */
 .dice-overlay{
-  position:fixed;inset:0;
-  background:rgba(5,4,2,.85);
-  backdrop-filter:blur(4px);
-  z-index:100;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+  position:fixed;inset:0;background:rgba(5,4,2,.85);backdrop-filter:blur(4px);
+  z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
   opacity:0;pointer-events:none;transition:opacity .3s;
 }
 .dice-overlay.show{opacity:1;pointer-events:auto}
@@ -358,23 +273,14 @@ button.danger{
 .dice-verdict.bad{color:var(--blood-bright);text-shadow:0 0 30px rgba(195,74,74,.6)}
 .dice-continue{margin-top:10px;padding:12px 40px;font-size:1rem;}
 
-.combat{
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:16px;
-  background:linear-gradient(160deg, #1e1410, #0e0a07);
-  margin-bottom:14px;
-}
+/* БОЙ */
+.combat{border:1px solid var(--gold-dim);border-radius:3px;padding:16px;background:linear-gradient(160deg, #1e1410, #0e0a07);margin-bottom:14px;}
 .combat.active{border-color:var(--blood-bright);box-shadow:0 0 24px rgba(138,46,46,.25)}
 .combat-round{font-family:'Cinzel', serif;color:var(--blood-bright);letter-spacing:2px;margin-bottom:12px;text-align:center;border-bottom:1px solid var(--blood);padding-bottom:8px;font-size:1.05rem;}
 .combatant{
-  display:flex;align-items:center;gap:12px;
-  padding:10px 12px;
-  border-radius:3px;
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  margin:6px 0;
-  border:1px solid var(--gold-dim);
-  transition:.2s;
+  display:flex;align-items:center;gap:12px;padding:10px 12px;
+  border-radius:3px;background:linear-gradient(160deg, var(--panel2), var(--bg2));
+  margin:6px 0;border:1px solid var(--gold-dim);transition:.2s;
 }
 .combatant.turn{border-color:var(--gold-bright);background:linear-gradient(160deg, #3a2e18, var(--panel2));box-shadow:0 0 20px rgba(212,169,74,.3);}
 .combatant.enemy-turn{border-color:var(--blood-bright);background:linear-gradient(160deg, #3a1818, var(--panel2));box-shadow:0 0 20px rgba(195,74,74,.4);}
@@ -387,36 +293,21 @@ button.danger{
 .combatant .hpbar i{display:block;height:100%;transition:.4s;box-shadow:inset 0 0 8px rgba(0,0,0,.6);}
 .combatant .hp-text{font-size:.82rem;color:var(--muted);margin-top:3px;font-style:italic}
 .combatant .target-btn{
-  background:transparent;
-  border:1px solid var(--gold-dim);
-  color:var(--text);
-  padding:6px 12px;
-  font-size:.8rem;
-  border-radius:3px;
-  font-family:'Cinzel', serif;
-  letter-spacing:1px;
+  background:transparent;border:1px solid var(--gold-dim);color:var(--text);
+  padding:6px 12px;font-size:.8rem;border-radius:3px;
+  font-family:'Cinzel', serif;letter-spacing:1px;
 }
 .combatant .target-btn.selected{
-  border-color:var(--gold-bright);
-  background:rgba(212,169,74,.15);
-  color:var(--gold-bright);
-  box-shadow:0 0 12px rgba(212,169,74,.4);
+  border-color:var(--gold-bright);background:rgba(212,169,74,.15);
+  color:var(--gold-bright);box-shadow:0 0 12px rgba(212,169,74,.4);
 }
-
 .combat-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .combat-actions button{min-width:0;padding:12px 10px}
 .ability{
   background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--purple);
-  border-radius:3px;
-  padding:10px 12px;
-  cursor:pointer;
-  text-align:left;
-  color:var(--text);
-  font-weight:400;
-  font-family:'Cormorant Garamond', serif;
-  text-transform:none;
-  letter-spacing:0;
+  border:1px solid var(--purple);border-radius:3px;padding:10px 12px;
+  cursor:pointer;text-align:left;color:var(--text);font-weight:400;
+  font-family:'Cormorant Garamond', serif;text-transform:none;letter-spacing:0;
 }
 .ability:disabled{opacity:.4;cursor:not-allowed}
 .ability:hover:not(:disabled){border-color:var(--gold);box-shadow:0 0 12px rgba(154,122,201,.4)}
@@ -429,83 +320,29 @@ button.danger{
 .hero-hp i{display:block;height:100%;background:linear-gradient(90deg, var(--emerald), var(--emerald-bright));transition:.4s}
 
 .inv{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
-.inv span{
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:4px 9px;
-  font-size:.82rem;
-  font-style:italic;
-}
+.inv span{background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);border-radius:3px;padding:4px 9px;font-size:.82rem;font-style:italic;}
 
-.cond{
-  font-size:.72rem;
-  padding:2px 7px;
-  border-radius:2px;
-  margin-left:4px;
-  display:inline-block;
-  font-family:'Cinzel', serif;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
+.cond{font-size:.72rem;padding:2px 7px;border-radius:2px;margin-left:4px;display:inline-block;font-family:'Cinzel', serif;letter-spacing:1px;text-transform:uppercase;}
 .cond.poison{background:rgba(154,122,201,.2);color:#c9a0ff;border:1px solid var(--purple)}
 .cond.burn{background:rgba(195,74,74,.2);color:#ff9e6b;border:1px solid var(--blood-bright)}
 .cond.stun{background:rgba(212,169,74,.15);color:#ffe06b;border:1px solid var(--gold)}
 
-#feed{
-  height:240px;
-  overflow:auto;
-  background:#0a0604;
-  border:1px solid var(--gold-dim);
-  border-radius:3px;
-  padding:12px;
-  font-size:.92rem;
-}
+#feed{height:240px;overflow:auto;background:#0a0604;border:1px solid var(--gold-dim);border-radius:3px;padding:12px;font-size:.92rem;}
 .entry{padding:7px 0;border-bottom:1px dashed rgba(212,169,74,.15);overflow-wrap:anywhere;line-height:1.5;}
 .entry b{color:var(--gold-bright);font-family:'Cinzel', serif;font-size:.85rem;letter-spacing:.5px}
 .entry .muted{font-size:.78rem}
 
-.player{
-  padding:9px 11px;
-  border-radius:3px;
-  background:linear-gradient(160deg, var(--panel2), var(--bg2));
-  border:1px solid var(--gold-dim);
-  margin:6px 0;
-  overflow-wrap:anywhere;
-}
+.player{padding:9px 11px;border-radius:3px;background:linear-gradient(160deg, var(--panel2), var(--bg2));border:1px solid var(--gold-dim);margin:6px 0;overflow-wrap:anywhere;}
 .tag{font-size:.72rem;color:var(--gold-bright);margin-left:6px;font-family:'Cinzel', serif;letter-spacing:1px;}
 
-.notice{
-  background:rgba(212,169,74,.06);
-  border:1px solid var(--gold-dim);
-  border-left:3px solid var(--gold);
-  padding:12px 14px;
-  border-radius:3px;
-  font-size:.92rem;
-  font-style:italic;
-}
+.notice{background:rgba(212,169,74,.06);border:1px solid var(--gold-dim);border-left:3px solid var(--gold);padding:12px 14px;border-radius:3px;font-size:.92rem;font-style:italic;}
 .hidden{display:none!important}
 hr{border:0;border-top:1px solid var(--gold-dim);margin:18px 0;opacity:.4}
-footer{
-  text-align:center;
-  color:var(--muted);
-  font-size:.85rem;
-  padding:0 12px 30px;
-  font-style:italic;
-  position:relative;
-  z-index:1;
-}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px 30px;font-style:italic;position:relative;z-index:1;}
 
 .scene-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .scene-picker button{flex:1;min-width:130px;font-size:.78rem;padding:9px}
-
-.master-panel{
-  border:1px dashed var(--gold-dim);
-  border-radius:3px;
-  padding:12px;
-  margin-top:10px;
-  background:rgba(212,169,74,.03);
-}
+.master-panel{border:1px dashed var(--gold-dim);border-radius:3px;padding:12px;margin-top:10px;background:rgba(212,169,74,.03);}
 
 @media(max-width:800px){
   main{grid-template-columns:1fr}
@@ -514,6 +351,8 @@ footer{
   .combat-actions{grid-template-columns:1fr}
   .d20{width:140px;height:140px}
   .d20 .num{font-size:2.8rem}
+  .scene-illustration{height:200px}
+  .scene-title-overlay{font-size:1.05rem;letter-spacing:2px}
 }
 </style>
 </head>
@@ -574,8 +413,10 @@ footer{
 <div id="turnBanner"></div>
 <div id="sceneContainer">
   <div class="scene">
-    <div class="scene-title">🏘️ Серебряный Брод</div>
-    <div class="scene-text">Создайте комнату или подключитесь, чтобы начать приключение.</div>
+    <div class="scene-illustration" id="sceneIllus"></div>
+    <div class="scene-content">
+      <div class="scene-text">Создайте комнату или подключитесь, чтобы начать приключение.</div>
+    </div>
   </div>
 </div>
 <div id="masterScene" class="hidden">
@@ -587,7 +428,7 @@ footer{
     <div class="scene-picker" id="scenePicker"></div>
     <div class="actions" style="margin-top:10px">
       <button id="masterSkipTurn" class="secondary">⏭️ Пропустить ход</button>
-      <button id="masterForceCombat" class="secondary">⚔️ Начать бой (goblin ×2)</button>
+      <button id="masterForceCombat" class="secondary">⚔️ Начать бой (случайно)</button>
       <button id="restBtn" class="secondary">🔥 Долгий отдых</button>
     </div>
   </div>
@@ -617,7 +458,7 @@ footer{
 <section class="panel">
 <h2>📖 Свиток мастера</h2>
 <p style="font-style:italic">В деревне Серебряный Брод пропадают жители, а вода в реке чернеет. Мэр обещает награду тому, кто раскроет тайну.</p>
-<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Мастер описывает последствия.</div>
+<div class="notice"><b>Правило:</b> d20 + бонус ≥ сложность — успех. Натуральная 20 — крит, 1 — осложнение. Каждый вход в локацию случайно определяет врагов, лут и события.</div>
 <h3>Ветки сюжета</h3>
 <ul class="small" style="line-height:1.8">
 <li><b>Расследование:</b> таверна → допрос → следы на севере.</li>
@@ -657,11 +498,11 @@ const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 
 /* ---------- Firebase ---------- */
 let initializeApp, getAuth, signInAnonymously, onAuthStateChanged;
-let getDatabase, ref, set, get, update, push, onValue, runTransaction;
+let getDatabase, ref, set, get, update, push, onValue;
 try{
   ({initializeApp}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"));
   ({getAuth,signInAnonymously,onAuthStateChanged}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"));
-  ({getDatabase,ref,set,get,update,push,onValue,runTransaction}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
+  ({getDatabase,ref,set,get,update,push,onValue}=await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"));
   d('d1').innerHTML='✅ Модули Firebase загружены';
 }catch(e){d('d1').innerHTML='❌ '+e.message;throw e;}
 
@@ -715,65 +556,360 @@ const enemyTypes = {
   wolf:{name:'Лесной волк',emoji:'🐺',hp:12,atk:3,ac:12,xp:35,gold:3},
   bandit:{name:'Бандит',emoji:'🗡️',hp:14,atk:3,ac:12,xp:45,gold:15},
   troll:{name:'Тролль',emoji:'🧟',hp:26,atk:5,ac:13,xp:90,gold:30},
+  spider:{name:'Гигантский паук',emoji:'🕷️',hp:10,atk:3,ac:12,xp:30,gold:8},
+  skeleton:{name:'Скелет',emoji:'💀',hp:9,atk:2,ac:11,xp:20,gold:4},
+  ghost:{name:'Призрак',emoji:'👻',hp:11,atk:4,ac:13,xp:50,gold:20},
   dragon:{name:'Чёрный дракон',emoji:'🐉',hp:50,atk:6,ac:16,xp:300,gold:250}
 };
+
+/* ---------- КАРТИНКИ ЛОКАЦИЙ (SVG) ---------- */
+const illustrations = {
+  village: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="vsky" cx="50%" cy="20%" r="80%">
+          <stop offset="0%" stop-color="#3a2a15"/>
+          <stop offset="60%" stop-color="#1a1208"/>
+          <stop offset="100%" stop-color="#0a0806"/>
+        </radialGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#vsky)"/>
+      <circle cx="650" cy="60" r="22" fill="#f0cd7a" opacity="0.9"/>
+      <circle cx="650" cy="60" r="35" fill="#d4a94a" opacity="0.15"/>
+      <path d="M0 200 Q 200 170 400 190 T 800 180 L800 280 L0 280 Z" fill="#1a1409"/>
+      <path d="M0 220 Q 200 200 400 215 T 800 210 L800 280 L0 280 Z" fill="#0a0806"/>
+      <!-- дома -->
+      <g fill="#2a1e10" stroke="#4a3a1a" stroke-width="1.5">
+        <polygon points="80,180 110,150 140,180"/>
+        <rect x="85" y="180" width="50" height="50" fill="#1a1409"/>
+        <polygon points="200,175 235,140 270,175"/>
+        <rect x="205" y="175" width="60" height="55" fill="#1a1409"/>
+        <polygon points="350,185 380,160 410,185"/>
+        <rect x="355" y="185" width="50" height="45" fill="#1a1409"/>
+      </g>
+      <!-- окна -->
+      <g fill="#f0cd7a" opacity="0.7">
+        <rect x="100" y="195" width="8" height="10"/>
+        <rect x="220" y="190" width="8" height="10"/>
+        <rect x="240" y="190" width="8" height="10"/>
+        <rect x="370" y="200" width="8" height="10"/>
+      </g>
+      <!-- дорога -->
+      <path d="M0 260 Q 400 240 800 260" stroke="#4a3a1a" stroke-width="3" fill="none" opacity="0.5"/>
+      <!-- река -->
+      <path d="M0 265 Q 200 255 400 268 T 800 262" stroke="#2a3a4a" stroke-width="6" fill="none" opacity="0.6"/>
+    </svg>
+  `,
+  tavern: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="tsky" cx="50%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="#5a3a15"/>
+          <stop offset="60%" stop-color="#2a1808"/>
+          <stop offset="100%" stop-color="#0a0604"/>
+        </radialGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#tsky)"/>
+      <!-- свеча -->
+      <g transform="translate(400,90)">
+        <ellipse cx="0" cy="0" rx="18" ry="28" fill="#f0cd7a" opacity="0.4"/>
+        <ellipse cx="0" cy="0" rx="10" ry="18" fill="#f0cd7a" opacity="0.7"/>
+        <ellipse cx="0" cy="0" rx="4" ry="10" fill="#ffffff"/>
+        <rect x="-4" y="20" width="8" height="60" fill="#d4a94a"/>
+        <rect x="-4" y="20" width="8" height="60" fill="#8a6f2e" opacity="0.4"/>
+      </g>
+      <!-- кружки -->
+      <g transform="translate(180,210)">
+        <rect x="0" y="0" width="30" height="40" fill="#5a3a1a" stroke="#d4a94a" stroke-width="1.5"/>
+        <path d="M30 8 Q 45 8 45 20 Q 45 32 30 32" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
+        <ellipse cx="15" cy="2" rx="15" ry="4" fill="#8a6f2e" opacity="0.6"/>
+      </g>
+      <g transform="translate(600,210)">
+        <rect x="0" y="0" width="30" height="40" fill="#5a3a1a" stroke="#d4a94a" stroke-width="1.5"/>
+        <path d="M30 8 Q 45 8 45 20 Q 45 32 30 32" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
+      </g>
+      <!-- стол -->
+      <rect x="150" y="240" width="500" height="20" fill="#3a2a15" stroke="#4a3a1a" stroke-width="1.5"/>
+      <!-- бочки -->
+      <g transform="translate(70,200)">
+        <ellipse cx="25" cy="0" rx="25" ry="6" fill="#4a3a1a"/>
+        <rect x="0" y="0" width="50" height="50" fill="#3a2a15" stroke="#5a4a2a" stroke-width="1"/>
+        <line x1="0" y1="15" x2="50" y2="15" stroke="#8a6f2e" stroke-width="1"/>
+        <line x1="0" y1="35" x2="50" y2="35" stroke="#8a6f2e" stroke-width="1"/>
+      </g>
+    </svg>
+  `,
+  forest: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0a1a0e"/>
+          <stop offset="50%" stop-color="#0a1208"/>
+          <stop offset="100%" stop-color="#050804"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#fsky)"/>
+      <!-- луна -->
+      <circle cx="680" cy="50" r="18" fill="#c9d0e0" opacity="0.6"/>
+      <circle cx="680" cy="50" r="30" fill="#c9d0e0" opacity="0.1"/>
+      <!-- деревья задние -->
+      <g fill="#0a1208" opacity="0.7">
+        <polygon points="100,280 130,60 160,280"/>
+        <polygon points="220,280 250,40 280,280"/>
+        <polygon points="400,280 430,70 460,280"/>
+        <polygon points="560,280 590,50 620,280"/>
+        <polygon points="700,280 730,80 760,280"/>
+      </g>
+      <!-- деревья передние -->
+      <g fill="#050804">
+        <polygon points="40,280 70,100 100,280"/>
+        <polygon points="300,280 340,120 380,280"/>
+        <polygon points="500,280 540,100 580,280"/>
+        <polygon points="740,280 770,140 800,280"/>
+      </g>
+      <!-- тропа -->
+      <path d="M300 280 Q 400 220 450 180 Q 500 140 520 100" stroke="#1a1409" stroke-width="12" fill="none" opacity="0.5"/>
+      <!-- туман -->
+      <ellipse cx="400" cy="240" rx="300" ry="30" fill="#9a8b6a" opacity="0.06"/>
+      <ellipse cx="200" cy="260" rx="200" ry="20" fill="#9a8b6a" opacity="0.05"/>
+    </svg>
+  `,
+  temple: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tsky2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a0a1e"/>
+          <stop offset="60%" stop-color="#0a0610"/>
+          <stop offset="100%" stop-color="#050408"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#tsky2)"/>
+      <!-- звёзды -->
+      <g fill="#c9d0e0" opacity="0.5">
+        <circle cx="100" cy="40" r="1.5"/>
+        <circle cx="200" cy="70" r="1"/>
+        <circle cx="350" cy="30" r="1.5"/>
+        <circle cx="500" cy="60" r="1"/>
+        <circle cx="650" cy="40" r="1.5"/>
+        <circle cx="750" cy="80" r="1"/>
+      </g>
+      <!-- колонны -->
+      <g fill="#2a2018" stroke="#4a3a1a" stroke-width="1.5">
+        <rect x="100" y="80" width="30" height="180"/>
+        <rect x="180" y="80" width="30" height="180"/>
+        <rect x="590" y="80" width="30" height="180"/>
+        <rect x="670" y="80" width="30" height="180"/>
+      </g>
+      <!-- арка -->
+      <path d="M130 80 Q 400 -20 670 80 L 670 60 Q 400 -40 130 60 Z" fill="#2a2018" stroke="#4a3a1a" stroke-width="1.5"/>
+      <!-- дверь с символами -->
+      <rect x="330" y="130" width="140" height="130" fill="#0a0806" stroke="#8a6f2e" stroke-width="2"/>
+      <g fill="#d4a94a" opacity="0.8">
+        <!-- солнце -->
+        <circle cx="370" cy="170" r="8"/>
+        <g stroke="#d4a94a" stroke-width="1.5">
+          <line x1="370" y1="155" x2="370" y2="148"/>
+          <line x1="370" y1="185" x2="370" y2="192"/>
+          <line x1="355" y1="170" x2="348" y2="170"/>
+          <line x1="385" y1="170" x2="392" y2="170"/>
+        </g>
+        <!-- глаз -->
+        <ellipse cx="400" cy="200" rx="12" ry="7" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
+        <circle cx="400" cy="200" r="3" fill="#d4a94a"/>
+        <!-- коготь -->
+        <path d="M420 185 Q 430 195 425 210 Q 435 200 440 215" fill="none" stroke="#d4a94a" stroke-width="1.5"/>
+      </g>
+    </svg>
+  `,
+  lair: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="lsky" cx="50%" cy="80%" r="80%">
+          <stop offset="0%" stop-color="#4a0a0a"/>
+          <stop offset="40%" stop-color="#2a0808"/>
+          <stop offset="100%" stop-color="#0a0202"/>
+        </radialGradient>
+        <radialGradient id="leye" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ff4a4a"/>
+          <stop offset="60%" stop-color="#8a1e1e"/>
+          <stop offset="100%" stop-color="#2a0808" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#lsky)"/>
+      <!-- пещера: сталактиты -->
+      <g fill="#0a0202">
+        <polygon points="80,0 100,60 60,0"/>
+        <polygon points="200,0 220,80 180,0"/>
+        <polygon points="350,0 370,50 330,0"/>
+        <polygon points="500,0 520,70 480,0"/>
+        <polygon points="650,0 670,55 630,0"/>
+        <polygon points="750,0 770,45 730,0"/>
+      </g>
+      <!-- озеро -->
+      <ellipse cx="400" cy="260" rx="350" ry="40" fill="#0a0a1a" opacity="0.9"/>
+      <ellipse cx="400" cy="260" rx="300" ry="25" fill="#1a1a3a" opacity="0.5"/>
+      <!-- дракон (силуэт) -->
+      <g transform="translate(400,150)" fill="#0a0202" stroke="#4a0808" stroke-width="1">
+        <!-- тело -->
+        <ellipse cx="0" cy="0" rx="80" ry="40"/>
+        <!-- голова -->
+        <path d="M-80 -10 Q -120 -20 -130 0 Q -120 20 -80 10 Z"/>
+        <!-- рог -->
+        <path d="M-110 -15 Q -115 -35 -105 -30"/>
+        <!-- глаз -->
+        <circle cx="-105" cy="-5" r="6" fill="url(#leye)"/>
+        <circle cx="-105" cy="-5" r="2" fill="#ffaaaa"/>
+        <!-- крыло -->
+        <path d="M-20 -30 Q 30 -90 100 -70 Q 60 -40 40 -20 Z" opacity="0.9"/>
+        <!-- хвост -->
+        <path d="M80 0 Q 130 10 150 40 Q 120 20 90 20 Z"/>
+      </g>
+      <!-- свечение глаз -->
+      <circle cx="295" cy="145" r="40" fill="#ff4a4a" opacity="0.15"/>
+    </svg>
+  `,
+  epilogue: `
+    <svg viewBox="0 0 800 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="esky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4a3a1a"/>
+          <stop offset="50%" stop-color="#2a1e0a"/>
+          <stop offset="100%" stop-color="#0a0806"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="280" fill="url(#esky)"/>
+      <!-- лучи солнца -->
+      <g opacity="0.15">
+        <polygon points="400,0 350,280 450,280" fill="#f0cd7a"/>
+        <polygon points="400,0 250,280 320,280" fill="#f0cd7a"/>
+        <polygon points="400,0 480,280 550,280" fill="#f0cd7a"/>
+      </g>
+      <!-- солнце -->
+      <circle cx="400" cy="80" r="50" fill="#f0cd7a" opacity="0.4"/>
+      <circle cx="400" cy="80" r="30" fill="#f0cd7a" opacity="0.8"/>
+      <circle cx="400" cy="80" r="18" fill="#ffffff"/>
+      <!-- земля -->
+      <path d="M0 200 Q 200 180 400 200 T 800 190 L800 280 L0 280 Z" fill="#2a1e0a"/>
+      <path d="M0 230 Q 200 215 400 230 T 800 225 L800 280 L0 280 Z" fill="#1a1409"/>
+      <!-- силуэт дракона улетающего -->
+      <g transform="translate(600,100)" fill="#0a0806">
+        <ellipse cx="0" cy="0" rx="30" ry="12"/>
+        <path d="M-30 -5 Q -45 -10 -50 0 Q -45 10 -30 5 Z"/>
+        <path d="M-15 -10 Q 10 -40 50 -30 Q 20 -15 15 -5 Z"/>
+        <path d="M30 0 Q 60 5 70 20 Q 50 10 35 10 Z"/>
+      </g>
+    </svg>
+  `
+};
+
+/* ---------- РАНДОМ КАК В D&D ---------- */
+const rand = arr => arr[Math.floor(Math.random()*arr.length)];
+const randInt = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+
+/* Пул врагов для каждой локации — выбирается случайно */
+const enemyPool = {
+  village:['goblin','bandit'],
+  tavern:['bandit','goblin'],
+  forest:['goblin','wolf','spider','bandit'],
+  temple:['skeleton','ghost','spider','wolf'],
+  lair:['dragon']
+};
+/* Пул лута для исследования */
+const lootPool = [
+  {gold:randInt(5,20),text:'находит горсть монет'},
+  {gold:randInt(10,30),text:'находит кошель с золотом'},
+  {item:'🧪 Зелье лечения',text:'находит зелье лечения'},
+  {item:'🗝️ Ржавый ключ',text:'находит ржавый ключ'},
+  {item:'💎 Самоцвет',text:'находит самоцвет'},
+  {item:'📜 Старый свиток',text:'находит обрывок свитка'}
+];
+/* Случайные события при исследовании */
+const randomEvents = [
+  {text:'На вас нападают из засады!',combat:'goblin',count:2},
+  {text:'Вы проваливаетесь в яму — 2 урона.',damageAll:2},
+  {text:'Туман сгущается, но вы находите тропу.',nothing:true},
+  {text:'Из кустов выскакивает волк!',combat:'wolf',count:1},
+  {text:'Вы находите следы — они ведут дальше.',nothing:true},
+  {text:'Стая ворон кружит над головой…',nothing:true}
+];
+
+/* Случайная генерация врагов для боя */
+function generateEncounter(locationId){
+  const pool = enemyPool[locationId]||['goblin'];
+  const type = rand(pool);
+  const count = randInt(1,3);
+  return {type,count};
+}
 
 /* ---------- Сцены ---------- */
 const scenes = {
   village: {
     title:'🏘️ Серебряный Брод',
+    illustration:'village',
     text:'В деревне пропадают люди. Вода в реке чернеет. Мэр встречает вас у ратуши:\n\n«Герои, помогите! Три дня назад ушли трое — и не вернулись. Следы ведут к лесу. Если найдёте — награжу щедро.»',
     choices:[
       {text:'Расспросить мэра о пропавших', check:'skill', dc:10, success:'Мэр рассказал: пропали дровосек, его дочь и старый охотник.', fail:'Мэр путается в показаниях.', next:'tavern'},
       {text:'Осмотреть берег реки', check:'skill', dc:12, success:'На берегу — чёрные чешуйки и след огромной лапы.', fail:'Река мутная, ничего не видно.', next:'tavern'},
+      {text:'Исследовать окрестности (рандом)', explore:true},
       {text:'Сразу идти в лес', next:'forest'}
     ]
   },
   tavern: {
     title:'🍺 Таверна «Пьяный Гоблин»',
+    illustration:'tavern',
     text:'Тавернщик Гаррик протирает кружки:\n\n«Дровосек был должен мне. А ночью у леса кто-то шепчет. Слышите?»',
     choices:[
       {text:'Угостить тавернщика и разговорить', check:'skill', dc:11, success:'Гаррик видел человека в чёрном плаще с символом дракона.', fail:'Гаррик замкнулся.', next:'forest'},
       {text:'Обыскать комнату охотника', check:'skill', dc:13, success:'Найдена карта с отметкой у храма и записка: «Ошейник снять нельзя, только разбить».', fail:'Хозяин забрал вещи.', next:'forest'},
+      {text:'Устроить драку (рандом)', explore:true},
       {text:'Идти в лес', next:'forest'}
     ]
   },
   forest: {
     title:'🌲 Шепчущий лес',
-    text:'Среди деревьев — разбитая телега. Шёпот: «Отдайте кристалл — пленник останется жив». На поляне — три гоблина и связанный следопыт.',
+    illustration:'forest',
+    text:'Среди деревьев — разбитая телега. Шёпот: «Отдайте кристалл — пленник останется жив». На поляне — враги и связанный следопыт.',
     choices:[
-      {text:'Атаковать гоблинов!', combat:'goblin', count:3, next:'forest_after'},
-      {text:'Попробовать договориться', check:'skill', dc:14, success:'Гоблины дрогнули и отпустили пленника.', fail:'Переговоры провалились!', failCombat:'goblin', count:3, next:'forest_after'},
-      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы нашли тайную тропу к храму.', fail:'Ветка хрустнула — гоблины заметили вас!', failCombat:'goblin', count:3, next:'forest_after'}
+      {text:'Атаковать врагов! (рандом)', randomCombat:true, next:'forest_after'},
+      {text:'Попробовать договориться', check:'skill', dc:14, success:'Враги дрогнули и отпустили пленника.', fail:'Переговоры провалились!', randomFailCombat:true, next:'forest_after'},
+      {text:'Исследовать чащу (рандом)', explore:true},
+      {text:'Обойти поляну', check:'skill', dc:12, success:'Вы нашли тайную тропу к храму.', fail:'Ветка хрустнула — враги заметили вас!', randomFailCombat:true, next:'forest_after'}
     ]
   },
   forest_after: {
     title:'🌲 После боя в лесу',
+    illustration:'forest',
     text:'Пленник — старый следопыт Эдрик:\n\n«Дракон не виноват. На нём ошейник, проклятие чёрного мага. Снимите ошейник — и дракон станет собой. В храме есть подсказка.»',
     choices:[
       {text:'Идти к старому храму', next:'temple'},
+      {text:'Обыскать телегу (рандом)', explore:true},
       {text:'Вернуться в деревню', next:'village'}
     ]
   },
   temple: {
     title:'🏚️ Старый храм',
+    illustration:'temple',
     text:'На каменной двери три символа: ☀️ солнце, 👁️ глаз, 🦅 коготь. Рядом высечено: «Свет видит, глаз знает, коготь берёт».',
     choices:[
       {text:'Солнце → глаз → коготь', check:'skill', dc:10, success:'Дверь открылась. Внутри — свиток с ритуалом.', next:'temple_after'},
       {text:'Глаз → солнце → коготь', fail:'Из стены вырвалась тьма!', damageAll:3, next:'temple'},
-      {text:'Коготь → глаз → солнце', fail:'Из трещин пошли тени!', failCombat:'wolf', count:2, next:'temple_after'}
+      {text:'Коготь → глаз → солнце', fail:'Из трещин пошли тени!', randomFailCombat:true, next:'temple_after'},
+      {text:'Обыскать развалины (рандом)', explore:true}
     ]
   },
   temple_after: {
     title:'🏚️ Храм: ритуал',
+    illustration:'temple',
     text:'В свитке сказано: чтобы снять ошейник, нужно произнести истинное имя дракона — «Ашар-Нор» — и коснуться ошейника серебром.',
     choices:[
       {text:'Идти к логову дракона', next:'lair'},
-      {text:'Вернуться за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал.', fail:'Кузнец отказал: «Это реликвия».', next:'lair'}
+      {text:'Вернуться за серебром', check:'skill', dc:11, success:'Кузнец дал серебряный кинжал.', fail:'Кузнец отказал: «Это реликвия».', next:'lair'},
+      {text:'Помолиться у алтаря (рандом)', explore:true}
     ]
   },
   lair: {
     title:'🐉 Логово дракона',
+    illustration:'lair',
     text:'Чёрный дракон лежит над тёмным озером. На шее — магический ошейник. Дракон поднимает голову:\n\n«Убейте… меня… или снимите это…»',
     choices:[
       {text:'Произнести имя: Ашар-Нор', check:'skill', dc:13, success:'Ошейник треснул. Проклятие снято!', next:'epilogue_good'},
@@ -783,11 +919,13 @@ const scenes = {
   },
   epilogue_good: {
     title:'✨ Финал: Свобода',
+    illustration:'epilogue',
     text:'Дракон Ашар-Нор свободен. Он улетает, оставив вам сокровище. Деревня спасена.\n\n🏆 ПОБЕДА!',
     choices:[{text:'Начать новое приключение', next:'village'}]
   },
   epilogue_battle: {
     title:'⚔️ Финал: Цена победы',
+    illustration:'epilogue',
     text:'Дракон повержен, но тьма ошейника рассеялась. Вы победили, но тот, кто надел ошейник, ещё жив.\n\n🏆 ПОБЕДА (но не конец).',
     choices:[{text:'Начать новое приключение', next:'village'}]
   }
@@ -823,19 +961,9 @@ function isMyTurn(){
   if(!me?.heroId)return false;
   return t.order[t.turnIndex]===uid;
 }
-function currentTurnEntry(){
-  const t=roomData?.turn;
-  if(!t?.order?.length)return null;
-  return t.order[t.turnIndex];
-}
-function isEnemyTurn(){
-  const cur=currentTurnEntry();
-  if(!cur)return false;
-  return String(cur).startsWith('enemy:');
-}
-function currentTurnName(){
-  return currentTurnNameByIdx(roomData?.turn?.turnIndex);
-}
+function currentTurnEntry(){const t=roomData?.turn;if(!t?.order?.length)return null;return t.order[t.turnIndex];}
+function isEnemyTurn(){const cur=currentTurnEntry();if(!cur)return false;return String(cur).startsWith('enemy:');}
+function currentTurnName(){return currentTurnNameByIdx(roomData?.turn?.turnIndex);}
 function currentTurnNameByIdx(idx){
   const t=roomData?.turn;
   if(!t?.order?.[idx])return '—';
@@ -893,48 +1021,40 @@ function renderTurnBanner(){
   const enemyTurn=isEnemyTurn();
   if(isMaster){
     const phase=t.phase==='combat'?`Бой, раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
-    el.innerHTML=`
-      <div class="turn-banner ${enemyTurn?'enemy-turn':''}">
-        <div class="crown">${enemyTurn?'👹':'🎬'}</div>
-        <div class="who">Режим мастера</div>
-        <div class="hint">Сейчас: <b style="color:${enemyTurn?'var(--blood-bright)':'var(--gold-bright)'}">${esc(currentTurnName())}</b> · ${phase} · вы не ходите</div>
-      </div>`;
+    el.innerHTML=`<div class="turn-banner ${enemyTurn?'enemy-turn':''}"><div class="crown">${enemyTurn?'👹':'🎬'}</div><div class="who">Режим мастера</div><div class="hint">Сейчас: <b style="color:${enemyTurn?'var(--blood-bright)':'var(--gold-bright)'}">${esc(currentTurnName())}</b> · ${phase} · вы не ходите</div></div>`;
     return;
   }
   if(enemyTurn){
-    el.innerHTML=`
-      <div class="turn-banner enemy-turn">
-        <div class="crown">👹</div>
-        <div class="who">Ход врага: ${esc(currentTurnName())}</div>
-        <div class="hint">Враг атакует…</div>
-      </div>`;
+    el.innerHTML=`<div class="turn-banner enemy-turn"><div class="crown">👹</div><div class="who">Ход врага: ${esc(currentTurnName())}</div><div class="hint">Враг атакует…</div></div>`;
     return;
   }
   const mine=isMyTurn();
   const phase=t.phase==='combat'?`Раунд ${t.round}`:t.phase==='explore'?'Приключение':'Ожидание';
-  el.innerHTML=`
-    <div class="turn-banner ${mine?'my-turn':''}">
-      <div class="crown">👑</div>
-      <div class="who">Ход: ${esc(currentTurnName())}</div>
-      <div class="hint">${mine?'Ваш ход — выбирайте действие':'Ждите своей очереди…'} · ${phase}</div>
-    </div>`;
+  el.innerHTML=`<div class="turn-banner ${mine?'my-turn':''}"><div class="crown">👑</div><div class="who">Ход: ${esc(currentTurnName())}</div><div class="hint">${mine?'Ваш ход — выбирайте действие':'Ждите своей очереди…'} · ${phase}</div></div>`;
 }
 function renderScene(){
   const sceneId=roomData?.game?.scene||'village';
   const sc=scenes[sceneId]||scenes.village;
   const mine=isMyTurn();
+  const illus=illustrations[sc.illustration]||illustrations.village;
   const html=`
     <div class="scene">
-      <div class="scene-title">${sc.title}</div>
-      <div class="scene-text">${esc(sc.text)}</div>
-      <div class="choices">
-        ${sc.choices.map((c,i)=>{
-          const check=c.check?`<span class="check">${c.check==='skill'?'🎯 проверка':c.check==='attack'?'⚔️ атака':'🛡️ спасбросок'} СЛ ${c.dc||11}</span>`:'';
-          return `<button class="choice" data-idx="${i}" ${mine?'':'disabled'}>
-            <span>${esc(c.text)}</span>
-            <span style="display:flex;align-items:center;gap:10px">${check}<span class="arrow">→</span></span>
-          </button>`;
-        }).join('')}
+      <div class="scene-illustration">
+        ${illus}
+        <div class="scene-title-overlay">${sc.title}</div>
+      </div>
+      <div class="scene-content">
+        <div class="scene-text">${esc(sc.text)}</div>
+        <div class="choices">
+          ${sc.choices.map((c,i)=>{
+            const check=c.check?`<span class="check">🎯 СЛ ${c.dc||11}</span>`:'';
+            const rnd=c.explore||c.randomCombat||c.randomFailCombat?`<span class="check">🎲 рандом</span>`:'';
+            return `<button class="choice" data-idx="${i}" ${mine?'':'disabled'}>
+              <span>${esc(c.text)}</span>
+              <span style="display:flex;align-items:center;gap:10px">${check}${rnd}<span class="arrow">→</span></span>
+            </button>`;
+          }).join('')}
+        </div>
       </div>
     </div>`;
   $('sceneContainer').innerHTML=html;
@@ -947,7 +1067,11 @@ function renderScene(){
     const info=$('masterTurnInfo');
     if(info)info.innerHTML=`Сейчас: <b style="color:var(--gold-bright)">${esc(currentTurnName())}</b>`;
     const skip=$('masterSkipTurn');if(skip)skip.onclick=()=>endTurnAndMaybeEnemy();
-    const fc=$('masterForceCombat');if(fc)fc.onclick=()=>startCombat('goblin',2,roomData.game.scene);
+    const fc=$('masterForceCombat');
+    if(fc)fc.onclick=()=>{
+      const enc=generateEncounter(roomData.game.scene||'village');
+      startCombat(enc.type, enc.count, roomData.game.scene);
+    };
   }else{
     $('masterScene').classList.add('hidden');
   }
@@ -958,16 +1082,13 @@ async function setScene(sceneId){
   await addLog(`🎬 Мастер открыл сцену: ${scenes[sceneId].title}`);
 }
 
-/* ---------- Переход хода (единая функция) ---------- */
-/* Передаёт ход следующему живому участнику (игроку или врагу).
-   Возвращает {nextIsEnemy:boolean} */
+/* ---------- Переход хода ---------- */
 async function advanceTurn(){
   const t=roomData?.turn;
   if(!t?.order?.length)return {nextIsEnemy:false};
   let idx=(t.turnIndex+1)%t.order.length;
   let round=t.round||1;
   if(idx===0)round++;
-  // пропускаем мёртвых/без персонажа
   let guard=0;
   while(guard<50){
     const entry=t.order[idx];
@@ -985,21 +1106,17 @@ async function advanceTurn(){
   }
   const nextEntry=t.order[idx];
   const nextIsEnemy=String(nextEntry).startsWith('enemy:');
-  // ОДИН update — и ход, и фаза, и раунд
   await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx,round,phase:t.phase});
-  // Лог
   const name=nextIsEnemy
-    ? (()=>{const eid=String(nextEntry).slice(6);const e=roomData.combat?.enemies?.[eid];return e?`${e.emoji} ${e.name}`:'Враг';})()
-    : (roomData.players?.[nextEntry]?.name||'?');
+    ?(()=>{const eid=String(nextEntry).slice(6);const e=roomData.combat?.enemies?.[eid];return e?`${e.emoji} ${e.name}`:'Враг';})()
+    :(roomData.players?.[nextEntry]?.name||'?');
   await addLog(`⏭️ Ход → ${nextIsEnemy?'👹 ':''}${name} (раунд ${round})`);
-  // Обновляем локальную копию сразу, чтобы UI не ждал onValue
   if(roomData?.turn){roomData.turn.turnIndex=idx;roomData.turn.round=round;}
   return {nextIsEnemy};
 }
 async function endTurnAndMaybeEnemy(){
   const {nextIsEnemy}=await advanceTurn();
-  // Ручной рендер — чтобы UI обновился немедленно
-  renderTurnBanner(); renderScene(); renderCombat(); renderPlayers();
+  renderTurnBanner();renderScene();renderCombat();renderPlayers();
   if(nextIsEnemy)await runEnemyTurn();
 }
 
@@ -1017,13 +1134,60 @@ async function chooseOption(idx){
 
   await addLog(`выбирает: «${choice.text}»`, p.name);
 
-  // === Бой без проверки ===
+  // === Рандомное исследование ===
+  if(choice.explore){
+    const roll=rollDice(100);
+    if(roll<=20){
+      // бой
+      const enc=generateEncounter(sceneId);
+      await addLog(`🎲 Исследование: ${enc.count}× ${enemyTypes[enc.type].name} нападают!`);
+      await startCombat(enc.type,enc.count,sceneId);
+    } else if(roll<=70){
+      // лут
+      const loot=rand(lootPool);
+      await addLog(`🎲 Исследование: ${loot.text}`);
+      if(loot.gold){await update(ref(db,`rooms/${roomId}/players/${uid}`),{gold:(p.gold||0)+loot.gold});}
+      if(loot.item){await update(ref(db,`rooms/${roomId}/players/${uid}`),{inventory:[...(p.inventory||[]),loot.item]});}
+      await endTurnAndMaybeEnemy();
+    } else {
+      // событие
+      const ev=rand(randomEvents);
+      await addLog(`🎲 Исследование: ${ev.text}`);
+      if(ev.combat){await startCombat(ev.combat,ev.count||1,sceneId);return;}
+      if(ev.damageAll){
+        for(const pl of Object.values(roomData.players||{})){
+          if(!pl.heroId)continue;
+          const ph=heroes.find(x=>x.id===pl.heroId);
+          const mx=pl.maxHp||ph.hp;
+          await update(ref(db,`rooms/${roomId}/players/${pl.uid}`),{hp:Math.max(0,(pl.hp??mx)-ev.damageAll)});
+        }
+      }
+      await endTurnAndMaybeEnemy();
+    }
+    return;
+  }
+
+  // === Рандомный бой ===
+  if(choice.randomCombat){
+    const enc=generateEncounter(sceneId);
+    await addLog(`🎲 Случайная стычка: ${enc.count}× ${enemyTypes[enc.type].name}!`);
+    await startCombat(enc.type,enc.count,choice.next||sceneId);
+    return;
+  }
+  if(choice.randomFailCombat){
+    const enc=generateEncounter(sceneId);
+    await addLog(`🎲 Провал: ${enc.count}× ${enemyTypes[enc.type].name} нападают!`);
+    await startCombat(enc.type,enc.count,choice.next||sceneId);
+    return;
+  }
+
+  // === Обычный бой ===
   if(choice.combat){
     await startCombat(choice.combat, choice.count||1, choice.next||sceneId);
     return;
   }
 
-  // === Проверка характеристики ===
+  // === Проверка ===
   if(choice.check){
     const d20=rollDice(20);
     const bonus=h.atk;
@@ -1031,32 +1195,17 @@ async function chooseOption(idx){
     const dc=choice.dc||11;
     const success=d20===20||(d20!==1&&total>=dc);
     const verdict=d20===20?'КРИТИЧЕСКИЙ УСПЕХ':d20===1?'КРИТИЧЕСКИЙ ПРОВАЛ':success?'УСПЕХ':'ПРОВАЛ';
-
-    // Показываем кубик
-    await showDice({
-      label:`Проверка: ${choice.text}`,
-      sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,
-      value:d20, modifier:bonus, total, dc, verdict, good:success, name:p.name
-    });
-    // Пишем в базу для остальных
-    await update(ref(db,`rooms/${roomId}/dice`),{
-      id:Date.now(),uid,name:p.name,label:choice.text,value:d20,modifier:bonus,total,dc,verdict,
-      sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,ts:Date.now(),good:success
-    });
+    await showDice({label:`Проверка: ${choice.text}`,sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,value:d20,modifier:bonus,total,dc,verdict,good:success,name:p.name});
+    await update(ref(db,`rooms/${roomId}/dice`),{id:Date.now(),uid,name:p.name,label:choice.text,value:d20,modifier:bonus,total,dc,verdict,sub:`d20 (${d20}) + ${bonus} против сложности ${dc}`,ts:Date.now(),good:success});
     await addLog(`🎲 ${choice.text}: d20(${d20})+${bonus}=${total} vs ${dc} — ${success?'успех':'провал'}`, p.name);
 
-    // Определяем следующую сцену
     let nextSceneId=sceneId;
     if(success){
       if(choice.success)await addLog(choice.success);
       if(choice.next)nextSceneId=choice.next;
     }else{
       if(choice.fail)await addLog(choice.fail);
-      // Провал с боем — запускаем бой, ход не трогаем
-      if(choice.failCombat){
-        await startCombat(choice.failCombat, choice.count||1, choice.next||sceneId);
-        return;
-      }
+      if(choice.failCombat){await startCombat(choice.failCombat,choice.count||1,choice.next||sceneId);return;}
       if(choice.damageAll){
         for(const pl of Object.values(roomData.players||{})){
           if(!pl.heroId)continue;
@@ -1068,13 +1217,11 @@ async function chooseOption(idx){
       }
       if(choice.next)nextSceneId=choice.next;
     }
-
-    // ОДИН update: и сцена, и ход — атомарно
     await commitSceneAndTurn(nextSceneId);
     return;
   }
 
-  // === Простой переход без проверки ===
+  // === Простой переход ===
   if(choice.success)await addLog(choice.success);
   if(choice.damageAll){
     for(const pl of Object.values(roomData.players||{})){
@@ -1085,16 +1232,12 @@ async function chooseOption(idx){
     }
     await addLog(`💥 Все получают ${choice.damageAll} урона!`);
   }
-  const nextSceneId=choice.next||sceneId;
-  await commitSceneAndTurn(nextSceneId);
+  await commitSceneAndTurn(choice.next||sceneId);
 }
 
-/* Атомарно: меняем сцену И передаём ход одним update */
 async function commitSceneAndTurn(nextSceneId){
   const t=roomData?.turn;
   const nextSc=scenes[nextSceneId]||scenes[roomData.game.scene];
-
-  // вычисляем нового ходящего
   let newTurnIndex=t?.turnIndex??0;
   let newRound=t?.round??1;
   if(t?.order?.length){
@@ -1116,30 +1259,21 @@ async function commitSceneAndTurn(nextSceneId){
       if(idx===0)round++;
       guard++;
     }
-    newTurnIndex=idx; newRound=round;
+    newTurnIndex=idx;newRound=round;
   }
-
-  // один update — всё вместе
-  const updates={
+  await update(ref(db,`rooms/${roomId}`),{
     'game/scene':nextSceneId,
     'game/sceneText':nextSc.text,
     'turn/turnIndex':newTurnIndex,
     'turn/round':newRound
-  };
-  await update(ref(db,`rooms/${roomId}`),updates);
-
-  // обновляем локальную копию
+  });
   if(roomData){
     roomData.game.scene=nextSceneId;
     roomData.game.sceneText=nextSc.text;
     if(roomData.turn){roomData.turn.turnIndex=newTurnIndex;roomData.turn.round=newRound;}
   }
   await addLog(`🎬 Сцена: ${nextSc.title} · ⏭️ Ход → ${currentTurnNameByIdx(newTurnIndex)} (раунд ${newRound})`);
-
-  // мгновенный рендер
-  renderTurnBanner(); renderScene(); renderCombat(); renderPlayers();
-
-  // если новый ход — враг, запускаем его
+  renderTurnBanner();renderScene();renderCombat();renderPlayers();
   const nextEntry=roomData.turn?.order?.[newTurnIndex];
   if(nextEntry&&String(nextEntry).startsWith('enemy:'))await runEnemyTurn();
 }
@@ -1153,10 +1287,7 @@ async function showDice({label,sub,value,modifier,total,dc,verdict,good,name,ene
   const d20=$('d20');
   d20.classList.remove('crit','fumble','enemy-die');
   if(enemy)d20.classList.add('enemy-die');
-  else{
-    if(value===20)d20.classList.add('crit');
-    if(value===1)d20.classList.add('fumble');
-  }
+  else{if(value===20)d20.classList.add('crit');if(value===1)d20.classList.add('fumble');}
   $('d20num').textContent='?';
   $('diceOverlay').classList.add('show');
   d20.classList.add('rolling');
@@ -1168,10 +1299,7 @@ async function showDice({label,sub,value,modifier,total,dc,verdict,good,name,ene
   $('diceContinue').classList.remove('hidden');
   if(!enemy)await addLog(`🎲 ${name}: ${label} — d20(${value})+${modifier}=${total} vs ${dc} — ${verdict}`);
 }
-function hideDice(){
-  $('diceOverlay').classList.remove('show');
-  $('diceContinue').classList.add('hidden');
-}
+function hideDice(){$('diceOverlay').classList.remove('show');$('diceContinue').classList.add('hidden');}
 $('diceContinue').onclick=()=>hideDice();
 
 /* ---------- Ход врага ---------- */
@@ -1188,11 +1316,7 @@ async function runEnemyTurn(){
     if(!entry||!String(entry).startsWith('enemy:')){enemyTurnLock=false;return;}
     const eid=String(entry).slice(6);
     const e=data.combat.enemies?.[eid];
-    if(!e||e.dead){
-      enemyTurnLock=false;
-      await forceAdvanceAfterEnemy();
-      return;
-    }
+    if(!e||e.dead){enemyTurnLock=false;await forceAdvanceAfterEnemy();return;}
     const alive=Object.values(data.players||{}).filter(p=>p.heroId&&(p.hp??1)>0);
     if(!alive.length){enemyTurnLock=false;return;}
     const target=alive[Math.floor(Math.random()*alive.length)];
@@ -1201,7 +1325,6 @@ async function runEnemyTurn(){
     const rawD20=rollDice(20);
     const total=rawD20+e.atk;
     const hit=rawD20>=h.ac;
-    // показываем красный кубик всем через БД
     await update(ref(db,`rooms/${roomId}/dice`),{
       id:Date.now(),uid:'enemy',name:`${e.emoji} ${e.name}`,
       label:`Атака по ${target.name}`,
@@ -1220,12 +1343,8 @@ async function runEnemyTurn(){
       await addLog(`👹 ${e.name} промахнулся по ${target.name}`);
     }
     await forceAdvanceAfterEnemy();
-  }catch(err){
-    console.error('enemy turn error',err);
-    enemyTurnLock=false;
-  }
+  }catch(err){console.error('enemy turn error',err);enemyTurnLock=false;}
 }
-/* После хода врага — принудительно продвигаем ход */
 async function forceAdvanceAfterEnemy(){
   try{
     const snap=await get(ref(db,`rooms/${roomId}`));
@@ -1260,13 +1379,11 @@ async function startCombat(enemyType,count,returnScene){
     ...enemyOrder.map(o=>({key:'enemy:'+o.eid,init:o.init,kind:'enemy'}))
   ].sort((a,b)=>b.init-a.init);
   const order=combined.map(o=>o.key);
-  // один update — весь бой
   await update(ref(db,`rooms/${roomId}`),{
     'combat/active':true,'combat/round':1,'combat/enemies':enemies,
     'combat/returnScene':returnScene||roomData.game.scene,
     'turn/order':order,'turn/turnIndex':0,'turn/phase':'combat','turn/round':1
   });
-  // локально
   if(roomData){
     roomData.combat={active:true,round:1,enemies,returnScene:returnScene||roomData.game.scene};
     roomData.turn={order,turnIndex:0,phase:'combat',round:1};
@@ -1282,17 +1399,13 @@ async function startCombat(enemyType,count,returnScene){
 }
 function renderCombat(){
   const c=roomData?.combat;
-  if(!c?.active){
-    $('combatContainer').innerHTML='<div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>';
-    return;
-  }
+  if(!c?.active){$('combatContainer').innerHTML='<div class="status muted">Бой не начат. Мастер начнёт бой из сюжета.</div>';return;}
   const t=roomData.turn;
   const cur=currentTurnEntry();
   const mine=isMyTurn();
   const enemyTurn=isEnemyTurn();
   const myPlayer=roomData.players?.[uid];
   const myHero=heroes.find(x=>x.id===myPlayer?.heroId);
-
   const combatants=[];
   for(const pl of Object.values(roomData.players||{})){
     if(!pl.heroId)continue;
@@ -1305,7 +1418,6 @@ function renderCombat(){
     combatants.push({kind:'enemy',data:e,hp:e.hp,maxHp:e.maxHp,isTurn:key===cur,dead:e.dead});
   }
   const enemyList=Object.values(c.enemies||{}).filter(e=>!e.dead);
-
   const html=`
     <div class="combat active">
       <div class="combat-round">⚔️ Раунд ${t?.round||1} · Ход: ${esc(currentTurnName())}</div>
@@ -1485,7 +1597,6 @@ async function checkCombatEnd(){
   if(!alive.length){
     await addLog('🏆 Все враги повержены! Бой окончен.');
     const ret=c.returnScene||roomData.game.scene;
-    // Оставляем в очереди только игроков
     const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
     await update(ref(db,`rooms/${roomId}`),{
       'combat/active':false,'combat/enemies':{},'combat/round':0,
@@ -1521,39 +1632,29 @@ function startListeners(){
     roomData=snap.val();
     if(!roomData){status('Комната удалена.');setConnected(false);return;}
     isMaster=roomData.masterUid===uid;
-
-    // автоочистка: мастер не должен быть в очереди
     if(roomData.turn?.order?.includes(roomData.masterUid)){
       const cleaned=roomData.turn.order.filter(u=>u!==roomData.masterUid);
       update(ref(db,`rooms/${roomId}/turn`),{order:cleaned});
     }
-
     $('roomInfo').classList.remove('hidden');
     $('roomLabel').textContent=roomId;
     $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
-
     const heroPanel=$('heroPanel');
     if(heroPanel)heroPanel.style.display=isMaster?'none':'';
     const masterHint=$('masterHint');
     if(masterHint)masterHint.classList.toggle('hidden',!isMaster);
-
     renderPlayers();renderTurnBanner();renderScene();renderCombat();setConnected(true);
     status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
-
-    // кубик от других
     const dice=roomData.dice;
     if(dice?.id && dice.id!==lastDiceKey && dice.uid!==uid){
       lastDiceKey=dice.id;
       showDice({
-        label:dice.label||'Бросок',
-        sub:dice.sub||'',
+        label:dice.label||'Бросок',sub:dice.sub||'',
         value:dice.value,modifier:dice.modifier,total:dice.total,dc:dice.dc,
         verdict:dice.verdict||'',good:dice.good!==false,name:dice.name||'Игрок',
         enemy:!!dice.enemy
       });
     }
-
-    // автозапуск хода врага — только мастер-клиент
     if(isMaster && roomData.combat?.active && isEnemyTurn() && !enemyTurnLock){
       setTimeout(()=>{runEnemyTurn();},700);
     }
@@ -1574,14 +1675,12 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена.');
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
-
   if(room.masterUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();
     await addLog('мастер вернулся в комнату',name);
     return;
   }
-
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now(),isMaster:false});
   const order=room.turn?.order||[];
   if(!order.includes(uid)){
@@ -1633,13 +1732,8 @@ $('restBtn').onclick=async()=>{
     ups[`players/${p.uid}/cooldowns`]={};
   }
   const order=Object.values(roomData.players||{}).filter(p=>p.heroId).map(p=>p.uid);
-  ups['combat/active']=false;
-  ups['combat/enemies']={};
-  ups['combat/round']=0;
-  ups['turn/order']=order;
-  ups['turn/phase']='explore';
-  ups['turn/turnIndex']=0;
-  ups['turn/round']=1;
+  ups['combat/active']=false;ups['combat/enemies']={};ups['combat/round']=0;
+  ups['turn/order']=order;ups['turn/phase']='explore';ups['turn/turnIndex']=0;ups['turn/round']=1;
   await update(ref(db,`rooms/${roomId}`),ups);
   await addLog('🔥 Мастер объявил долгий отдых');
 };
