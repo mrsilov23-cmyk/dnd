@@ -841,7 +841,6 @@ function renderScenario(){
   const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
   $('roundBadge').textContent=label;
 
-  // Ресурсы бункера по раскрытым характеристикам
   const tags={};
   for(const p of ps){
     if(p.kicked)continue;
@@ -1327,13 +1326,11 @@ async function connectRoom(code){
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
 
-  // Если это ведущий — он уже в комнате, просто слушаем
   if(room.hostUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();return;
   }
 
-  // Обычный игрок
   const players=room.players||{};
   const playerCount=Object.values(players).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
@@ -1437,7 +1434,6 @@ async function doReveal(key){
     if(!me?.character)return;
     if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
 
-    // Профессия обязательно первой
     if(!me.revealed?.profession && key!=='profession'){
       setStatus('Первым нужно вскрыть профессию',false);
       return;
@@ -1449,7 +1445,6 @@ async function doReveal(key){
     const snap2=await get(ref(db,`rooms/${roomId}/players`));
     const playersNow=snap2.val()||{};
 
-    // Голосование после 2 раскрытых характеристик у всех
     const allHaveTwo=aliveOrder.every(u=>{
       const r=playersNow[u]?.revealed||{};
       return REVEAL_KEYS.filter(k=>r[k]).length>=2;
@@ -1514,25 +1509,49 @@ async function finishVote(){
     if(c>max){max=c;maxUid=u;tie=false;}
     else if(c===max)tie=true;
   }
-  const chosen=maxUid&&!tie;
-  const chosenName=chosen?roomData.players?.[maxUid]?.name:'';
-  const result={chosen,chosenUid:maxUid,chosenName,maxVotes:max,tie,label:v.label,kick:v.kick,type:v.type};
+
+  // ✅ Безопасно: только если maxUid реальный и не __skip__ и есть игрок
+  const validUid = maxUid && maxUid!=='__skip__' && roomData.players?.[maxUid];
+  const chosen = !!(maxUid && !tie && validUid);
+  const chosenName = chosen ? String(roomData.players[maxUid]?.name || '') : '';
+
+  const result={
+    chosen,
+    chosenUid: chosen ? String(maxUid) : '',
+    chosenName,
+    maxVotes: max,
+    tie,
+    label: String(v.label || ''),
+    kick: !!v.kick,
+    type: String(v.type || '')
+  };
+
+  // Если выбран __skip__ — отмечаем отдельно
+  if(maxUid==='__skip__' && !tie){
+    result.chosen = false;
+    result.skip = true;
+    result.chosenUid = '';
+    result.chosenName = '';
+  }
+
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
 
-  if(!chosen){
+  // Ничья — пропуск
+  if(!chosen && maxUid!=='__skip__'){
     const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
     await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
 
+  // Никто не идёт — пропускаем квест
   if(maxUid==='__skip__'){
-    // Никто не идёт — пропускаем квест
     const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
     await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:false,data:null,result:null});
     await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
     return;
   }
 
+  // Изгнание
   if(v.kick){
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
     const psSnap=await get(ref(db,`rooms/${roomId}/players`));
@@ -1548,6 +1567,7 @@ async function finishVote(){
     return;
   }
 
+  // Квест
   const player=roomData.players[maxUid];
   const questData=prepareQuest(player);
   if(!questData){
