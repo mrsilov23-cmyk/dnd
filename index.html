@@ -285,4 +285,413 @@ function renderBattlefield(){
     }
   }
   bf.innerHTML=html;
-  bf.querySelectorAll('.cell').forEach(c=>c.onclick=
+  bf.querySelectorAll('.cell').forEach(c=>c.onclick=()=>onCellClick(Number(c.dataset.x),Number(c.dataset.y)));
+  renderTurnBar(); renderEnemies();
+}
+function onCellClick(x,y){
+  selectedCell={x,y};
+  renderBattlefield();
+}
+function renderTurnBar(){
+  const battle=roomData?.battle;
+  const bar=$('turnBar');
+  if(!battle?.active){bar.textContent='Ход: — · Инициатива не начата';bar.classList.remove('active');return;}
+  const order=battle.order||[];
+  const turnUid=order[battle.turnIndex];
+  const p=roomData.players?.[turnUid];
+  const h=heroes.find(x=>x.id===p?.heroId);
+  const isMyTurn=turnUid===uid;
+  bar.innerHTML=`Раунд ${battle.round} · Ход: <b>${esc(p?.name||'?')}</b> ${h?'('+h.emoji+h.role+')':''} ${isMyTurn?'<span class="good">← ваш ход</span>':''}`;
+  bar.classList.toggle('active',isMyTurn);
+  $('endTurn').disabled=!battle.active || (!isMyTurn && !isMaster);
+}
+function renderEnemies(){
+  const battle=roomData?.battle;
+  const enemies=Object.values(battle?.enemies||{});
+  if(!enemies.length){$('enemies').innerHTML='<span class="muted small">Нет врагов. Мастер может создать бой.</span>';return;}
+  $('enemies').innerHTML=enemies.map(e=>{
+    const sel=selectedCell && e.pos && selectedCell.x===e.pos.x && selectedCell.y===e.pos.y;
+    return `<div class="enemy-card ${e.dead?'dead':''} ${sel?'selected':''}" data-eid="${e.id}">
+      ${e.emoji} <b>${esc(e.name)}</b> — ${e.hp}/${e.maxHp} HP · ⚔️+${e.atk} · 🛡️${e.ac}
+      ${e.dead?'<span class="bad">[повержен]</span>':`<span class="muted small"> · 💰${e.gold} · XP${e.xp}</span>`}
+      <div class="hero-hp"><i style="width:${Math.max(0,(e.hp/e.maxHp)*100)}%;background:var(--red)"></i></div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.enemy-card').forEach(c=>c.onclick=()=>{
+    const e=Object.values(roomData.battle.enemies).find(x=>x.id===c.dataset.eid);
+    if(e?.pos){selectedCell={x:e.pos.x,y:e.pos.y};renderBattlefield();}
+  });
+}
+
+/* ---------- Слушатели ---------- */
+function startListeners(){
+  for(const u of [unsubRoom,unsubPlayers,unsubLog,unsubBattle]) if(u)u();
+  unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
+    roomData=snap.val();
+    if(!roomData){status('Комната удалена или недоступна.');setConnected(false);return;}
+    isMaster=roomData.masterUid===uid;
+    $('roomInfo').classList.remove('hidden');
+    $('roomLabel').textContent=roomId;
+    $('inviteLink').value=location.origin+location.pathname+'?room='+roomId;
+    renderMap(); renderPlayers(); renderBattlefield(); renderAbilities();
+    setConnected(true);
+    status(`Подключено к комнате ${roomId}${isMaster?' · вы мастер':''}`,true);
+  });
+  unsubPlayers=onValue(ref(db,`rooms/${roomId}/players`),snap=>{const p=snap.val()||{};if(p[uid])myPlayer=p[uid];renderPlayers();renderAbilities();});
+  unsubLog=onValue(ref(db,`rooms/${roomId}/log`),snap=>{const v=snap.val()||{};const items=Object.values(v).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,70);renderFeed(items);});
+  unsubBattle=onValue(ref(db,`rooms/${roomId}/battle`),()=>{renderBattlefield();});
+}
+async function addLog(text,name){if(!roomId||!uid)return;await set(push(ref(db,`rooms/${roomId}/log`)),{text,name:name||$('playerName').value.trim()||'Игрок',uid,at:Date.now()});}
+
+/* ---------- Подключение ---------- */
+async function connectRoom(code){
+  if(!configured){$('configNotice').classList.remove('hidden');status('Нужно заполнить Firebase config в index.html.');return;}
+  if(!auth.currentUser)throw new Error('Firebase авторизация ещё не готова. Попробуйте ещё раз.');
+  roomId=code.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+  if(roomId.length<5)throw new Error('Код комнаты должен содержать минимум 5 символов.');
+  const rref=ref(db,`rooms/${roomId}`);
+  const snap=await get(rref);
+  if(!snap.exists())throw new Error('Комната не найдена. Проверьте код или создайте новую.');
+  const name=$('playerName').value.trim().slice(0,24)||'Игрок';
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{uid,name,joinedAt:Date.now()});
+  history.replaceState(null,'',`?room=${roomId}`);
+  startListeners();
+  await addLog('подключился к партии',name);
+}
+async function createRoom(){
+  if(!configured){$('configNotice').classList.remove('hidden');status('Нужно заполнить Firebase config в index.html.');return;}
+  const name=$('playerName').value.trim().slice(0,24)||'Мастер';
+  roomId=Math.random().toString(36).slice(2,9).toUpperCase();
+  await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
+  history.replaceState(null,'',`?room=${roomId}`);
+  startListeners();
+  await addLog('создал комнату. Приключение начинается!',name);
+}
+if(configured){
+  try{
+    app=initializeApp(firebaseConfig);auth=getAuth(app);db=getDatabase(app);
+    signInAnonymously(auth).catch(e=>status('Ошибка входа: '+e.message));
+    onAuthStateChanged(auth,user=>{
+      if(!user)return;uid=user.uid;
+      const code=new URLSearchParams(location.search).get('room');
+      if(code){$('roomCode').value=code;connectRoom(code).catch(e=>status(e.message));}
+    });
+  }catch(e){status('Не удалось запустить Firebase: '+e.message);}
+}else{$('configNotice').classList.remove('hidden');}
+
+/* ---------- Кнопки подключения ---------- */
+$('createRoom').onclick=()=>createRoom().catch(e=>status(e.message));
+$('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>status(e.message));
+
+/* ---------- Выбор героя ---------- */
+$('pickHero').onclick=async()=>{
+  if(!roomId||!uid)return;
+  const name=$('playerName').value.trim().slice(0,24)||myPlayer?.name||'Игрок';
+  const p=roomData.players||{};
+  if(Object.values(p).some(x=>x.uid!==uid&&x.heroId===selected.id)){status('Этот герой уже выбран другим игроком. Выберите другого.');return;}
+  const h=selected;
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+    name,heroId:h.id,hp:h.hp,maxHp:h.hp,xp:0,level:1,gold:0,inventory:['🧪 Зелье лечения'],conditions:[],cooldowns:{},pos:{x:0,y:0}
+  });
+  await addLog(`выбрал персонажа ${h.name}`,name);
+};
+
+/* ---------- Лечение ---------- */
+$('heal').onclick=async()=>{
+  const p=roomData?.players?.[uid];if(!p?.heroId)return status('Сначала выберите персонажа.');
+  const h=heroes.find(x=>x.id===p.heroId);
+  const maxHp=p.maxHp||h.hp;
+  if((p.hp??maxHp)>=maxHp)return status('Здоровье уже полное.');
+  const inv=p.inventory||[];
+  const potionIdx=inv.findIndex(i=>i.includes('Зелье'));
+  if(potionIdx<0)return status('Нет зелий лечения.');
+  const newInv=[...inv]; newInv.splice(potionIdx,1);
+  await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(maxHp,(p.hp??maxHp)+6),inventory:newInv});
+  await addLog('использовал зелье лечения (+6 HP)');
+};
+
+/* ---------- Долгий отдых (мастер) ---------- */
+$('restBtn').onclick=async()=>{
+  if(!isMaster)return;
+  const ps=roomData.players||{};
+  const updates={};
+  for(const p of Object.values(ps)){
+    const h=heroes.find(x=>x.id===p.heroId); if(!h)continue;
+    updates[`${p.uid}/hp`]=p.maxHp||h.hp;
+    updates[`${p.uid}/conditions`]=[];
+    updates[`${p.uid}/cooldowns`]={};
+  }
+  await update(ref(db,`rooms/${roomId}/players`),updates);
+  await update(ref(db,`rooms/${roomId}/battle`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await addLog('мастер объявил долгий отдых: все восстановили HP, сняли состояния и кулдауны');
+};
+
+/* ---------- Броски ---------- */
+$('roll').onclick=async()=>{
+  const p=roomData?.players?.[uid];
+  const h=heroes.find(x=>x.id===p?.heroId)||selected;
+  const mode=$('rollMode').value;
+  let rolls=[Math.floor(Math.random()*20)+1];
+  if(mode==='adv')rolls.push(Math.floor(Math.random()*20)+1);
+  if(mode==='dis')rolls.push(Math.floor(Math.random()*20)+1);
+  const d=mode==='adv'?Math.max(...rolls):mode==='dis'?Math.min(...rolls):rolls[0];
+  const baseBonus=$('checkType').value==='attack'?h.atk:Math.max(0,h.atk-1);
+  const extra=Number($('bonusMod').value)||0;
+  const bonus=baseBonus+extra;
+  const dc=Number($('dc').value),total=d+bonus;
+  const outcome=d===20?'Критический успех!':d===1?'Натуральная 1 — осложнение!':total>=dc?'Успех!':'Неудача.';
+  const modeText=mode==='adv'?' (преимущество)':mode==='dis'?' (помеха)':'';
+  const txt=`🎲 ${$('checkType').selectedOptions[0].text}${modeText}: d20 (${rolls.join('/')}→${d}) + ${bonus} = ${total}, цель ${dc}. ${outcome}`;
+  $('rollResult').textContent=txt;
+  await addLog(txt);
+};
+
+/* ---------- Исследование и локации ---------- */
+$('explore').onclick=async()=>{
+  const loc=Number(roomData?.game?.location||0);
+  await addLog('исследует локацию: '+places[loc].name+'. '+places[loc].text);
+  // Случайное событие при исследовании
+  const r=Math.floor(Math.random()*4);
+  if(r===0){await addLog('находит тайник: +10 золота'); const p=roomData.players[uid]; await update(ref(db,`rooms/${roomId}/players/${uid}`),{gold:(p.gold||0)+10});}
+  else if(r===1){await addLog('находит зелье лечения'); const p=roomData.players[uid]; const inv=p.inventory||[]; await update(ref(db,`rooms/${roomId}/players/${uid}`),{inventory:[...inv,'🧪 Зелье лечения']});}
+  else if(r===2 && isMaster){await addLog('из засады появляется гоблин! (мастер, нажмите «Спавн врага»)');}
+};
+$('nextLocation').onclick=async()=>{
+  if(!isMaster)return;
+  const old=Number(roomData?.game?.location||0),next=Math.min(places.length-1,old+1);
+  if(next===old){await addLog('достиг финала приключения. Решите судьбу дракона!');return;}
+  await update(ref(db,`rooms/${roomId}/game`),{location:next,notes:places[next].text});
+  await addLog('мастер открыл локацию: '+places[next].name);
+};
+
+/* ---------- Чат ---------- */
+$('sendChat').onclick=async()=>{const t=$('chatText').value.trim();if(!t)return;$('chatText').value='';await addLog(t);};
+$('chatText').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
+$('copyLink').onclick=async()=>{try{await navigator.clipboard.writeText($('inviteLink').value);status('Ссылка скопирована.',true);}catch{$('inviteLink').select();status('Ссылка выделена.');}};
+$('exportLog').onclick=async()=>{const s=await get(ref(db,`rooms/${roomId}/log`));const arr=Object.values(s.val()||{}).sort((a,b)=>a.at-b.at).map(e=>new Date(e.at).toLocaleString('ru-RU')+' — '+e.name+': '+e.text).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([arr],{type:'text/plain;charset=utf-8'}));a.download='dnd-zhurnal.txt';a.click();URL.revokeObjectURL(a.href);};
+$('clearRoom').onclick=async()=>{
+  if(!isMaster||!confirm('Сбросить локацию, бой и журнал комнаты? Персонажи останутся.'))return;
+  await update(ref(db,`rooms/${roomId}/game`),{location:0,notes:places[0].text});
+  await update(ref(db,`rooms/${roomId}/battle`),{active:false,round:0,turnIndex:0,order:[],enemies:{}});
+  await set(ref(db,`rooms/${roomId}/log`),null);
+  await addLog('мастер начал приключение заново');
+};
+
+/* ---------- БОЙ ---------- */
+function rollDice(sides){return Math.floor(Math.random()*sides)+1;}
+function rollDamage(count,sides,bonus){let s=0;for(let i=0;i<count;i++)s+=rollDice(sides);return s+bonus;}
+
+$('startBattle').onclick=async()=>{
+  if(!isMaster)return;
+  const players=roomData.players||{};
+  const order=[];
+  for(const p of Object.values(players)){
+    if(!p.heroId)continue;
+    const h=heroes.find(x=>x.id===p.heroId);
+    const init=rollDice(20)+h.atk;
+    order.push({uid:p.uid,init});
+  }
+  order.sort((a,b)=>b.init-a.init);
+  // Расставляем героев
+  const updates={};
+  let i=0;
+  for(const o of order){
+    updates[`${o.uid}/pos`]={x:i%GRID_W,y:Math.floor(i/GRID_W)};
+    updates[`${o.uid}/conditions`]=[];
+    i++;
+  }
+  if(Object.keys(updates).length)await update(ref(db,`rooms/${roomId}/players`),updates);
+  await update(ref(db,`rooms/${roomId}/battle`),{active:true,round:1,turnIndex:0,order:order.map(o=>o.uid),enemies:{}});
+  await addLog('⚔️ Бой начался! Инициатива: '+order.map(o=>{const p=players[o.uid];return `${p.name}(${o.init})`;}).join(', '));
+};
+$('spawnEnemy').onclick=async()=>{
+  if(!isMaster)return;
+  const typeId=prompt('Тип врага: goblin, wolf, bandit, troll, dragon','goblin');
+  const t=enemyTypes.find(x=>x.id===typeId)||enemyTypes[0];
+  const eid='e'+Date.now().toString(36);
+  const occupied=new Set();
+  for(const p of Object.values(roomData.players||{})){const pos=p.pos||{x:0,y:0};occupied.add(pos.x+','+pos.y);}
+  for(const e of Object.values(roomData?.battle?.enemies||{})){if(e.pos&&!e.dead)occupied.add(e.pos.x+','+e.pos.y);}
+  let pos=null;
+  for(let y=0;y<GRID_H;y++){for(let x=0;x<GRID_W;x++){if(!occupied.has(x+','+y)){pos={x,y};break;}}if(pos)break;}
+  if(!pos)pos={x:GRID_W-1,y:GRID_H-1};
+  const enemy={id:eid,name:t.name,emoji:t.emoji,hp:t.hp,maxHp:t.hp,atk:t.atk,ac:t.ac,xp:t.xp,gold:t.gold,pos,dead:false,conditions:[]};
+  await update(ref(db,`rooms/${roomId}/battle/enemies/${eid}`),enemy);
+  await addLog(`👹 Мастер создал врага: ${t.emoji} ${t.name} (${t.hp} HP)`);
+};
+$('endTurn').onclick=async()=>{
+  const b=roomData.battle;
+  if(!b?.active)return;
+  const order=b.order||[];
+  let idx=(b.turnIndex+1)%order.length;
+  let round=b.round;
+  if(idx===0)round++;
+  // Проверяем состояния текущего игрока
+  await processConditions(order[b.turnIndex],round);
+  await update(ref(db,`rooms/${roomId}/battle`),{turnIndex:idx,round});
+  await addLog(`⏭️ Ход переходит к ${roomData.players[order[idx]]?.name||'?'} (раунд ${round})`);
+};
+
+/* Обработка состояний игрока в конце хода */
+async function processConditions(playerUid,round){
+  const p=roomData.players?.[playerUid];
+  if(!p||!p.conditions?.length)return;
+  const conds=[...p.conditions];
+  let hp=p.hp, newConds=[];
+  for(const c of conds){
+    if(c==='poison'){const dmg=2;hp-=dmg;await addLog(`${p.name} страдает от яда: -${dmg} HP`);}
+    else if(c==='burn'){const dmg=rollDamage(1,6,0);hp-=dmg;await addLog(`${p.name} горит: -${dmg} HP`);}
+    else if(c==='stun'){await addLog(`${p.name} оглушён и пропускает ход`);}
+    else newConds.push(c);
+  }
+  // Случайно снимаем состояния
+  if(newConds.length && round%2===0){newConds=[];await addLog(`${p.name} избавился от состояний`);}
+  await update(ref(db,`rooms/${roomId}/players/${playerUid}`),{hp:Math.max(0,hp),conditions:newConds});
+  if(hp<=0)await handleDeath(playerUid);
+}
+async function handleDeath(playerUid){
+  const p=roomData.players[playerUid];
+  await addLog(`💀 ${p.name} падает без сознания! Нужна помощь союзников.`);
+  await update(ref(db,`rooms/${roomId}/players/${playerUid}`),{hp:0,conditions:['stun']});
+}
+
+/* Атака врага */
+async function attackEnemy(enemyId,damage,bonusText=''){
+  const e=roomData.battle?.enemies?.[enemyId];
+  if(!e||e.dead)return;
+  const newHp=Math.max(0,e.hp-damage);
+  const dead=newHp<=0;
+  await update(ref(db,`rooms/${roomId}/battle/enemies/${enemyId}`),{hp:newHp,dead});
+  await addLog(`⚔️ ${bonusText} наносит ${damage} урона ${e.emoji}${e.name} (${newHp}/${e.maxHp} HP)`);
+  if(dead){
+    await addLog(`🎉 ${e.name} повержен! Награда: ${e.gold} золота, ${e.xp} XP`);
+    // Выдаём награду текущему игроку
+    const p=roomData.players[uid];
+    if(p){
+      const newXp=(p.xp||0)+e.xp;
+      const newGold=(p.gold||0)+e.gold;
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{xp:newXp,gold:newGold});
+      await checkLevelUp(uid,newXp);
+    }
+  }
+}
+async function checkLevelUp(playerUid,xp){
+  const p=roomData.players[playerUid];
+  const h=heroes.find(x=>x.id===p.heroId); if(!h)return;
+  let lvl=p.level||1;
+  while(xp>=xpForLevel(lvl)){lvl++;}
+  if(lvl>p.level){
+    const newMax=(p.maxHp||h.hp)+3;
+    await update(ref(db,`rooms/${roomId}/players/${playerUid}`),{level:lvl,maxHp:newMax,hp:newMax});
+    await addLog(`⬆️ ${p.name} достиг уровня ${lvl}! Макс. HP: ${newMax}`);
+  }
+}
+
+/* Атака по игроку (враг) */
+async function enemyAttack(enemyId,targetUid){
+  const e=roomData.battle.enemies[enemyId];
+  const p=roomData.players[targetUid];
+  if(!e||e.dead||!p)return;
+  const h=heroes.find(x=>x.id===p.heroId); if(!h)return;
+  const d=rollDice(20)+e.atk;
+  const ac=h.ac;
+  if(d>=ac){
+    let dmg=rollDamage(1,6,e.atk);
+    if(d===20+0){} // упрощённо
+    const newHp=Math.max(0,(p.hp??h.hp)-dmg);
+    await update(ref(db,`rooms/${roomId}/players/${targetUid}`),{hp:newHp});
+    await addLog(`👹 ${e.name} атакует ${p.name}: d20(${d})+${e.atk} vs AC${ac} — попадание, ${dmg} урона! (${newHp} HP)`);
+    if(newHp<=0)await handleDeath(targetUid);
+  }else{
+    await addLog(`👹 ${e.name} атакует ${p.name}: d20(${d})+${e.atk} vs AC${ac} — промах.`);
+  }
+}
+
+/* ---------- Способности ---------- */
+async function useAbility(abilityId){
+  const p=roomData?.players?.[uid];
+  if(!p?.heroId)return status('Сначала выберите персонажа.');
+  if(!roomData.battle?.active)return status('Способности доступны только в бою.');
+  const h=heroes.find(x=>x.id===p.heroId);
+  const ab=h.abilities.find(a=>a.id===abilityId);
+  if(!ab)return;
+  const cd=p.cooldowns?.[abilityId]||0;
+  if(cd>0)return status('Способность ещё не готова.');
+  if(!selectedCell)return status('Выберите цель на поле боя (клик по клетке).');
+
+  // Находим цель
+  let targetEnemy=null,targetPlayer=null;
+  for(const e of Object.values(roomData.battle.enemies||{})){
+    if(!e.dead&&e.pos&&e.pos.x===selectedCell.x&&e.pos.y===selectedCell.y){targetEnemy=e;break;}
+  }
+  for(const pl of Object.values(roomData.players||{})){
+    if(pl.uid!==uid&&pl.pos&&pl.pos.x===selectedCell.x&&pl.pos.y===selectedCell.y){targetPlayer=pl;break;}
+  }
+
+  const enemyList=Object.values(roomData.battle.enemies||{}).filter(e=>!e.dead);
+  const updates={[`players/${uid}/cooldowns/${abilityId}`]:ab.cd};
+
+  switch(ab.type){
+    case 'attack':{
+      if(!targetEnemy)return status('Выберите врага.');
+      let dmg=0,extra='';
+      if(abilityId==='fireball'){dmg=rollDamage(2,6,0);extra='🔥 Огненный шар';}
+      else if(abilityId==='sneak'){dmg=rollDamage(1,6,h.atk)+rollDamage(2,6,0);extra='🗡️ Скрытая атака';}
+      else dmg=rollDamage(1,6,h.atk);
+      await attackEnemy(targetEnemy.id,dmg,extra);
+      break;
+    }
+    case 'aoe':{
+      const targets=enemyList.filter(e=>e.pos&&Math.abs(e.pos.x-selectedCell.x)<=1&&Math.abs(e.pos.y-selectedCell.y)<=1);
+      if(!targets.length)return status('Нет врагов рядом с выбранной клеткой.');
+      for(const t of targets){const dmg=rollDamage(1,6,h.atk);await attackEnemy(t.id,dmg,'🌀 Рассекающий удар');}
+      break;
+    }
+    case 'multi':{
+      const targets=enemyList.slice(0,2);
+      if(!targets.length)return status('Нет врагов.');
+      for(const t of targets){const dmg=rollDamage(1,6,h.atk);await attackEnemy(t.id,dmg,'🏹 Град стрел');}
+      break;
+    }
+    case 'heal':{
+      const ally=targetPlayer||p;
+      const allyH=heroes.find(x=>x.id===ally.heroId);
+      const maxHp=ally.maxHp||allyH?.hp||10;
+      const heal=rollDamage(1,8,0);
+      const newHp=Math.min(maxHp,(ally.hp??maxHp)+heal);
+      await update(ref(db,`rooms/${roomId}/players/${ally.uid}`),{hp:newHp});
+      await addLog(`✨ ${h.name} лечит ${ally.name} на ${heal} HP (${newHp}/${maxHp})`);
+      break;
+    }
+    case 'buff':{
+      await addLog(`🛡️ ${h.name} использует ${ab.name}: +3 AC на 1 ход`);
+      // Упрощённо: лечим 3 HP как временный бафф
+      const maxHp=p.maxHp||h.hp;
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{hp:Math.min(maxHp,(p.hp??maxHp)+3)});
+      break;
+    }
+    case 'stun':{
+      if(!targetEnemy)return status('Выберите врага.');
+      await update(ref(db,`rooms/${roomId}/battle/enemies/${targetEnemy.id}/conditions`),['stun']);
+      await addLog(`💫 ${h.name} ставит ловушку: ${targetEnemy.name} оглушён`);
+      break;
+    }
+    case 'poison':{
+      if(!targetEnemy)return status('Выберите врага.');
+      const dmg=rollDamage(1,6,h.atk);
+      await attackEnemy(targetEnemy.id,dmg,'☠️ Отравленный клинок');
+      await update(ref(db,`rooms/${roomId}/battle/enemies/${targetEnemy.id}/conditions`),['poison']);
+      break;
+    }
+  }
+  // Кулдаун
+  await update(ref(db,`rooms/${roomId}/players/${uid}/cooldowns`),{[abilityId]:ab.cd});
+  // Уменьшаем кулдауны в конце хода
+  await addLog(`✨ ${h.name} использует способность «${ab.name}»`);
+  renderAbilities();
+}
+
+/* ---------- Инициализация ---------- */
+renderHeroes();renderMap();renderBattlefield();
+</script>
+</body></html>
