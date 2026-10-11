@@ -249,7 +249,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <h2>🎴 Выбор профессии</h2>
     <span class="badge gold">1 из 3</span>
   </div>
-  <p class="muted small" style="margin-top:0;">Выберите одну из трёх профессий. <b>Выбор окончательный</b> — вернуться к нему нельзя.</p>
+  <p class="muted small" style="margin-top:0;">Выберите одну из трёх профессий. <b>Выбор окончательный</b>.</p>
   <div class="pick-grid" id="pickGrid"></div>
   <div class="actions">
     <button id="confirmPick" disabled>✅ Подтвердить (окончательно)</button>
@@ -285,9 +285,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
     <div class="actions">
       <button id="startGameBtn">▶️ Начать игру</button>
       <button id="beginRevealBtn" class="secondary hidden">🔓 Начать раскрытие</button>
-      <button id="startQuestBtn" class="secondary hidden">⚔️ Отправить на квест</button>
       <button id="openResultBtn" class="secondary hidden">📖 Открыть исход квеста</button>
-      <button id="startKickBtn" class="danger hidden">🚪 Изгнание</button>
       <button id="resetGameBtn" class="ghost">🔄 Сброс</button>
     </div>
   </div>
@@ -584,7 +582,6 @@ function generateRest(players){
   const phPool=phobias.filter(x=>!taken.phobia.includes(x.id));
   const spPool=specials.filter(x=>!taken.special.includes(x.id));
 
-  // Баланс 50/50 мужчин и женщин
   let menCount=0, womenCount=0;
   for(const p of Object.values(players||{})){
     if(!p.character)continue;
@@ -643,19 +640,15 @@ function defaultRoom(hostUid,name){
   return {
     createdAt:Date.now(),hostUid,
     players:{[hostUid]:{
-      uid:hostUid,
-      name,
-      joinedAt:Date.now(),
-      isHost:true,
-      kicked:false,
-      character:null,
-      pickOptions:null,
-      pickedProfession:null,
-      rerolled:false,
-      revealed:null
+      uid:hostUid,name,joinedAt:Date.now(),
+      isHost:true,kicked:false,character:null,
+      pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
     }},
-    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0},
-    bunker:{capacity:2,started:false,finished:false,winners:[]},
+    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,revealCount:0},
+    bunker:{
+      capacity:2,started:false,finished:false,winners:[],
+      resources:{food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0}
+    },
     votes:{active:false,type:null,label:null,candidates:null,votes:{},finished:false,result:null,kick:false},
     quest:{active:false,data:null,finished:false,result:null}
   };
@@ -736,9 +729,7 @@ function renderPick(){
   const curUid=t?.order?.[t?.turnIndex];
   const isMyPickTurn=curUid===uid;
 
-  if(!me||me.character||phase!=='pick'){
-    pc.style.display='none';return;
-  }
+  if(!me||me.character||phase!=='pick'){pc.style.display='none';return;}
   pc.style.display='';
 
   if(!isMyPickTurn){
@@ -841,6 +832,7 @@ function renderScenario(){
   const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
   $('roundBadge').textContent=label;
 
+  const baseRes=roomData?.bunker?.resources || {food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
   const tags={};
   for(const p of ps){
     if(p.kicked)continue;
@@ -862,19 +854,19 @@ function renderScenario(){
     }
   }
   const resList = [
-    {label:'🍞 Еда', value:(tags.food||0)},
-    {label:'💊 Медицина', value:(tags.medic||0)},
-    {label:'🔧 Техника', value:(tags.tech||0)+(tags.craft||0)},
-    {label:'⚔️ Бой', value:(tags.combat||0)+(tags.strong||0)},
-    {label:'🧭 Выживание', value:(tags.survival||0)},
-    {label:'💬 Социум', value:(tags.social||0)},
-    {label:'🧠 Ум', value:(tags.smart||0)},
-    {label:'💪 Здоровье', value:(tags.healthy||0)}
+    {label:'🍞 Еда', value:(baseRes.food||0)+(tags.food||0)},
+    {label:'💊 Медицина', value:(baseRes.medic||0)+(tags.medic||0)},
+    {label:'🔧 Техника', value:(baseRes.tech||0)+(tags.tech||0)+(tags.craft||0)},
+    {label:'⚔️ Бой', value:(baseRes.combat||0)+(tags.combat||0)+(tags.strong||0)},
+    {label:'🧭 Выживание', value:(baseRes.survival||0)+(tags.survival||0)},
+    {label:'💬 Социум', value:(baseRes.social||0)+(tags.social||0)},
+    {label:'🧠 Ум', value:(baseRes.smart||0)+(tags.smart||0)},
+    {label:'💪 Здоровье', value:(baseRes.healthy||0)+(tags.healthy||0)}
   ];
   const resourcesHtml=resList.map(r=>{
     const v=r.value;
-    const bar=Math.min(100,v*25);
-    const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--dim)';
+    const bar=Math.min(100,v*10);
+    const color=v>=8?'var(--green)':v>=4?'var(--gold)':'var(--red)';
     return `<div class="res-row" style="margin-bottom:6px;">
       <span class="res-label" style="flex:0 0 110px;font-size:.8rem;">${r.label}</span>
       <div class="res-bar" style="height:8px;"><i style="width:${bar}%;background:${color}"></i></div>
@@ -890,7 +882,7 @@ function renderScenario(){
 
 Чтобы человечество выжило, в бункере должны остаться <b>мужчина и женщина</b>, способные иметь детей. Иначе — конец.
 
-Раскрывайте характеристики и голосуйте. Каждый голос решает судьбу.</div>
+Квесты приносят и отнимают ресурсы. Следите за запасами.</div>
       <div class="scenario-stats">
         <div class="stat"><b>2</b><span>места</span></div>
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
@@ -898,7 +890,8 @@ function renderScenario(){
       </div>
     </div>
     <div class="final-section" style="margin-top:0;">
-      <h3>🛠️ Ресурсы бункера (по раскрытым характеристикам)</h3>
+      <h3>🛠️ Ресурсы бункера</h3>
+      <p class="muted small" style="margin-top:0;">Складываются из квестов и раскрытых характеристик.</p>
       ${resourcesHtml}
     </div>
   `;
@@ -909,9 +902,7 @@ function renderMasterPanel(){
   const phase=t?.phase||'lobby';
   $('startGameBtn').classList.toggle('hidden',!(isHost&&phase==='lobby'));
   $('beginRevealBtn').classList.toggle('hidden',!(isHost&&phase==='pick'));
-  $('startQuestBtn').classList.toggle('hidden',!(isHost&&phase==='reveal'));
   $('openResultBtn').classList.toggle('hidden',!(isHost&&phase==='quest'));
-  $('startKickBtn').classList.toggle('hidden',!(isHost&&(phase==='reveal'||phase==='vote')));
 }
 function renderTurnBanner(){
   const el=$('turnBanner');
@@ -933,11 +924,15 @@ function renderTurnBanner(){
     return;
   }
   if(phase==='quest'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест в разгаре</div><div class="hint">Ведущий откроет исход</div></div>`;
+    el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест</div><div class="hint">Ведущий откроет исход</div></div>`;
     return;
   }
   if(phase==='finished'){
     el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;
+    return;
+  }
+  if(phase==='vote'){
+    el.innerHTML=`<div class="turn-banner"><div class="who">🗳️ Голосование</div><div class="hint">Определите судьбу игрока</div></div>`;
     return;
   }
   const cur=t.order?.[t.turnIndex];
@@ -1002,7 +997,7 @@ function renderVote(){
     if(v?.finished&&v?.result){
       const r=v.result;
       vc.innerHTML=`<div class="status-box ${r.chosen?'success':''}">
-        <b>${esc(r.label||'Голосование')}:</b> ${r.chosen?`выбран <b>${esc(r.chosenName)}</b> (${r.maxVotes})`:'никто не выбран'}${r.kick?' · исключён':''}
+        <b>${esc(r.label||'Голосование')}:</b> ${r.chosen?`выбран <b>${esc(r.chosenName)}</b> (${r.maxVotes})`:'никто не выбран'}
       </div>`;
     } else {
       vc.innerHTML='<div class="status-box muted">Голосование не начато.</div>';
@@ -1015,12 +1010,13 @@ function renderVote(){
   for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
   const canVote=!!me&&!me.kicked;
   const isQuest = v.type==='quest';
-  const skipKey = '__skip__';
-  const skipCount = counts[skipKey]||0;
+  const skipKey='__skip__';
+  const skipCount=counts[skipKey]||0;
+
   vc.innerHTML=`
     <div class="vote-info">
-      <h3>${v.kick?'🚪 Изгнание игрока':isQuest?'🎯 Отправить на квест?':'🎯 '+esc(v.label||'Голосование')}</h3>
-      <p>${v.kick?'Кто покинет бункер навсегда?':isQuest?'Кто пойдёт на опасный квест? Или пропустить и не рисковать?':'Кто отправится на действие?'}</p>
+      <h3>${v.kick?'🚪 Изгнание игрока':isQuest?'⚔️ Кто пойдёт на квест?':'🗳️ Голосование'}</h3>
+      <p>${v.kick?'Кто покинет бункер навсегда?':isQuest?'Бункер решает, кто пойдёт на опасный квест. Или никто.':'Кто отправится на действие?'}</p>
     </div>
     <div class="vote-list">
       ${candidates.map(c=>{
@@ -1052,12 +1048,8 @@ function calcBunkerOutcome(winners){
     const ch=w.character;
     if(!ch)continue;
     const addTags = (obj) => { if(obj?.tags) obj.tags.forEach(t=>tags[t]=(tags[t]||0)+1); };
-    addTags(ch.profession);
-    addTags(ch.biology);
-    addTags(ch.health);
-    addTags(ch.hobby);
-    addTags(ch.phobia);
-    addTags(ch.special);
+    addTags(ch.profession);addTags(ch.biology);addTags(ch.health);
+    addTags(ch.hobby);addTags(ch.phobia);addTags(ch.special);
     if(Array.isArray(ch.inventory)) ch.inventory.forEach(i=>addTags(i));
   }
   const resources = [
@@ -1079,7 +1071,6 @@ function calcBunkerOutcome(winners){
   const women = winners.filter(w=>getSex(w.character)==='W');
   const menCanRepro = men.filter(w=>canReproduce(w.character));
   const womenCanRepro = women.filter(w=>canReproduce(w.character));
-
   const hasMan = menCanRepro.length>0;
   const hasWoman = womenCanRepro.length>0;
   const exactlyTwo = winners.length===2;
@@ -1098,46 +1089,34 @@ function calcBunkerOutcome(winners){
 
   let verdict, verdictType, reason;
   if(!exactlyTwo){
-    verdict='💀 БУНКЕР НЕ ЖИЗНЕСПОСОБЕН';
-    verdictType='lose';
-    reason=`В бункере ${winners.length} человек. Для выживания нужно ровно 2 — мужчина и женщина.`;
+    verdict='💀 БУНКЕР НЕ ЖИЗНЕСПОСОБЕН';verdictType='lose';
+    reason=`В бункере ${winners.length} человек. Нужно ровно 2.`;
   } else if(!hasMan && !hasWoman){
-    verdict='💀 ЧЕЛОВЕЧЕСТВО ОБРЕЧЕНО';
-    verdictType='lose';
-    reason='В бункере нет мужчины и женщины, способных к потомству.';
+    verdict='💀 ЧЕЛОВЕЧЕСТВО ОБРЕЧЕНО';verdictType='lose';
+    reason='Нет пары, способной к потомству.';
   } else if(!hasMan){
-    verdict='💀 НЕТ МУЖЧИНЫ';
-    verdictType='lose';
-    reason='В бункере нет мужчины, способного к потомству. Род прервётся.';
+    verdict='💀 НЕТ МУЖЧИНЫ';verdictType='lose';
+    reason='Нет мужчины, способного к потомству.';
   } else if(!hasWoman){
-    verdict='💀 НЕТ ЖЕНЩИНЫ';
-    verdictType='lose';
-    reason='В бункере нет женщины, способной к потомству. Род прервётся.';
+    verdict='💀 НЕТ ЖЕНЩИНЫ';verdictType='lose';
+    reason='Нет женщины, способной к потомству.';
   } else if(score>=40){
-    verdict='🏆 БУНКЕР ВЫЖИВЕТ!';
-    verdictType='win';
+    verdict='🏆 БУНКЕР ВЫЖИВЕТ!';verdictType='win';
     reason='Мужчина и женщина способны к потомству. Ресурсов хватает на 10 лет.';
   } else if(score>=20){
-    verdict='⚠️ НА ГРАНИ, НО ЕСТЬ ШАНС';
-    verdictType='warn';
-    reason='Пара способна к потомству, но ресурсов мало. Первые годы будут тяжёлыми.';
+    verdict='⚠️ НА ГРАНИ, НО ЕСТЬ ШАНС';verdictType='warn';
+    reason='Пара способна к потомству, но ресурсов мало.';
   } else {
-    verdict='😰 ВЫЖИВУТ, НО ТЯЖЕЛО';
-    verdictType='warn';
-    reason='Пара есть, но без еды, медицины и инструментов. Выживание под вопросом.';
+    verdict='😰 ВЫЖИВУТ, НО ТЯЖЕЛО';verdictType='warn';
+    reason='Пара есть, но ресурсов мало.';
   }
 
   return {
-    score: Math.round(score),
-    verdict, verdictType, reason,
-    resources, problems,
-    hasMan, hasWoman, exactlyTwo,
+    score: Math.round(score), verdict, verdictType, reason,
+    resources, problems, hasMan, hasWoman, exactlyTwo,
     winners: winners.map(w=>({
-      uid:w.uid,
-      name:w.name,
-      character:w.character,
-      sex:getSex(w.character),
-      canRepro:canReproduce(w.character)
+      uid:w.uid, name:w.name, character:w.character,
+      sex:getSex(w.character), canRepro:canReproduce(w.character)
     }))
   };
 }
@@ -1155,10 +1134,7 @@ async function finalizeGame(alive, allPlayers){
 
 function renderQuest(){
   const el=$('questContainer');
-  if(roomData?.turn?.phase==='finished'){
-    renderFinalSummary(el);
-    return;
-  }
+  if(roomData?.turn?.phase==='finished'){renderFinalSummary(el);return;}
   const q=roomData?.quest;
   if(!q?.active&&!q?.finished){el.innerHTML='';return;}
   const d=q.data;
@@ -1168,7 +1144,10 @@ function renderQuest(){
       <div class="quest-box">
         <div class="quest-title">${esc(d.title)}</div>
         <div class="quest-text">${esc(d.text)}</div>
-        <div class="quest-hero"><b>Отправлен:</b> ${esc(d.playerName)}<br><span class="muted small">Подсказка: ${esc(d.hint)}</span></div>
+        <div class="quest-hero">
+          <b>Бункер отправил:</b> ${esc(d.playerName)}<br>
+          <span class="muted small">Подсказка: ${esc(d.hint)}</span>
+        </div>
         <p class="muted small" style="text-align:center;margin-top:10px;">Ведущий откроет исход…</p>
       </div>`;
     return;
@@ -1177,39 +1156,52 @@ function renderQuest(){
   if(!r){el.innerHTML='';return;}
   const matchLines=(r.matchedTags.length?r.matchedTags:['—']).map(t=>`<div class="match-line"><span class="ok">✓</span><span>Подошло: <b>${esc(t)}</b></span></div>`).join('');
   const missLines=r.requiredTags.filter(t=>!r.matchedTags.includes(t)).map(t=>`<div class="match-line miss"><span class="no">✗</span><span>Не хватило: ${esc(t)}</span></div>`).join('');
+
+  let resDeltaHtml='';
+  if(r.resDelta){
+    const labelMap={food:'🍞 Еда',medic:'💊 Медицина',tech:'🔧 Техника',combat:'⚔️ Бой',survival:'🧭 Выживание',social:'💬 Социум',smart:'🧠 Ум',healthy:'💪 Здоровье'};
+    const rows=Object.entries(r.resDelta).filter(([k,v])=>v!==0).map(([k,v])=>{
+      const color=v>0?'var(--green)':'var(--red)';
+      const sign=v>0?'+':'';
+      return `<div class="res-row" style="margin-bottom:4px;">
+        <span class="res-label" style="flex:0 0 130px;font-size:.82rem;">${labelMap[k]||k}</span>
+        <span class="res-val" style="flex:1;text-align:left;color:${color};font-size:.85rem;">${sign}${v}</span>
+      </div>`;
+    }).join('');
+    if(rows){
+      resDeltaHtml=`<div class="final-section" style="margin-top:10px;"><h3>📦 Влияние на ресурсы бункера</h3>${rows}</div>`;
+    }
+  }
+
   el.innerHTML=`
     <div class="quest-box">
       <div class="quest-title">${esc(d.title)}</div>
       <div class="quest-text">${esc(d.text)}</div>
-      <div class="quest-hero"><b>Герой:</b> ${esc(d.playerName)}<br><span class="muted small">Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · совпадений: ${r.matchCount}</span></div>
+      <div class="quest-hero">
+        <b>Герой:</b> ${esc(d.playerName)}<br>
+        <span class="muted small">Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · совпадений: ${r.matchCount}</span>
+      </div>
       <div class="quest-match">${matchLines}${missLines}</div>
-      <div class="quest-result ${r.success?'win':'lose'}">${r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'💀 ПОГИБ'}</div>
+      <div class="quest-result ${r.success?'win':'lose'}">${r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'😰 ВЕРНУЛСЯ НИ С ЧЕМ'}</div>
+      ${resDeltaHtml}
     </div>`;
 }
 
 function renderFinalSummary(el){
   const b=roomData?.bunker;
-  if(!b?.outcome){
-    el.innerHTML=`<div class="final-panel"><div class="final-title">🏆 Игра окончена</div><p class="muted">Итоги не рассчитаны.</p></div>`;
-    return;
-  }
+  if(!b?.outcome){el.innerHTML=`<div class="final-panel"><div class="final-title">🏆 Игра окончена</div><p class="muted">Итоги не рассчитаны.</p></div>`;return;}
   const o=b.outcome;
 
   const winnersHtml = o.winners.map(w=>{
     const ch=w.character;
-    if(!ch){
-      return `<div class="final-winner"><h4>${esc(w.name)}</h4><p class="muted small">Нет данных</p></div>`;
-    }
+    if(!ch)return `<div class="final-winner"><h4>${esc(w.name)}</h4><p class="muted small">Нет данных</p></div>`;
     const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
     const sexLabel=w.sex==='M'?'♂️ Мужчина':w.sex==='W'?'♀️ Женщина':'—';
     const reproLabel=w.canRepro?'✅ способен(на) к потомству':'❌ не способен(на) к потомству';
     return `<div class="final-winner ${w.canRepro?'can-repro':'no-repro'}">
       <div class="fw-header">
         <span class="fw-emoji">${ch.profession.emoji}</span>
-        <div>
-          <h4>${esc(w.name)}</h4>
-          <p class="muted small">${sexLabel} · ${esc(ch.biology.text)}</p>
-        </div>
+        <div><h4>${esc(w.name)}</h4><p class="muted small">${sexLabel} · ${esc(ch.biology.text)}</p></div>
       </div>
       <div class="fw-repro">${reproLabel}</div>
       <div class="fw-traits">
@@ -1227,21 +1219,13 @@ function renderFinalSummary(el){
     const v=r.value;
     const bar=Math.min(100,v*25);
     const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--red)';
-    return `<div class="res-row">
-      <span class="res-label">${r.label}</span>
-      <div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div>
-      <span class="res-val" style="color:${color}">${v}</span>
-    </div>`;
+    return `<div class="res-row"><span class="res-label">${r.label}</span><div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div><span class="res-val" style="color:${color}">${v}</span></div>`;
   }).join('');
 
   const problemsHtml = o.problems.filter(p=>p.value>0).map(p=>{
     const v=p.value;
-    return `<div class="res-row">
-      <span class="res-label">${p.label}</span>
-      <div class="res-bar"><i style="width:${Math.min(100,v*25)}%;background:var(--red)"></i></div>
-      <span class="res-val" style="color:var(--red)">${v}</span>
-    </div>`;
-  }).join('') || '<p class="muted small">Проблем нет — отличная команда!</p>';
+    return `<div class="res-row"><span class="res-label">${p.label}</span><div class="res-bar"><i style="width:${Math.min(100,v*25)}%;background:var(--red)"></i></div><span class="res-val" style="color:var(--red)">${v}</span></div>`;
+  }).join('') || '<p class="muted small">Проблем нет.</p>';
 
   const deadHtml = (b.dead||[]).length
     ? b.dead.map(p=>`<span class="dead-chip">💀 ${esc(p.name)}</span>`).join('')
@@ -1249,18 +1233,9 @@ function renderFinalSummary(el){
 
   const pairCheck = `
     <div class="pair-check">
-      <div class="pair-item ${o.exactlyTwo?'ok':'bad'}">
-        <span class="pair-icon">${o.exactlyTwo?'✅':'❌'}</span>
-        <span>Ровно 2 выживших (сейчас: ${o.winners.length})</span>
-      </div>
-      <div class="pair-item ${o.hasMan?'ok':'bad'}">
-        <span class="pair-icon">${o.hasMan?'✅':'❌'}</span>
-        <span>Мужчина, способный к потомству</span>
-      </div>
-      <div class="pair-item ${o.hasWoman?'ok':'bad'}">
-        <span class="pair-icon">${o.hasWoman?'✅':'❌'}</span>
-        <span>Женщина, способная к потомству</span>
-      </div>
+      <div class="pair-item ${o.exactlyTwo?'ok':'bad'}"><span class="pair-icon">${o.exactlyTwo?'✅':'❌'}</span><span>Ровно 2 выживших (сейчас: ${o.winners.length})</span></div>
+      <div class="pair-item ${o.hasMan?'ok':'bad'}"><span class="pair-icon">${o.hasMan?'✅':'❌'}</span><span>Мужчина, способный к потомству</span></div>
+      <div class="pair-item ${o.hasWoman?'ok':'bad'}"><span class="pair-icon">${o.hasWoman?'✅':'❌'}</span><span>Женщина, способная к потомству</span></div>
     </div>`;
 
   const verdictClass = o.verdictType==='win'?'win':o.verdictType==='lose'?'lose':'warn';
@@ -1269,43 +1244,14 @@ function renderFinalSummary(el){
     <div class="final-panel">
       <div class="final-title">☢ ИТОГИ БУНКЕРА</div>
       <div class="final-subtitle">Сможет ли человечество продолжиться?</div>
-
-      <div class="final-verdict ${verdictClass}">
-        ${o.verdict}
-        <p class="verdict-reason">${esc(o.reason)}</p>
-      </div>
-
-      <div class="final-section">
-        <h3>🧬 Проверка пары</h3>
-        ${pairCheck}
-      </div>
-
-      <div class="final-section">
-        <h3>🛠️ Ресурсы бункера · счёт ${o.score}</h3>
-        ${resourcesHtml}
-      </div>
-
-      ${o.problems.some(p=>p.value>0)?`
-      <div class="final-section">
-        <h3>⚠️ Проблемы</h3>
-        ${problemsHtml}
-      </div>`:''}
-
-      <div class="final-section">
-        <h3>✅ Выжившие (${o.winners.length})</h3>
-        <div class="final-winners">${winnersHtml}</div>
-      </div>
-
-      <div class="final-section">
-        <h3>💀 Погибшие</h3>
-        <div class="dead-list">${deadHtml}</div>
-      </div>
-
-      <div class="final-section final-restart">
-        <p class="muted small">Ведущий может нажать «🔄 Сброс», чтобы начать новую игру.</p>
-      </div>
-    </div>
-  `;
+      <div class="final-verdict ${verdictClass}">${o.verdict}<p class="verdict-reason">${esc(o.reason)}</p></div>
+      <div class="final-section"><h3>🧬 Проверка пары</h3>${pairCheck}</div>
+      <div class="final-section"><h3>🛠️ Ресурсы бункера · счёт ${o.score}</h3>${resourcesHtml}</div>
+      ${o.problems.some(p=>p.value>0)?`<div class="final-section"><h3>⚠️ Проблемы</h3>${problemsHtml}</div>`:''}
+      <div class="final-section"><h3>✅ Выжившие (${o.winners.length})</h3><div class="final-winners">${winnersHtml}</div></div>
+      <div class="final-section"><h3>💀 Погибшие</h3><div class="dead-list">${deadHtml}</div></div>
+      <div class="final-section final-restart"><p class="muted small">Ведущий может нажать «🔄 Сброс», чтобы начать новую игру.</p></div>
+    </div>`;
 }
 
 /* ---------- КОМНАТА ---------- */
@@ -1325,12 +1271,10 @@ async function connectRoom(code){
   if(!snap.exists())throw new Error('Комната не найдена');
   const room=snap.val();
   const name=$('playerName').value.trim().slice(0,24)||'Игрок';
-
   if(room.hostUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();return;
   }
-
   const players=room.players||{};
   const playerCount=Object.values(players).length;
   if(playerCount>=12)throw new Error('Уже 12 игроков');
@@ -1391,10 +1335,7 @@ $('confirmPick').onclick=async()=>{
   });
 
   if(stillChoosing.length===0){
-    await update(ref(db,`rooms/${roomId}/turn`),{
-      order:order.slice(),
-      turnIndex:0,phase:'reveal',round:1
-    });
+    await update(ref(db,`rooms/${roomId}/turn`),{order:order.slice(),turnIndex:0,phase:'reveal',round:1});
     return;
   }
 
@@ -1419,7 +1360,7 @@ $('rerollPick').onclick=async()=>{
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts,rerolled:true});
 };
 
-/* ---------- ВСКРЫТИЕ ---------- */
+/* ---------- ВСКРЫТИЕ + КРУГИ + СОБЫТИЯ ---------- */
 async function doReveal(key){
   try{
     if(!REVEAL_KEYS.includes(key))return;
@@ -1441,29 +1382,72 @@ async function doReveal(key){
 
     await set(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
 
-    const aliveOrder=t.order.filter(u=>fresh.players?.[u]&&!fresh.players[u].kicked);
+    // Сколько ходов в этом круге сделано
     const snap2=await get(ref(db,`rooms/${roomId}/players`));
     const playersNow=snap2.val()||{};
+    const aliveOrder=t.order.filter(u=>playersNow[u]&&!playersNow[u].kicked);
 
-    const allHaveTwo=aliveOrder.every(u=>{
-      const r=playersNow[u]?.revealed||{};
-      return REVEAL_KEYS.filter(k=>r[k]).length>=2;
-    });
+    // Считаем "сколько раскрыто в этом круге у каждого" — для простоты используем revealsInRound по числу текущих раскрытий
+    // Определяем: круг завершён, когда все живые сделали вскрытие в этом круге
+    const round = t.round||1;
+    // Храним счётчик вскрытий в этом круге — используем turn.movesInRound
+    const movesInRound = (t.movesInRound||0) + 1;
+    const needMoves = aliveOrder.length;
 
-    if(allHaveTwo){
-      await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
-      await update(ref(db,`rooms/${roomId}/votes`),{
-        active:true,type:'quest',label:'Отправить на квест',kick:false,
-        candidates:aliveOrder,votes:{},finished:false,result:null
-      });
-    } else {
-      let idx=t.turnIndex;
+    if(movesInRound < needMoves){
+      // Круг ещё не завершён — следующий игрок
+      await update(ref(db,`rooms/${roomId}/turn`),{movesInRound, turnIndex:(t.turnIndex+1)%t.order.length});
+      // Пропустить изгнанных
+      let idx=(t.turnIndex+1)%t.order.length;
       for(let i=0;i<aliveOrder.length;i++){
-        idx=(idx+1)%t.order.length;
         if(playersNow[t.order[idx]]&&!playersNow[t.order[idx]].kicked)break;
+        idx=(idx+1)%t.order.length;
       }
       await update(ref(db,`rooms/${roomId}/turn`),{turnIndex:idx});
+      return;
     }
+
+    // Круг завершён — обнуляем и запускаем событие
+    const newRound = round+1;
+
+    // === РЕШЕНИЕ: квест или изгнание ===
+    const canQuest = round >= 1; // квест с 1-го круга
+    const canKick = round >= 2;  // изгнание со 2-го круга
+    const questRoll = Math.floor(Math.random()*100)+1;
+    const triggerQuest = canQuest && questRoll <= 30; // 30% шанс квеста
+
+    if(triggerQuest){
+      // Голосование бункера: кто идёт на квест
+      await update(ref(db,`rooms/${roomId}/turn`),{
+        phase:'vote',turnIndex:0,round:newRound,movesInRound:0
+      });
+      await update(ref(db,`rooms/${roomId}/votes`),{
+        active:true,type:'quest',label:'Кто пойдёт на квест?',
+        kick:false,quest:true,
+        candidates:aliveOrder,
+        votes:{},finished:false,result:null
+      });
+      return;
+    }
+
+    if(canKick){
+      // Голосование: кого изгнать
+      await update(ref(db,`rooms/${roomId}/turn`),{
+        phase:'vote',turnIndex:0,round:newRound,movesInRound:0
+      });
+      await update(ref(db,`rooms/${roomId}/votes`),{
+        active:true,type:'kick',label:'Кого изгнать?',
+        kick:true,quest:false,
+        candidates:aliveOrder,
+        votes:{},finished:false,result:null
+      });
+      return;
+    }
+
+    // Первый круг без событий — начинаем новый круг
+    await update(ref(db,`rooms/${roomId}/turn`),{
+      phase:'reveal',turnIndex:0,round:newRound,movesInRound:0
+    });
   }catch(e){
     console.error(e);
     showDebug('doReveal: '+e.message);
@@ -1482,8 +1466,9 @@ async function doVote(targetUid){
     if(!v?.active)return;
     const me=fresh.players?.[uid];
     if(!me||me.kicked)return;
-    if(targetUid!==uid && targetUid!=='__skip__' && !fresh.players[targetUid]){
-      setStatus('Неверная цель голосования',false);return;
+    const specialKeys=['__skip__'];
+    if(!specialKeys.includes(targetUid) && !fresh.players[targetUid]){
+      setStatus('Неверная цель',false);return;
     }
     if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
     myVote=targetUid;
@@ -1510,7 +1495,6 @@ async function finishVote(){
     else if(c===max)tie=true;
   }
 
-  // ✅ Безопасно: только если maxUid реальный и не __skip__ и есть игрок
   const validUid = maxUid && maxUid!=='__skip__' && roomData.players?.[maxUid];
   const chosen = !!(maxUid && !tie && validUid);
   const chosenName = chosen ? String(roomData.players[maxUid]?.name || '') : '';
@@ -1523,36 +1507,45 @@ async function finishVote(){
     tie,
     label: String(v.label || ''),
     kick: !!v.kick,
+    quest: !!v.quest,
     type: String(v.type || '')
   };
 
-  // Если выбран __skip__ — отмечаем отдельно
   if(maxUid==='__skip__' && !tie){
-    result.chosen = false;
-    result.skip = true;
-    result.chosenUid = '';
-    result.chosenName = '';
+    result.chosen=false;result.skip=true;result.chosenUid='';result.chosenName='';
   }
 
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
 
-  // Ничья — пропуск
-  if(!chosen && maxUid!=='__skip__'){
-    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
+  // === ГОЛОСОВАНИЕ ЗА КВЕСТ ===
+  if(v.quest){
+    if(!chosen || maxUid==='__skip__'){
+      // Никто не идёт — продолжаем раскрытие
+      const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      return;
+    }
+    // Кто-то выбран — отправляем на квест
+    const player=roomData.players[maxUid];
+    const questData=prepareQuest(player);
+    if(!questData){
+      const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      return;
+    }
+    await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
+    await update(ref(db,`rooms/${roomId}/turn`),{phase:'quest',turnIndex:0});
     return;
   }
 
-  // Никто не идёт — пропускаем квест
-  if(maxUid==='__skip__'){
-    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:false,data:null,result:null});
-    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
-    return;
-  }
-
-  // Изгнание
+  // === ГОЛОСОВАНИЕ ЗА ИЗГНАНИЕ ===
   if(v.kick){
+    if(!chosen){
+      // Ничья — никто не изгнан
+      const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      return;
+    }
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
     const psSnap=await get(ref(db,`rooms/${roomId}/players`));
     const all=psSnap.val()||{};
@@ -1563,20 +1556,9 @@ async function finishVote(){
       return;
     }
     const newOrder=alive.map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
+    await update(ref(db,`rooms/${roomId}/turn`),{order:newOrder,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0),movesInRound:0});
     return;
   }
-
-  // Квест
-  const player=roomData.players[maxUid];
-  const questData=prepareQuest(player);
-  if(!questData){
-    const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-    await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
-    return;
-  }
-  await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
-  await update(ref(db,`rooms/${roomId}/turn`),{phase:'quest',turnIndex:0});
 }
 
 /* ---------- ПАНЕЛЬ ВЕДУЩЕГО ---------- */
@@ -1586,7 +1568,7 @@ $('startGameBtn').onclick=async()=>{
   if(ps.length<2)return setStatus('Нужно минимум 2 игрока',false);
   if(ps.length>12)return setStatus('Максимум 12 игроков',false);
   const order=ps.map(p=>p.uid);
-  await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:1});
+  await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:0,movesInRound:0});
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity:2,started:true,finished:false,winners:[]});
 };
 $('beginRevealBtn').onclick=async()=>{
@@ -1596,14 +1578,7 @@ $('beginRevealBtn').onclick=async()=>{
   const ps=Object.values(roomData.players||{}).filter(p=>!p.kicked);
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus('Не все выбрали профессию: '+without.map(p=>p.name).join(', '),false);
-  await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1});
-};
-$('startQuestBtn').onclick=async()=>{
-  if(!isHost)return;
-  const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked);
-  if(alive.length<2)return setStatus('Мало игроков',false);
-  await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
-  await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'quest',label:'Отправить на квест',kick:false,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
+  await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1,movesInRound:0});
 };
 $('openResultBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1613,10 +1588,30 @@ $('openResultBtn').onclick=async()=>{
   const roll=Math.floor(Math.random()*100)+1;
   const success=roll<=d.chance;
   const result={success,chance:d.chance,matchedTags:d.matchedTags,requiredTags:d.requiredTags,matchCount:d.matchCount,roll};
-  await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:true,result});
-  if(!success){
-    await update(ref(db,`rooms/${roomId}/players/${d.playerUid}`),{kicked:true});
+
+  const resDelta={food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
+  const tagToRes={food:'food',medic:'medic',tech:'tech',craft:'tech',combat:'combat',strong:'combat',survival:'survival',social:'social',smart:'smart',healthy:'healthy',brave:'combat'};
+  for(const tag of d.matchedTags){
+    const res=tagToRes[tag];
+    if(res)resDelta[res] += success ? 1 : -1;
   }
+  if(success && d.matchCount===0)resDelta.food += 1;
+  if(!success && d.matchCount===0){resDelta.food -= 1;resDelta.medic -= 1;}
+
+  const oldRes=roomData.bunker?.resources || {food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
+  const newRes={...oldRes};
+  for(const k of Object.keys(newRes)){
+    newRes[k]=Math.max(0, (newRes[k]||0) + (resDelta[k]||0));
+  }
+
+  result.resDelta=resDelta;
+  result.newResources=newRes;
+
+  await update(ref(db,`rooms/${roomId}/bunker/resources`), newRes);
+  await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:true,result});
+
+  // Квест НЕ убивает игрока — только ресурсы
+
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
   const players=Object.values(all);
@@ -1625,14 +1620,11 @@ $('openResultBtn').onclick=async()=>{
     await finalizeGame(alive, players);
     return;
   }
-  await update(ref(db,`rooms/${roomId}/turn`),{order:alive.map(p=>p.uid),turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)+1});
-};
-$('startKickBtn').onclick=async()=>{
-  if(!isHost)return;
-  const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked);
-  if(alive.length<=2)return setStatus('Мало игроков',false);
-  await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0});
-  await update(ref(db,`rooms/${roomId}/votes`),{active:true,type:'kick',label:'Изгнание',kick:true,candidates:alive.map(p=>p.uid),votes:{},finished:false,result:null});
+  // После квеста — следующий круг раскрытия, НЕ изгнание
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    order:alive.map(p=>p.uid),turnIndex:0,phase:'reveal',
+    round:(roomData.turn?.round||0),movesInRound:0
+  });
 };
 $('resetGameBtn').onclick=async()=>{
   if(!isHost||!confirm('Сбросить игру?'))return;
@@ -1648,12 +1640,14 @@ $('resetGameBtn').onclick=async()=>{
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
   updates['turn/turnIndex']=0;
+  updates['turn/movesInRound']=0;
   updates['bunker/started']=false;
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
   updates['bunker/outcome']=null;
   updates['bunker/dead']=null;
   updates['bunker/capacity']=2;
+  updates['bunker/resources']={food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
   updates['votes/active']=false;
   updates['votes/votes']={};
   updates['votes/finished']=false;
