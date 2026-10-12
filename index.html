@@ -85,7 +85,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 #debugBar{position:fixed;bottom:8px;right:8px;max-width:400px;z-index:999;background:rgba(0,0,0,.9);color:#fff;font-family:monospace;font-size:10px;padding:6px 10px;border-radius:6px;border:1px solid var(--red);display:none;white-space:pre-wrap;}
 #debugBar.show{display:block;}
 
-/* Сценарий */
 .scenario{padding:10px;border-radius:10px;background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));border:1px solid rgba(251,146,60,.25);margin-bottom:8px;}
 .scenario-title{font-weight:800;color:var(--orange);font-size:.85rem;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
 .scenario-title .round-badge{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 7px;border-radius:12px;background:rgba(240,184,74,.15);color:var(--gold);border:1px solid rgba(240,184,74,.3);}
@@ -98,7 +97,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .stat b{display:block;color:var(--orange);font-size:.9rem;font-family:'JetBrains Mono',monospace;}
 .stat span{color:var(--muted);font-size:.62rem;}
 
-/* Персонаж */
 .char-header{display:flex;align-items:center;gap:10px;padding:8px;background:linear-gradient(135deg,var(--card2),var(--bg2));border-radius:9px;margin-bottom:8px;border:1px solid var(--border2);}
 .char-avatar{font-size:1.8rem;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:8px;border:1px solid var(--border2);flex-shrink:0;}
 .char-info h3{margin:0;font-size:.85rem;font-weight:700;}
@@ -118,7 +116,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .reveal-btn:disabled{opacity:.35;cursor:not-allowed;}
 .reveal-btn.already{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.3);color:var(--green);}
 
-/* Карточки профессий */
 .pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0;}
 .pick-card{background:linear-gradient(160deg,var(--card2),var(--bg2));border:2px solid var(--border2);border-radius:9px;padding:10px 6px;text-align:center;cursor:pointer;transition:.15s;position:relative;}
 .pick-card:hover{border-color:var(--gold);}
@@ -129,10 +126,10 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .pick-card .name{font-weight:700;color:var(--text);font-size:.78rem;margin-bottom:2px;}
 .pick-card .bonus{color:var(--muted);font-size:.66rem;}
 
-/* Игроки */
 .players-list{display:flex;flex-direction:column;gap:5px;}
 .player{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;position:relative;}
 .player.turn{border-color:var(--gold);box-shadow:0 0 0 2px rgba(240,184,74,.15);background:linear-gradient(135deg,rgba(240,184,74,.08),var(--bg2));}
+.player.on-quest{border-color:var(--purple);background:linear-gradient(135deg,rgba(167,139,250,.1),var(--bg2));}
 .player.kicked{opacity:.35;border-color:var(--red);}
 .player.kicked::after{content:'МЁРТВ';position:absolute;top:8px;right:10px;font-size:.55rem;font-weight:800;color:var(--red);letter-spacing:1.2px;font-family:'JetBrains Mono',monospace;}
 .player-name{font-weight:700;font-size:.8rem;margin-bottom:3px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
@@ -146,22 +143,21 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .player-traits .pt b{color:var(--text);font-weight:500;}
 .player-traits .pt.locked b{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
 
-/* Баннер хода */
 .turn-banner{padding:8px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);text-align:center;margin-bottom:8px;}
 .turn-banner.my-turn{background:linear-gradient(135deg,rgba(240,184,74,.12),rgba(240,184,74,.04));border-color:var(--gold);animation:pulse 2s infinite;}
+.turn-banner.quest-turn{background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(167,139,250,.04));border-color:var(--purple);}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,184,74,.3);}50%{box-shadow:0 0 0 10px rgba(240,184,74,0);}}
 .turn-banner .who{font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:2px;}
 .turn-banner.my-turn .who{color:var(--gold);}
+.turn-banner.quest-turn .who{color:var(--purple);}
 .turn-banner .hint{color:var(--muted);font-size:.72rem;}
 
-/* Ресурсы */
 .res-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:.72rem;}
 .res-label{flex:0 0 80px;color:var(--muted);}
 .res-bar{flex:1;height:5px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
 .res-bar i{display:block;height:100%;transition:.4s;}
 .res-val{flex:0 0 20px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.72rem;}
 
-/* Финал */
 .final-panel{background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);border:2px solid var(--gold);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
 .final-title{font-size:1.2rem;font-weight:800;text-align:center;letter-spacing:1.2px;color:var(--gold);margin-bottom:4px;}
 .final-subtitle{text-align:center;color:var(--muted);font-style:italic;margin-bottom:12px;font-size:.8rem;}
@@ -190,7 +186,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
 .verdict-reason{font-size:.7rem;font-weight:400;margin:3px 0 0;opacity:.9;font-style:italic;}
 
-/* МОДАЛЬНЫЕ ОКНА */
 .overlay{
   position:fixed;inset:0;
   background:rgba(5,4,2,.85);backdrop-filter:blur(6px);
@@ -214,7 +209,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 }
 .modal-body{font-size:.85rem;line-height:1.5;color:var(--text);}
 
-/* Голосование в модалке */
 .vote-info{background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:10px;margin-bottom:10px;}
 .vote-info h3{margin:0 0 2px;color:var(--red);font-size:.85rem;}
 .vote-info p{margin:0;color:var(--muted);font-size:.75rem;}
@@ -225,7 +219,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .vote-btn.self{opacity:.5;cursor:not-allowed;}
 .vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.82rem;margin-left:8px;}
 
-/* Квест в модалке */
 .quest-box{background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(96,165,250,.05));border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:14px;}
 .quest-title{font-weight:800;color:var(--purple);font-size:.95rem;margin-bottom:6px;}
 .quest-text{color:var(--text);line-height:1.5;font-size:.82rem;margin-bottom:8px;}
@@ -238,12 +231,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .quest-result{padding:12px;border-radius:8px;text-align:center;margin-top:10px;font-weight:700;font-size:.9rem;}
 .quest-result.win{background:rgba(74,222,128,.15);border:1px solid var(--green);color:var(--green);}
 .quest-result.lose{background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);}
-
-/* Спец-карта в модалке */
-.card-ability{display:flex;align-items:flex-start;gap:10px;padding:12px;background:linear-gradient(135deg,rgba(167,139,250,.08),var(--bg2));border:1px solid var(--purple);border-radius:9px;}
-.card-ability-icon{font-size:1.6rem;}
-.card-ability-info h4{margin:0 0 4px;color:var(--purple);font-size:.85rem;}
-.card-ability-info p{margin:0;color:var(--muted);font-size:.78rem;}
 
 @media(max-width:800px){
   .traits,.pick-grid,.reveal-grid,.final-winners{grid-template-columns:1fr 1fr;}
@@ -269,7 +256,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 
 <main>
 
-<!-- ЛЕВАЯ КОЛОНКА: Сценарий + Ресурсы + Квест -->
 <section>
   <div class="card">
     <div id="scenarioContainer"></div>
@@ -280,7 +266,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </section>
 
-<!-- ЦЕНТР: Персонаж + Профессия -->
 <section>
   <div class="card" id="pickCard" style="display:none;">
     <h2>🎴 Выбор профессии</h2>
@@ -325,7 +310,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </section>
 
-<!-- ПРАВАЯ КОЛОНКА: Стол + Ведущий + Баннер -->
 <section>
   <div id="turnBanner"></div>
   <div id="masterPanel" class="card hidden" style="margin-bottom:10px;">
@@ -347,7 +331,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 
 <div id="debugBar"></div>
 
-<!-- МОДАЛКА ГОЛОСОВАНИЯ -->
 <div id="voteModal" class="overlay">
   <div class="modal">
     <div class="modal-title" id="voteModalTitle">🗳️ Голосование</div>
@@ -356,7 +339,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </div>
 
-<!-- МОДАЛКА КВЕСТА (запуск) -->
 <div id="questStartModal" class="overlay">
   <div class="modal">
     <div class="modal-title">⚔️ Квест</div>
@@ -368,7 +350,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </div>
 
-<!-- МОДАЛКА КВЕСТА (итог) -->
 <div id="questResultModal" class="overlay">
   <div class="modal">
     <div class="modal-title">📖 Итог квеста</div>
@@ -380,7 +361,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </div>
 
-<!-- МОДАЛКА СПЕЦ-КАРТЫ -->
 <div id="cardModal" class="overlay">
   <div class="modal">
     <div class="modal-title" id="cardModalTitle">🎴 Спец-карта</div>
@@ -410,7 +390,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </div>
 
-<!-- МОДАЛКА ФИНАЛА -->
 <div id="finalModal" class="overlay">
   <div class="modal" style="max-width:820px;">
     <div class="modal-title">🏆 Игра окончена</div>
@@ -420,7 +399,6 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 </div>
 
 <script type="module">
-/* ---------- Отладка ---------- */
 const debugBar=document.getElementById('debugBar');
 function showDebug(msg){
   debugBar.textContent='⚠ '+msg;
@@ -808,9 +786,10 @@ function defaultRoom(hostUid,name){
       uid:hostUid,name,joinedAt:Date.now(),
       isHost:true,kicked:false,character:null,
       pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
-      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null
+      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null,
+      onQuest:false,questReturnRound:null
     }},
-    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,movesInRound:0},
+    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,movesInRound:0,questCooldown:0},
     bunker:{
       capacity:2,started:false,finished:false,winners:[],
       resources:{food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0}
@@ -820,7 +799,6 @@ function defaultRoom(hostUid,name){
   };
 }
 
-/* ---------- СЛУШАТЕЛИ ---------- */
 function startListeners(){
   if(unsubRoom)unsubRoom();
   unsubRoom=onValue(ref(db,`rooms/${roomId}`),snap=>{
@@ -840,9 +818,9 @@ function setStatus(t,ok=true){
   $('dot').className='dot '+(ok?'green':'red');
 }
 
-/* ---------- РЕНДЕР ---------- */
 let lastQuestId=null;
 let lastResultShown=null;
+let lastFinalShown=false;
 
 function renderAll(){
   const safe=(name,fn)=>{try{fn();}catch(e){console.error('renderAll/'+name+':',e);showDebug(name+': '+e.message);}};
@@ -864,7 +842,6 @@ function renderAll(){
   bindGlobalClicks();
 }
 
-/* ---------- МОДАЛКА ГОЛОСОВАНИЯ ---------- */
 function renderVoteModal(){
   const v=roomData?.votes;
   const modal=$('voteModal');
@@ -879,13 +856,15 @@ function renderVoteModal(){
   const votes=v.votes||{};
   const counts={};
   for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
-  const canVote=!!me&&!me.kicked;
+  const canVote=!!me&&!me.kicked&&!me.onQuest;
   const isQuest = v.type==='quest';
   const skipKey='__skip__';
+  const abstainKey='__abstain__';
   const skipCount=counts[skipKey]||0;
+  const abstainCount=counts[abstainKey]||0;
 
   $('voteModalTitle').textContent = v.kick ? '🚪 Изгнание игрока' : (isQuest ? '⚔️ Кто пойдёт на квест?' : '🗳️ Голосование');
-  $('voteModalSub').textContent = v.kick ? 'Кто покинет бункер навсегда?' : (isQuest ? 'Бункер решает, кто пойдёт. Или никто.' : '');
+  $('voteModalSub').textContent = me?.onQuest ? 'Вы на квесте — не можете голосовать' : (v.kick ? 'Кто покинет бункер навсегда?' : (isQuest ? 'Бункер решает, кто пойдёт. Или никто.' : ''));
 
   $('voteModalBody').innerHTML=`
     <div class="vote-list">
@@ -896,9 +875,15 @@ function renderVoteModal(){
         const chosen=myVote===c;
         const self=c===uid;
         const shielded = p.shield===true;
-        const disabled = !canVote || self || shielded;
+        const onQuest = p.onQuest===true;
+        const disabled = !canVote || self || shielded || onQuest;
+        const tags = [];
+        if(p.isHost)tags.push('👑');
+        if(self)tags.push('(вы)');
+        if(shielded)tags.push('🛡️');
+        if(onQuest)tags.push('⚔️ на квесте');
         return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${disabled?'disabled':''}>
-          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}${shielded?' 🛡️':''}</span>
+          <span>${esc(p.name)} ${tags.join(' ')}</span>
           <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
         </button>`;
       }).join('')}
@@ -908,14 +893,17 @@ function renderVoteModal(){
           <span class="count">${skipCount>0?'⚑ '+skipCount:''}</span>
         </button>
       `:''}
+      <button type="button" class="vote-btn ${myVote===abstainKey?'chosen':''}" data-vote="${abstainKey}" ${!canVote?'disabled':''} style="border-color:var(--muted);opacity:.85;">
+        <span>🤐 Не голосовать (воздержаться)</span>
+        <span class="count">${abstainCount>0?'⚑ '+abstainCount:''}</span>
+      </button>
     </div>
-    <div class="small muted" style="margin-top:10px;text-align:center;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0)}</div>
+    <div class="small muted" style="margin-top:10px;text-align:center;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0) + 1}</div>
   `;
 
   modal.classList.add('show');
 }
 
-/* ---------- МОДАЛКА СТАРТА КВЕСТА ---------- */
 function renderQuestStartModal(){
   const q=roomData?.quest;
   const modal=$('questStartModal');
@@ -924,12 +912,10 @@ function renderQuestStartModal(){
     return;
   }
   const d=q.data;
+  if(roomData.turn?.phase!=='quest'){modal.classList.remove('show');return;}
   if(lastQuestId===d.questId+'|'+d.playerUid && modal.classList.contains('show')){
     return;
   }
-  // Показываем только когда фаза quest
-  if(roomData.turn?.phase!=='quest'){modal.classList.remove('show');return;}
-
   lastQuestId = d.questId+'|'+d.playerUid;
 
   const reqMap={food:'🍞 Еда',medic:'💊 Медицина',tech:'🔧 Техника',craft:'🔧 Ремесло',combat:'⚔️ Бой',strong:'💪 Сила',survival:'🧭 Выживание',social:'💬 Общение',smart:'🧠 Ум',healthy:'💪 Здоровье',brave:'🦁 Отвага'};
@@ -949,7 +935,6 @@ function renderQuestStartModal(){
 }
 $('questStartClose').onclick=()=>$('questStartModal').classList.remove('show');
 
-/* ---------- МОДАЛКА РЕЗУЛЬТАТА КВЕСТА ---------- */
 function renderQuestResultModal(){
   const q=roomData?.quest;
   const modal=$('questResultModal');
@@ -959,7 +944,7 @@ function renderQuestResultModal(){
   }
   const key = q.data.questId+'|'+q.data.playerUid+'|'+(q.result.roll||'')+'|'+(q.result.outcomeText||'');
   if(lastResultShown===key){
-    return; // уже показали
+    return;
   }
   lastResultShown=key;
 
@@ -1000,8 +985,6 @@ function renderQuestResultModal(){
 }
 $('questResultClose').onclick=()=>$('questResultModal').classList.remove('show');
 
-/* ---------- МОДАЛКА ФИНАЛА ---------- */
-let lastFinalShown=false;
 function renderFinalIfNeeded(){
   const b=roomData?.bunker;
   const modal=$('finalModal');
@@ -1022,7 +1005,12 @@ function renderFinalIfNeeded(){
   const winnersHtml = o.winners.map(w=>{
     const ch=w.character;
     if(!ch)return `<div class="final-winner"><h4>${esc(w.name)}</h4></div>`;
-    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
+    let invText='';
+    if(Array.isArray(ch.inventory)){
+      invText=ch.inventory.map(i=>(i&&i.text)?i.text:String(i)).join(' · ');
+    } else if(ch.inventory && ch.inventory.text){
+      invText=ch.inventory.text;
+    }
     const sexLabel=w.sex==='M'?'♂️':w.sex==='W'?'♀️':'—';
     const reproLabel=w.canRepro?'✅ к потомству':'❌ не способен';
     return `<div class="final-winner ${w.canRepro?'can-repro':'no-repro'}">
@@ -1172,11 +1160,12 @@ function renderMyChar(){
   const t=roomData.turn;
   const myTurn=t?.order?.[t?.turnIndex]===uid;
   const phase=t?.phase;
-  const canReveal=myTurn&&phase==='reveal'&&!me.kicked;
+  const canReveal=myTurn&&phase==='reveal'&&!me.kicked&&!me.onQuest;
   const professionRevealed=!!revealed.profession;
 
   let hint;
   if(phase!=='reveal')hint='Не фаза раскрытия';
+  else if(me.onQuest)hint='⚔️ Вы на квесте — пропускаете ход';
   else if(!myTurn)hint='Ждите хода';
   else if(!professionRevealed)hint='⚠️ Первым — ПРОФЕССИЮ';
   else hint='Выберите характеристику';
@@ -1213,7 +1202,7 @@ function renderMyChar(){
     <div class="char-header">
       <div class="char-avatar">${ch.profession.emoji}</div>
       <div class="char-info">
-        <h3>${esc(me.name)}${me.isHost?' <span class="player-tag gold">ВЕД.</span>':''}</h3>
+        <h3>${esc(me.name)}${me.isHost?' <span class="player-tag gold">ВЕД.</span>':''}${me.onQuest?' <span class="player-tag purple">⚔️ квест</span>':''}</h3>
         <p>${esc(ch.profession.name)} · ${esc(ch.biology.text)}</p>
       </div>
     </div>
@@ -1277,11 +1266,14 @@ function renderScenario(){
   }).join('');
 
   const phaseLabels={'lobby':'Лобби','pick':'Выбор проф.','reveal':`Круг ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'};
+  const cooldown = t?.questCooldown||0;
+  const cooldownText = cooldown>0?` · ⏳ кулдаун квеста: ${cooldown}`:'';
+
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
       <div class="scenario-title">
         <span>${apo.emoji} ${esc(apo.title)}</span>
-        <span class="round-badge">${phaseLabels[phase]||phase}</span>
+        <span class="round-badge">${phaseLabels[phase]||phase}${cooldownText}</span>
       </div>
       <div class="scenario-text collapsed" id="scenarioText">${esc(apo.text)}</div>
       <button class="expand-btn" id="expandScenario">▾ Показать полностью</button>
@@ -1333,7 +1325,7 @@ function renderTurnBanner(){
     return;
   }
   if(phase==='quest'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">⚔️ Квест</div><div class="hint">Ведущий откроет исход</div></div>`;
+    el.innerHTML=`<div class="turn-banner quest-turn"><div class="who">⚔️ Квест</div><div class="hint">Ведущий откроет исход</div></div>`;
     return;
   }
   if(phase==='finished'){
@@ -1346,7 +1338,18 @@ function renderTurnBanner(){
   }
   const cur=t.order?.[t.turnIndex];
   const isMyTurn=cur===uid;
-  const curName=cur?roomData.players?.[cur]?.name:'—';
+  const curPlayer=cur?roomData.players?.[cur]:null;
+  const curName=curPlayer?.name||'—';
+
+  // Если текущий игрок на квесте — пропускает ход
+  if(curPlayer?.onQuest){
+    el.innerHTML=`<div class="turn-banner quest-turn">
+      <div class="who">⚔️ ${esc(curName)} на квесте</div>
+      <div class="hint">${isMyTurn?'Пропускаете ход…':'Пропуск хода'}</div>
+    </div>`;
+    return;
+  }
+
   el.innerHTML=`
     <div class="turn-banner ${isMyTurn?'my-turn':''}">
       <div class="who">${isMyTurn?'👑 Ваш ход':'Ход: '+esc(curName)}</div>
@@ -1374,10 +1377,19 @@ function renderPlayers(){
         <div class="player-name">${esc(p.name)}${p.isHost?'<span class="player-tag gold">ВЕД.</span>':''}${me?'<span class="player-tag">вы</span>':''}<span class="player-tag">нет персонажа</span></div>
       </div>`;
     }
-    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
+    // === ФИКС БАГАЖА ===
+    let invText='';
+    if(Array.isArray(ch.inventory)){
+      invText=ch.inventory.map(i=>(i&&i.text)?i.text:String(i)).join(', ');
+    } else if(ch.inventory && ch.inventory.text){
+      invText=ch.inventory.text;
+    } else if(ch.inventory){
+      invText=String(ch.inventory);
+    }
     const revealedCount=REVEAL_KEYS.filter(k=>r[k]).length;
     const cardTag = p.specialCard && !p.cardUsed ? '<span class="player-tag purple">🎴</span>' : (p.specialCard?'<span class="player-tag" style="opacity:.5">🎴</span>':'');
-    return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
+    const questTag = p.onQuest ? '<span class="player-tag purple">⚔️ на квесте</span>' : '';
+    return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''} ${p.onQuest?'on-quest':''}">
       <div class="player-name">
         ${esc(p.name)}
         ${p.isHost?'<span class="player-tag gold">ВЕД.</span>':''}
@@ -1386,6 +1398,7 @@ function renderPlayers(){
         ${p.kicked?'<span class="player-tag red">мёртв</span>':''}
         <span class="player-tag green">${revealedCount}/7</span>
         ${cardTag}
+        ${questTag}
       </div>
       <div class="player-traits">
         ${row('💼',ch.profession.name,'profession')}
@@ -1504,7 +1517,6 @@ async function finalizeGame(alive, allPlayers){
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
 }
 
-/* ---------- КОМНАТА ---------- */
 async function createRoom(){
   if(!auth.currentUser)throw new Error('Подождите');
   const name=$('playerName').value.trim().slice(0,24)||'Ведущий';
@@ -1535,7 +1547,8 @@ async function connectRoom(code){
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{
       uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
       character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
-      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null
+      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null,
+      onQuest:false,questReturnRound:null
     });
   }
   const order=room.turn?.order||[];
@@ -1552,7 +1565,6 @@ $('copyLink').onclick=async()=>{
   catch{$('inviteLink').select();}
 };
 
-/* ---------- ВЫБОР ПРОФЕССИИ ---------- */
 $('confirmPick').onclick=async()=>{
   const me=roomData?.players?.[uid];
   if(!me||!me.pickOptions)return;
@@ -1573,7 +1585,8 @@ $('confirmPick').onclick=async()=>{
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
     character,pickedProfession:prof.name,revealed,pickOptions:null,
     specialCard:card, cardUsed:false,
-    doubleVote:false,shield:false,luckPending:false,forceNext:null
+    doubleVote:false,shield:false,luckPending:false,forceNext:null,
+    onQuest:false,questReturnRound:null
   });
 
   const order=t.order||[];
@@ -1586,7 +1599,7 @@ $('confirmPick').onclick=async()=>{
   });
 
   if(stillChoosing.length===0){
-    await update(ref(db,`rooms/${roomId}/turn`),{order:order.slice(),turnIndex:0,phase:'reveal',round:1,movesInRound:0});
+    await update(ref(db,`rooms/${roomId}/turn`),{order:order.slice(),turnIndex:0,phase:'reveal',round:1,movesInRound:0,questCooldown:0});
     return;
   }
   let idx=t.turnIndex;
@@ -1742,7 +1755,7 @@ $('cardConfirmBtn').onclick=async()=>{
   }
 };
 
-/* ---------- ВСКРЫТИЕ ---------- */
+/* ---------- ВСКРЫТИЕ + КРУГИ ---------- */
 async function doReveal(key){
   try{
     if(!REVEAL_KEYS.includes(key))return;
@@ -1755,6 +1768,27 @@ async function doReveal(key){
     if(t.order[t.turnIndex]!==uid){setStatus('Не ваш ход',false);return;}
     const me=fresh.players?.[uid];
     if(!me?.character)return;
+
+    // === Игрок на квесте пропускает ход ===
+    if(me.onQuest){
+      setStatus('Вы на квесте — пропускаете ход',false);
+      const snap2=await get(ref(db,`rooms/${roomId}/players`));
+      const playersNow=snap2.val()||{};
+      const aliveOrder=t.order.filter(u=>playersNow[u]&&!playersNow[u].kicked);
+      let idx=(t.turnIndex+1)%t.order.length;
+      for(let i=0;i<aliveOrder.length;i++){
+        if(playersNow[t.order[idx]]&&!playersNow[t.order[idx]].kicked)break;
+        idx=(idx+1)%t.order.length;
+      }
+      const movesInRound=(t.movesInRound||0)+1;
+      if(movesInRound >= aliveOrder.length){
+        await finishRound();
+      } else {
+        await update(ref(db,`rooms/${roomId}/turn`),{movesInRound,turnIndex:idx});
+      }
+      return;
+    }
+
     if(me.revealed?.[key]){setStatus('Уже открыто',false);return;}
     if(!me.revealed?.profession && key!=='profession'){
       setStatus('Сначала профессию',false);return;
@@ -1779,34 +1813,73 @@ async function doReveal(key){
       return;
     }
 
-    const newRound = round+1;
-    const canQuest = round >= 1;
-    const canKick = round >= 2;
-    const questRoll = Math.floor(Math.random()*100)+1;
-    const triggerQuest = canQuest && questRoll <= 30;
-
-    if(triggerQuest){
-      await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0,round:newRound,movesInRound:0});
-      await update(ref(db,`rooms/${roomId}/votes`),{
-        active:true,type:'quest',label:'Кто пойдёт на квест?',
-        kick:false,quest:true,candidates:aliveOrder,votes:{},finished:false,result:null
-      });
-      return;
-    }
-    if(canKick){
-      await update(ref(db,`rooms/${roomId}/turn`),{phase:'vote',turnIndex:0,round:newRound,movesInRound:0});
-      await update(ref(db,`rooms/${roomId}/votes`),{
-        active:true,type:'kick',label:'Кого изгнать?',
-        kick:true,quest:false,candidates:aliveOrder,votes:{},finished:false,result:null
-      });
-      return;
-    }
-    await update(ref(db,`rooms/${roomId}/turn`),{phase:'reveal',turnIndex:0,round:newRound,movesInRound:0});
+    // Круг завершён
+    await finishRound();
   }catch(e){
     console.error(e);
     showDebug('doReveal: '+e.message);
     setStatus('Ошибка: '+e.message,false);
   }
+}
+
+/* Завершение круга: квест или изгнание */
+async function finishRound(){
+  const snap=await get(ref(db,`rooms/${roomId}`));
+  const fresh=snap.val();
+  const t=fresh.turn;
+  const playersNow=fresh.players||{};
+  const aliveOrder=t.order.filter(u=>playersNow[u]&&!playersNow[u].kicked);
+
+  const round = t.round||1;
+  const newRound = round+1;
+
+  // Возвращаем игроков с квеста
+  for(const u of aliveOrder){
+    const p=playersNow[u];
+    if(p?.onQuest && p.questReturnRound && round >= p.questReturnRound){
+      await update(ref(db,`rooms/${roomId}/players/${u}`),{onQuest:false,questReturnRound:null});
+    }
+  }
+
+  // Кулдаун квеста
+  let cooldown = t.questCooldown || 0;
+  const canQuest = cooldown <= 0;
+  const canKick = round >= 2;
+
+  const questRoll = Math.floor(Math.random()*100)+1;
+  const triggerQuest = canQuest && questRoll <= 30;
+  const nextCooldown = Math.max(0, cooldown - 1);
+
+  if(triggerQuest){
+    await update(ref(db,`rooms/${roomId}/turn`),{
+      phase:'vote',turnIndex:0,round:newRound,movesInRound:0,
+      questCooldown: 2
+    });
+    await update(ref(db,`rooms/${roomId}/votes`),{
+      active:true,type:'quest',label:'Кто пойдёт на квест?',
+      kick:false,quest:true,candidates:aliveOrder,
+      votes:{},finished:false,result:null
+    });
+    return;
+  }
+
+  if(canKick){
+    await update(ref(db,`rooms/${roomId}/turn`),{
+      phase:'vote',turnIndex:0,round:newRound,movesInRound:0,
+      questCooldown: nextCooldown
+    });
+    await update(ref(db,`rooms/${roomId}/votes`),{
+      active:true,type:'kick',label:'Кого изгнать?',
+      kick:true,quest:false,candidates:aliveOrder,
+      votes:{},finished:false,result:null
+    });
+    return;
+  }
+
+  await update(ref(db,`rooms/${roomId}/turn`),{
+    phase:'reveal',turnIndex:0,round:newRound,movesInRound:0,
+    questCooldown: nextCooldown
+  });
 }
 
 /* ---------- ГОЛОСОВАНИЕ ---------- */
@@ -1820,15 +1893,17 @@ async function doVote(targetUid){
     if(!v?.active)return;
     const me=fresh.players?.[uid];
     if(!me||me.kicked)return;
-    const specialKeys=['__skip__'];
+    if(me.onQuest){setStatus('Вы на квесте',false);return;}
+    const specialKeys=['__skip__','__abstain__'];
     if(!specialKeys.includes(targetUid) && !fresh.players[targetUid]){setStatus('Неверная цель',false);return;}
     if(targetUid===uid){setStatus('Нельзя за себя',false);return;}
     if(fresh.players[targetUid]?.shield){setStatus('У игрока щит',false);return;}
+    if(fresh.players[targetUid]?.onQuest){setStatus('Игрок на квесте',false);return;}
     myVote=targetUid;
     await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
     const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
     const votes=snap2.val()||{};
-    const alive=Object.values(fresh.players||{}).filter(p=>!p.kicked);
+    const alive=Object.values(fresh.players||{}).filter(p=>!p.kicked && !p.onQuest);
     if(Object.keys(votes).length>=alive.length)await finishVote();
   }catch(e){
     console.error(e);
@@ -1842,6 +1917,7 @@ async function finishVote(){
   const votes=v.votes||{};
   const counts={};
   for(const [voterUid, targetUid] of Object.entries(votes)){
+    if(targetUid==='__abstain__')continue;
     const voter = roomData.players?.[voterUid];
     const weight = (voter?.doubleVote) ? 2 : 1;
     counts[targetUid]=(counts[targetUid]||0)+weight;
@@ -1897,6 +1973,12 @@ async function finishVote(){
       return;
     }
     await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
+    // Игрок уходит на квест — пропускает следующий круг
+    const currentRound = roomData.turn?.round||1;
+    await update(ref(db,`rooms/${roomId}/players/${targetUid}`),{
+      onQuest:true,
+      questReturnRound: currentRound + 2
+    });
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'quest',turnIndex:0});
     return;
   }
@@ -1928,7 +2010,7 @@ $('startGameBtn').onclick=async()=>{
   if(ps.length<2)return setStatus('Минимум 2',false);
   if(ps.length>12)return setStatus('Максимум 12',false);
   const order=ps.map(p=>p.uid);
-  await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:0,movesInRound:0});
+  await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:0,movesInRound:0,questCooldown:0});
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity:2,started:true,finished:false,winners:[]});
 };
 $('beginRevealBtn').onclick=async()=>{
@@ -1938,7 +2020,7 @@ $('beginRevealBtn').onclick=async()=>{
   const ps=Object.values(roomData.players||{}).filter(p=>!p.kicked);
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus('Не все выбрали: '+without.map(p=>p.name).join(', '),false);
-  await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1,movesInRound:0});
+  await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1,movesInRound:0,questCooldown:0});
 };
 $('openResultBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1978,6 +2060,8 @@ $('openResultBtn').onclick=async()=>{
   };
   await update(ref(db,`rooms/${roomId}/bunker/resources`), newRes);
   await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:true,result});
+  // Игрок возвращается с квеста
+  await update(ref(db,`rooms/${roomId}/players/${d.playerUid}`),{onQuest:false,questReturnRound:null});
 
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
@@ -2008,11 +2092,14 @@ $('resetGameBtn').onclick=async()=>{
     updates[`players/${p.uid}/shield`]=false;
     updates[`players/${p.uid}/luckPending`]=false;
     updates[`players/${p.uid}/forceNext`]=null;
+    updates[`players/${p.uid}/onQuest`]=false;
+    updates[`players/${p.uid}/questReturnRound`]=null;
   }
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
   updates['turn/turnIndex']=0;
   updates['turn/movesInRound']=0;
+  updates['turn/questCooldown']=0;
   updates['bunker/started']=false;
   updates['bunker/finished']=false;
   updates['bunker/winners']=[];
