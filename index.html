@@ -113,6 +113,7 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .player-tag.gold{background:rgba(240,184,74,.15);color:var(--gold);}
 .player-tag.red{background:rgba(248,113,113,.15);color:var(--red);}
 .player-tag.green{background:rgba(74,222,128,.15);color:var(--green);}
+.player-tag.purple{background:rgba(167,139,250,.15);color:var(--purple);}
 .player-traits{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:.82rem;}
 .player-traits .pt{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .player-traits .pt b{color:var(--text);font-weight:500;}
@@ -184,6 +185,13 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 .pair-item.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);color:var(--green);}
 .pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
 .pair-icon{font-size:1.1rem;}
+#cardModal.dice-overlay{display:none;}
+#cardModal.dice-overlay.show{display:flex;}
+#cardModal .dice-stage{
+  background:var(--card);border:2px solid var(--purple);border-radius:14px;
+  padding:24px;max-width:560px;width:calc(100% - 40px);
+  display:flex;flex-direction:column;gap:14px;align-items:stretch;
+}
 @media(max-width:900px){
   main{grid-template-columns:1fr;padding:16px 12px 40px;}
   .traits,.pick-grid,.reveal-grid{grid-template-columns:1fr 1fr;}
@@ -313,6 +321,37 @@ button.ghost:hover:not(:disabled){border-color:var(--blue);color:var(--text);}
 
 <div id="debugBar"></div>
 
+<!-- МОДАЛКА ИСПОЛЬЗОВАНИЯ СПЕЦ-КАРТЫ -->
+<div id="cardModal" class="dice-overlay">
+  <div class="dice-stage">
+    <div class="dice-label" id="cardModalTitle" style="color:var(--purple);">Спец-карта</div>
+    <div class="dice-sub" id="cardModalDesc"></div>
+
+    <div id="cardTargetBlock" style="display:none;width:100%;">
+      <label style="color:var(--muted);">Выберите игрока</label>
+      <select id="cardTargetSelect" style="width:100%;padding:10px;background:var(--bg2);color:var(--text);border:1px solid var(--border2);border-radius:8px;"></select>
+    </div>
+
+    <div id="cardTraitBlock" style="display:none;width:100%;">
+      <label style="color:var(--muted);">Выберите характеристику</label>
+      <select id="cardTraitSelect" style="width:100%;padding:10px;background:var(--bg2);color:var(--text);border:1px solid var(--border2);border-radius:8px;">
+        <option value="profession">💼 Профессия</option>
+        <option value="biology">🧬 Биология</option>
+        <option value="health">❤️ Здоровье</option>
+        <option value="hobby">🎯 Хобби</option>
+        <option value="phobia">😱 Фобия</option>
+        <option value="inventory">🎒 Багаж</option>
+        <option value="special">⭐ Спецусловие</option>
+      </select>
+    </div>
+
+    <div class="actions" style="margin-top:16px;width:100%;display:flex;gap:8px;">
+      <button id="cardConfirmBtn" style="flex:1;">Подтвердить</button>
+      <button id="cardCancelBtn" class="secondary" style="flex:1;">Отмена</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 /* ---------- Отладка ---------- */
 const debugBar=document.getElementById('debugBar');
@@ -370,6 +409,17 @@ onAuthStateChanged(auth,user=>{
   const code=new URLSearchParams(location.search).get('room');
   if(code){$('roomCode').value=code;connectRoom(code).catch(e=>setStatus(e.message,false));}
 });
+
+/* ---------- СЦЕНАРИИ КОНЦА СВЕТА ---------- */
+const apocalypses = [
+  {id:'nuclear',title:'Ядерная война',emoji:'☢',text:`Мир сгорел в огне. Города превратились в пепел, воздух отравлен радиацией. Единственное спасение — старый военный бункер, рассчитанный на двух человек.\n\nЧтобы человечество выжило, в бункере должны остаться мужчина и женщина, способные иметь детей. Иначе — конец.`},
+  {id:'zombie',title:'Зомби-вирус',emoji:'🧟',text:`Лабораторный вирус вырвался наружу. Миллионы обратились в живых мертвецов. Улицы городов заполнены ордами. Единственный шанс — укреплённое убежище.\n\nВыжившие должны сохранить человечество: мужчина и женщина, способные к потомству, — иначе нас не станет.`},
+  {id:'asteroid',title:'Падение астероида',emoji:'☄️',text:`Астероид диаметром 12 км врезался в Тихий океан. Цунами и пылевая зима уничтожили цивилизацию. Солнце скрыто за облаками пепла.\n\nБункер на двух человек — последняя надежда. Мужчина и женщина должны выжить, чтобы род продолжился.`},
+  {id:'pandemic',title:'Пандемия',emoji:'🦠',text:`Смертельный штамм вырвался из лаборатории. Он передаётся по воздуху и убивает 99,9% заражённых за 48 часов. Города опустели за неделю.\n\nВаш бункер герметичен. Но чтобы человечество продолжилось, нужна пара.`},
+  {id:'war',title:'Мировая война',emoji:'💥',text:`Ядерные удары накрыли десятки стран. Инфраструктура уничтожена, связь потеряна, государств больше не существует. Выжили только те, кто успел спрятаться.\n\nБункер на 2 человек — все, что у вас есть. Нужна пара, чтобы возродить человечество.`},
+  {id:'ai',title:'Восстание ИИ',emoji:'🤖',text:`Искусственный интеллект вышел из-под контроля. Дроны охотятся на людей, сети отключены, спутники следят за каждым движением. Технологии стали оружием против нас.\n\nВ глубоком бункере вас не найдут. Но человечество должно продолжиться — нужна пара.`},
+  {id:'climate',title:'Климатическая катастрофа',emoji:'🌊',text:`Уровень океана поднялся на 60 метров. Континенты ушли под воду, миллиарды погибли. Остались лишь острова-вершины гор и подземные убежища.\n\nВаш бункер — один из последних. Мужчина и женщина — вот кто даст человечеству шанс.`}
+];
 
 /* ---------- ДАННЫЕ ---------- */
 const professions = [
@@ -522,18 +572,64 @@ const specials = [
   {id:'s20',text:'Шьёт и вяжет',tags:['craft']}
 ];
 const quests = [
-  {id:'q_water',title:'🚰 Сломанный насос',text:'Насос подачи воды сломан. Без воды — смерть за сутки.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
-  {id:'q_raid',title:'🌫️ Вылазка за лекарствами',text:'Лекарства кончаются. Аптека в 2 км. Радиация снаружи смертельна.',requiredTags:['medic','survival','combat'],hint:'Медицина, выживание или бой'},
-  {id:'q_scouts',title:'👥 Разведка мародёров',text:'Поблизости замечены мародёры. Нужно разведать их лагерь.',requiredTags:['combat','survival','smart'],hint:'Бой, выживание или смекалка'},
-  {id:'q_generator',title:'⚡ Генератор глохнет',text:'Генератор с перебоями. Если встанет — бункер замёрзнет.',requiredTags:['tech','craft'],hint:'Техника или ремесло'},
-  {id:'q_food',title:'🍞 Голодная зима',text:'Запасы еды кончаются. Нужно дойти до заброшенной фермы.',requiredTags:['food','combat','survival'],hint:'Еда, бой или выживание'},
-  {id:'q_wounded',title:'🩸 Раненый у дверей',text:'У дверей бункера стучит раненый. Возможно, ловушка.',requiredTags:['medic','social','survival'],hint:'Медицина, общение или выживание'},
-  {id:'q_fire',title:'🔥 Пожар в бункере',text:'Короткое замыкание вызвало пожар. Нужно потушить.',requiredTags:['strong','tech','survival'],hint:'Сила, техника или выживание'},
-  {id:'q_child',title:'👶 Плач ребёнка',text:'Снаружи оставлен младенец. Рядом никого.',requiredTags:['social','medic','brave'],hint:'Общение, медицина или отвага'},
-  {id:'q_radio',title:'📻 Сигнал на радио',text:'Пойман сигнал с координатами другого бункера.',requiredTags:['tech','smart','social'],hint:'Техника, смекалка или общение'},
-  {id:'q_mutants',title:'🧟 Мутанты у входа',text:'Ночью к бункеру подошли мутанты. Ломают двери.',requiredTags:['combat','strong','brave'],hint:'Бой, сила или отвага'},
-  {id:'q_poison',title:'☠️ Отравленный воздух',text:'В вентиляции яд. Нужно обезвредить источник.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
-  {id:'q_escape',title:'🚪 Заблокированные двери',text:'Главный шлюз заклинило. Нужно починить снаружи.',requiredTags:['tech','strong','survival'],hint:'Техника, сила или выживание'}
+  {id:'q_water',title:'🚰 Сломанный насос',text:'Насос подачи воды сломан. Без воды — смерть за сутки. Нужно спуститься в технический отсек и починить его.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
+  {id:'q_raid',title:'🌫️ Вылазка за лекарствами',text:'Лекарства кончаются. Аптека в 2 км. Радиация снаружи смертельна, но без лекарств все погибнут.',requiredTags:['medic','survival','combat'],hint:'Медицина, выживание или бой'},
+  {id:'q_scouts',title:'👥 Разведка мародёров',text:'Поблизости замечены мародёры. Нужно разведать их лагерь: сколько их, где они, что у них есть.',requiredTags:['combat','survival','smart'],hint:'Бой, выживание или смекалка'},
+  {id:'q_generator',title:'⚡ Генератор глохнет',text:'Генератор работает с перебоями. Если встанет — бункер замёрзнет за 3 дня.',requiredTags:['tech','craft'],hint:'Техника или ремесло'},
+  {id:'q_food',title:'🍞 Голодная зима',text:'Запасы еды кончаются. Нужно выйти к заброшенной ферме — возможно, там остались консервы.',requiredTags:['food','combat','survival'],hint:'Еда, бой или выживание'},
+  {id:'q_wounded',title:'🩸 Раненый у дверей',text:'У дверей бункера стучит раненый человек. Он умоляет впустить. Возможно, это ловушка.',requiredTags:['medic','social','survival'],hint:'Медицина, общение или выживание'},
+  {id:'q_fire',title:'🔥 Пожар в бункере',text:'Из-за короткого замыкания вспыхнул пожар в жилом отсеке. Огонь быстро распространяется.',requiredTags:['strong','tech','survival'],hint:'Сила, техника или выживание'},
+  {id:'q_child',title:'👶 Плач ребёнка',text:'Снаружи кто-то оставил младенца. Он плачет. Рядом никого.',requiredTags:['social','medic','brave'],hint:'Общение, медицина или отвага'},
+  {id:'q_radio',title:'📻 Сигнал на радио',text:'На радиостанции пойман сигнал — кто-то передаёт координаты другого бункера.',requiredTags:['tech','smart','social'],hint:'Техника, смекалка или общение'},
+  {id:'q_mutants',title:'🧟 Мутанты у входа',text:'Ночью к бункеру подошли мутанты. Они царапают двери. Нужно выйти и отогнать их.',requiredTags:['combat','strong','brave'],hint:'Бой, сила или отвага'},
+  {id:'q_poison',title:'☠️ Отравленный воздух',text:'В системе вентиляции появился яд. Нужно спуститься в вентиляционный отсек и обезвредить источник.',requiredTags:['tech','medic','survival'],hint:'Техника, медицина или выживание'},
+  {id:'q_escape',title:'🚪 Заблокированные двери',text:'Главный шлюз заклинило. Если не открыть — никто не сможет выйти или войти.',requiredTags:['tech','strong','survival'],hint:'Техника, сила или выживание'}
+];
+
+/* ---------- СПЕЦ-КАРТЫ ---------- */
+const specialCards = [
+  {id:'swap',name:'🔄 Обмен характеристикой',desc:'Поменяйте одну свою характеристику с другим игроком. Оба увидят новое значение.',needTarget:true,needTrait:true},
+  {id:'reroll',name:'🎲 Переброс характеристики',desc:'Замените одну свою характеристику на случайную свободную из пула.',needTrait:true},
+  {id:'peek',name:'👁️ Подглядеть',desc:'Узнайте скрытую характеристику любого игрока. Она останется видна только вам.',needTarget:true,needTrait:true},
+  {id:'double_vote',name:'🚪 Двойной голос',desc:'На следующем голосовании ваш голос считается за двоих.',instant:true},
+  {id:'shield',name:'🛡️ Щит',desc:'На следующем голосовании вас нельзя выбрать целью.',instant:true},
+  {id:'steal',name:'🎁 Кража',desc:'Заберите один предмет багажа у другого игрока.',needTarget:true},
+  {id:'luck',name:'🍀 Удача',desc:'Следующий провал вашего квеста превращается в успех.',instant:true},
+  {id:'force_quest',name:'🎭 Маска',desc:'Принудительно отправьте другого игрока на следующий квест.',needTarget:true}
+];
+function pickSpecialCard(){
+  return specialCards[Math.floor(Math.random()*specialCards.length)];
+}
+
+/* ---------- ИСХОДЫ КВЕСТОВ ---------- */
+const questSuccessOutcomes = [
+  {text:'Нашёл целый склад консервов. Принёс еды на всех.',res:{food:2}},
+  {text:'Нашёл аптечку с антибиотиками. Медицина пополнена.',res:{medic:2}},
+  {text:'Нашёл ящик инструментов. Техника бункера улучшена.',res:{tech:2}},
+  {text:'Нашёл оружейный склад. Боевая мощь возросла.',res:{combat:2}},
+  {text:'Нашёл карту безопасных троп. Выживание улучшено.',res:{survival:2}},
+  {text:'Встретил дружелюбных выживших. Привёл их в бункер.',res:{social:2}},
+  {text:'Нашёл древние книги и чертежи. Знания улучшены.',res:{smart:2}},
+  {text:'Нашёл чистую воду и витамины. Здоровье улучшено.',res:{healthy:2}},
+  {text:'Добыл 2 ресурса разного типа.',res:{food:1,tech:1}},
+  {text:'Нашёл топливо и медикаменты.',res:{tech:1,medic:1}},
+  {text:'Вернулся с едой и оружием.',res:{food:1,combat:1}},
+  {text:'Ничего не нашёл, но остался невредим.'}
+];
+const questFailOutcomes = [
+  {text:'Получил ранение, но выжил. Потерял часть медикаментов.',res:{medic:-1}},
+  {text:'Попал в ловушку. Потерял часть еды.',res:{food:-2}},
+  {text:'Отравлен. Ресурсы бункера тратятся на лечение.',res:{medic:-2,healthy:-1}},
+  {text:'Попал под обстрел. Потерял боеприпасы.',res:{combat:-2}},
+  {text:'Заблудился и вернулся ни с чем. Ресурсы на исходе.',res:{food:-1,survival:-1}},
+  {text:'Сломал оборудование. Техника пострадала.',res:{tech:-2}},
+  {text:'Потерял контакт с бункером на день. Все нервничают.',res:{social:-1}},
+  {text:'Вернулся с заражением. Здоровье бункера под угрозой.',res:{healthy:-2}},
+  {text:'Вернулся раненый, но живой. Потерял инструменты.',res:{tech:-1}},
+  {text:'Потерял часть припасов в бою. Еда уменьшилась.',res:{food:-1,combat:-1}},
+  {text:'Еле выжил. Потерял 2 разных ресурса.',res:{food:-1,medic:-1}},
+  {text:'Вернулся в шоке. Потерял рассудок, но жив.',res:{social:-2,smart:-1}},
+  {text:'Не смог найти путь назад. Пропал на 3 дня.',res:{food:-2,survival:-1}}
 ];
 
 const pick = a => a[Math.floor(Math.random()*a.length)];
@@ -637,14 +733,17 @@ function canReproduce(ch){
 
 /* ---------- КОМНАТА ---------- */
 function defaultRoom(hostUid,name){
+  const apo = apocalypses[Math.floor(Math.random()*apocalypses.length)];
   return {
     createdAt:Date.now(),hostUid,
+    apocalypse: apo.id,
     players:{[hostUid]:{
       uid:hostUid,name,joinedAt:Date.now(),
       isHost:true,kicked:false,character:null,
-      pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
+      pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
+      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null
     }},
-    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,revealCount:0},
+    turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,movesInRound:0},
     bunker:{
       capacity:2,started:false,finished:false,winners:[],
       resources:{food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0}
@@ -811,6 +910,25 @@ function renderMyChar(){
       ${open?'<span class="open-mark">✓</span>':lockedByProfession?'<span class="open-mark" style="color:var(--muted);">🔒</span>':''}
     </button>`;
   }).join('');
+
+  // Блок спец-карты
+  let cardHtml='';
+  const myCard = me.specialCard;
+  if(myCard){
+    const used = !!me.cardUsed;
+    const status = used?'✅ использована':'🟢 доступна';
+    cardHtml = `
+      <div class="trait revealed" style="margin-top:12px;grid-column:1/-1;border-color:var(--purple);background:linear-gradient(135deg,rgba(167,139,250,.08),var(--bg2));">
+        <div class="trait-label" style="color:var(--purple);">
+          <span>🎴 ${esc(myCard.name)}</span>
+          <span class="open-mark" style="color:${used?'var(--muted)':'var(--green)'};">${status}</span>
+        </div>
+        <div class="trait-value" style="margin-bottom:8px;">${esc(myCard.desc)}</div>
+        ${!used?`<button type="button" id="useCardBtn" style="width:100%;background:linear-gradient(180deg,#a78bfa,#7c5cd6);color:#fff;border-color:#a78bfa;">🎴 Использовать карту</button>`:''}
+      </div>
+    `;
+  }
+
   $('myChar').innerHTML=`
     <div class="char-header">
       <div class="char-avatar">${ch.profession.emoji}</div>
@@ -820,9 +938,18 @@ function renderMyChar(){
       </div>
     </div>
     <div class="traits">${traits}</div>
+    ${cardHtml}
     <div class="small muted" style="margin-top:14px;text-align:center;">${hint}</div>
     <div class="reveal-grid" id="revealGrid">${buttons}</div>
   `;
+
+  const useBtn=document.getElementById('useCardBtn');
+  if(useBtn){
+    useBtn.addEventListener('click', ev=>{
+      ev.preventDefault();
+      openCardModal();
+    });
+  }
 }
 function renderScenario(){
   const ps=Object.values(roomData?.players||{});
@@ -831,6 +958,9 @@ function renderScenario(){
   const phase=t?.phase||'lobby';
   const label={'lobby':'Лобби','pick':'Выбор профессии','reveal':`Раунд ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'}[phase]||phase;
   $('roundBadge').textContent=label;
+
+  const apoId = roomData?.apocalypse || 'nuclear';
+  const apo = apocalypses.find(a=>a.id===apoId) || apocalypses[0];
 
   const baseRes=roomData?.bunker?.resources || {food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
   const tags={};
@@ -843,12 +973,9 @@ function renderScenario(){
       if(!opened||!obj?.tags)return;
       obj.tags.forEach(t=>tags[t]=(tags[t]||0)+1);
     };
-    addObj(ch.profession, r.profession);
-    addObj(ch.biology, r.biology);
-    addObj(ch.health, r.health);
-    addObj(ch.hobby, r.hobby);
-    addObj(ch.phobia, r.phobia);
-    addObj(ch.special, r.special);
+    addObj(ch.profession, r.profession);addObj(ch.biology, r.biology);
+    addObj(ch.health, r.health);addObj(ch.hobby, r.hobby);
+    addObj(ch.phobia, r.phobia);addObj(ch.special, r.special);
     if(r.inventory && Array.isArray(ch.inventory)){
       ch.inventory.forEach(i=>{ if(i?.tags) i.tags.forEach(t=>tags[t]=(tags[t]||0)+1); });
     }
@@ -876,13 +1003,8 @@ function renderScenario(){
 
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
-      <div class="scenario-title">☢ Ядерная война · день 1</div>
-      <div class="scenario-text">Снаружи — радиация, мародёры и смерть. Внутри — бункер на <b>2 места</b>.
-Вас — <b>${n}</b>.
-
-Чтобы человечество выжило, в бункере должны остаться <b>мужчина и женщина</b>, способные иметь детей. Иначе — конец.
-
-Квесты приносят и отнимают ресурсы. Следите за запасами.</div>
+      <div class="scenario-title">${apo.emoji} ${esc(apo.title)}</div>
+      <div class="scenario-text">${esc(apo.text)}</div>
       <div class="scenario-stats">
         <div class="stat"><b>2</b><span>места</span></div>
         <div class="stat"><b>${n}</b><span>претендентов</span></div>
@@ -967,6 +1089,7 @@ function renderPlayers(){
     }
     const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(', '):'';
     const revealedCount=REVEAL_KEYS.filter(k=>r[k]).length;
+    const cardTag = p.specialCard && !p.cardUsed ? '<span class="player-tag purple">🎴 карта</span>' : (p.specialCard?'<span class="player-tag" style="opacity:.5">🎴</span>':'');
     return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''}">
       <div class="player-name">
         ${esc(p.name)}
@@ -975,6 +1098,7 @@ function renderPlayers(){
         ${me?'<span class="player-tag">вы</span>':''}
         ${p.kicked?'<span class="player-tag red">мёртв</span>':''}
         <span class="player-tag green">${revealedCount}/7</span>
+        ${cardTag}
       </div>
       <div class="player-traits">
         ${row('💼 Проф',ch.profession.name,'profession')}
@@ -1025,8 +1149,10 @@ function renderVote(){
         const cnt=counts[c]||0;
         const chosen=myVote===c;
         const self=c===uid;
-        return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${(!canVote||self)?'disabled':''}>
-          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}</span>
+        const shielded = p.shield===true;
+        const disabled = !canVote || self || shielded;
+        return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${disabled?'disabled':''}>
+          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}${shielded?' 🛡️':''}</span>
           <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
         </button>`;
       }).join('')}
@@ -1139,21 +1265,25 @@ function renderQuest(){
   if(!q?.active&&!q?.finished){el.innerHTML='';return;}
   const d=q.data;
   if(!d){el.innerHTML='';return;}
+
   if(q.active){
+    const reqMap={food:'🍞 Еда',medic:'💊 Медицина',tech:'🔧 Техника',craft:'🔧 Ремесло',combat:'⚔️ Бой',strong:'💪 Сила',survival:'🧭 Выживание',social:'💬 Общение',smart:'🧠 Ум',healthy:'💪 Здоровье',brave:'🦁 Отвага'};
     el.innerHTML=`
       <div class="quest-box">
-        <div class="quest-title">${esc(d.title)}</div>
+        <div class="quest-title">⚔️ ${esc(d.title)}</div>
         <div class="quest-text">${esc(d.text)}</div>
         <div class="quest-hero">
           <b>Бункер отправил:</b> ${esc(d.playerName)}<br>
-          <span class="muted small">Подсказка: ${esc(d.hint)}</span>
+          <span class="muted small">Требуется: ${d.requiredTags.map(t=>reqMap[t]||t).join(' · ')}</span>
         </div>
-        <p class="muted small" style="text-align:center;margin-top:10px;">Ведущий откроет исход…</p>
+        <p class="muted small" style="text-align:center;margin-top:10px;">⏳ Ведущий откроет исход…</p>
       </div>`;
     return;
   }
+
   const r=q.result;
   if(!r){el.innerHTML='';return;}
+
   const matchLines=(r.matchedTags.length?r.matchedTags:['—']).map(t=>`<div class="match-line"><span class="ok">✓</span><span>Подошло: <b>${esc(t)}</b></span></div>`).join('');
   const missLines=r.requiredTags.filter(t=>!r.matchedTags.includes(t)).map(t=>`<div class="match-line miss"><span class="no">✗</span><span>Не хватило: ${esc(t)}</span></div>`).join('');
 
@@ -1173,16 +1303,19 @@ function renderQuest(){
     }
   }
 
+  const outcomeText = r.outcomeText || (r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'😰 ВЕРНУЛСЯ НИ С ЧЕМ');
+  const outcomeClass = r.success ? 'win' : 'lose';
+
   el.innerHTML=`
     <div class="quest-box">
-      <div class="quest-title">${esc(d.title)}</div>
+      <div class="quest-title">⚔️ ${esc(d.title)}</div>
       <div class="quest-text">${esc(d.text)}</div>
       <div class="quest-hero">
         <b>Герой:</b> ${esc(d.playerName)}<br>
         <span class="muted small">Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · совпадений: ${r.matchCount}</span>
       </div>
       <div class="quest-match">${matchLines}${missLines}</div>
-      <div class="quest-result ${r.success?'win':'lose'}">${r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'😰 ВЕРНУЛСЯ НИ С ЧЕМ'}</div>
+      <div class="quest-result ${outcomeClass}">${esc(outcomeText)}</div>
       ${resDeltaHtml}
     </div>`;
 }
@@ -1191,6 +1324,9 @@ function renderFinalSummary(el){
   const b=roomData?.bunker;
   if(!b?.outcome){el.innerHTML=`<div class="final-panel"><div class="final-title">🏆 Игра окончена</div><p class="muted">Итоги не рассчитаны.</p></div>`;return;}
   const o=b.outcome;
+
+  const apoId = roomData?.apocalypse || 'nuclear';
+  const apo = apocalypses.find(a=>a.id===apoId) || apocalypses[0];
 
   const winnersHtml = o.winners.map(w=>{
     const ch=w.character;
@@ -1242,8 +1378,8 @@ function renderFinalSummary(el){
 
   el.innerHTML=`
     <div class="final-panel">
-      <div class="final-title">☢ ИТОГИ БУНКЕРА</div>
-      <div class="final-subtitle">Сможет ли человечество продолжиться?</div>
+      <div class="final-title">${apo.emoji} ИТОГИ БУНКЕРА</div>
+      <div class="final-subtitle">${esc(apo.title)} — сможет ли человечество продолжиться?</div>
       <div class="final-verdict ${verdictClass}">${o.verdict}<p class="verdict-reason">${esc(o.reason)}</p></div>
       <div class="final-section"><h3>🧬 Проверка пары</h3>${pairCheck}</div>
       <div class="final-section"><h3>🛠️ Ресурсы бункера · счёт ${o.score}</h3>${resourcesHtml}</div>
@@ -1285,7 +1421,8 @@ async function connectRoom(code){
   } else {
     await update(ref(db,`rooms/${roomId}/players/${uid}`),{
       uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
-      character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null
+      character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
+      specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null
     });
   }
 
@@ -1321,8 +1458,12 @@ $('confirmPick').onclick=async()=>{
   const character={profession:prof,...rest};
   const revealed={profession:false,biology:false,health:false,hobby:false,phobia:false,inventory:false,special:false};
 
+  const card = pickSpecialCard();
+
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{
-    character,pickedProfession:prof.name,revealed,pickOptions:null
+    character,pickedProfession:prof.name,revealed,pickOptions:null,
+    specialCard:card, cardUsed:false,
+    doubleVote:false,shield:false,luckPending:false,forceNext:null
   });
 
   const order=t.order||[];
@@ -1335,7 +1476,7 @@ $('confirmPick').onclick=async()=>{
   });
 
   if(stillChoosing.length===0){
-    await update(ref(db,`rooms/${roomId}/turn`),{order:order.slice(),turnIndex:0,phase:'reveal',round:1});
+    await update(ref(db,`rooms/${roomId}/turn`),{order:order.slice(),turnIndex:0,phase:'reveal',round:1,movesInRound:0});
     return;
   }
 
@@ -1360,6 +1501,172 @@ $('rerollPick').onclick=async()=>{
   await update(ref(db,`rooms/${roomId}/players/${uid}`),{pickOptions:opts,rerolled:true});
 };
 
+/* ---------- СПЕЦ-КАРТЫ: ИСПОЛЬЗОВАНИЕ ---------- */
+let currentCardContext=null;
+
+function openCardModal(){
+  const me=roomData?.players?.[uid];
+  if(!me?.specialCard){setStatus('У вас нет спец-карты',false);return;}
+  if(me.cardUsed){setStatus('Карта уже использована',false);return;}
+
+  const card=me.specialCard;
+  currentCardContext=card;
+
+  $('cardModalTitle').textContent='🎴 '+card.name;
+  $('cardModalDesc').textContent=card.desc;
+
+  const otherPlayers=Object.values(roomData.players||{}).filter(p=>p.uid!==uid&&!p.kicked);
+  const targetSel=$('cardTargetSelect');
+  targetSel.innerHTML=otherPlayers.map(p=>`<option value="${p.uid}">${esc(p.name)}${p.isHost?' 👑':''}</option>`).join('');
+
+  $('cardTargetBlock').style.display = card.needTarget?'block':'none';
+  $('cardTraitBlock').style.display = card.needTrait?'block':'none';
+
+  $('cardModal').classList.add('show');
+}
+
+function closeCardModal(){
+  $('cardModal').classList.remove('show');
+  currentCardContext=null;
+}
+
+$('cardCancelBtn').onclick=()=>closeCardModal();
+
+function formatTraitValue(val, trait){
+  if(!val)return '—';
+  if(trait==='profession')return val.emoji+' '+val.name;
+  if(trait==='inventory'&&Array.isArray(val))return val.map(i=>i.text).join(', ');
+  if(val.text)return val.text;
+  return String(val);
+}
+
+$('cardConfirmBtn').onclick=async()=>{
+  if(!currentCardContext)return;
+  const me=roomData?.players?.[uid];
+  if(!me?.specialCard||me.cardUsed)return;
+  const card=currentCardContext;
+
+  try{
+    if(card.id==='swap'){
+      const targetUid=$('cardTargetSelect').value;
+      const trait=$('cardTraitSelect').value;
+      const target=roomData.players[targetUid];
+      if(!target)return setStatus('Игрок не найден',false);
+
+      const myVal=me.character[trait];
+      const theirVal=target.character[trait];
+      if(!myVal||!theirVal)return setStatus('Нельзя обменять эту характеристику',false);
+
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+        [`character/${trait}`]:theirVal,
+        [`revealed/${trait}`]:true,
+        cardUsed:true
+      });
+      await update(ref(db,`rooms/${roomId}/players/${targetUid}`),{
+        [`character/${trait}`]:myVal,
+        [`revealed/${trait}`]:true
+      });
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='reroll'){
+      const trait=$('cardTraitSelect').value;
+      const pools={profession:professions,biology:biologies,health:healths,hobby:hobbies,phobia:phobias,inventory:inventories,special:specials};
+      const takenIds=collectTakenIds(roomData.players);
+      const pool=pools[trait].filter(x=>!takenIds[trait].includes(x.id));
+      if(!pool.length)return setStatus('Нет свободных вариантов',false);
+      const newVal=pool[Math.floor(Math.random()*pool.length)];
+
+      if(trait==='inventory'){
+        const newInv=[...(me.character.inventory||[])];
+        if(newInv.length>0)newInv[0]=newVal; else newInv.push(newVal);
+        await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+          'character/inventory':newInv,
+          'revealed/inventory':true,
+          cardUsed:true
+        });
+      } else {
+        await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+          [`character/${trait}`]:newVal,
+          [`revealed/${trait}`]:true,
+          cardUsed:true
+        });
+      }
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='peek'){
+      const targetUid=$('cardTargetSelect').value;
+      const trait=$('cardTraitSelect').value;
+      const target=roomData.players[targetUid];
+      if(!target)return setStatus('Игрок не найден',false);
+      const val=target.character[trait];
+      alert(`👁️ Вы подсмотрели: ${target.name} — ${REVEAL_LABELS[trait]}: ${formatTraitValue(val, trait)}`);
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{cardUsed:true});
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='double_vote'){
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{cardUsed:true,doubleVote:true});
+      setStatus('🚪 Ваш следующий голос считается за двоих',true);
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='shield'){
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{cardUsed:true,shield:true});
+      setStatus('🛡️ На следующем голосовании вас нельзя выбрать',true);
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='steal'){
+      const targetUid=$('cardTargetSelect').value;
+      const target=roomData.players[targetUid];
+      if(!target||!Array.isArray(target.character?.inventory)||!target.character.inventory.length){
+        return setStatus('У игрока нет предметов',false);
+      }
+      const stolen=target.character.inventory[0];
+      const newTargetInv=target.character.inventory.slice(1);
+      const myInv=[...(me.character.inventory||[]),stolen];
+      await update(ref(db,`rooms/${roomId}/players/${targetUid}`),{
+        'character/inventory':newTargetInv
+      });
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{
+        'character/inventory':myInv,
+        cardUsed:true
+      });
+      alert(`🎁 Вы забрали у ${target.name}: ${stolen.text}`);
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='luck'){
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{cardUsed:true,luckPending:true});
+      setStatus('🍀 Следующий провал вашего квеста станет успехом',true);
+      closeCardModal();
+      return;
+    }
+
+    if(card.id==='force_quest'){
+      const targetUid=$('cardTargetSelect').value;
+      const target=roomData.players[targetUid];
+      if(!target)return setStatus('Игрок не найден',false);
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{cardUsed:true,forceNext:targetUid});
+      alert(`🎭 Вы наложили маску на ${target.name}. Он пойдёт на следующий квест.`);
+      closeCardModal();
+      return;
+    }
+  }catch(e){
+    console.error(e);
+    showDebug('card: '+e.message);
+    setStatus('Ошибка карты: '+e.message,false);
+  }
+};
+
 /* ---------- ВСКРЫТИЕ + КРУГИ + СОБЫТИЯ ---------- */
 async function doReveal(key){
   try{
@@ -1382,22 +1689,16 @@ async function doReveal(key){
 
     await set(ref(db,`rooms/${roomId}/players/${uid}/revealed/${key}`),true);
 
-    // Сколько ходов в этом круге сделано
     const snap2=await get(ref(db,`rooms/${roomId}/players`));
     const playersNow=snap2.val()||{};
     const aliveOrder=t.order.filter(u=>playersNow[u]&&!playersNow[u].kicked);
 
-    // Считаем "сколько раскрыто в этом круге у каждого" — для простоты используем revealsInRound по числу текущих раскрытий
-    // Определяем: круг завершён, когда все живые сделали вскрытие в этом круге
     const round = t.round||1;
-    // Храним счётчик вскрытий в этом круге — используем turn.movesInRound
     const movesInRound = (t.movesInRound||0) + 1;
     const needMoves = aliveOrder.length;
 
     if(movesInRound < needMoves){
-      // Круг ещё не завершён — следующий игрок
       await update(ref(db,`rooms/${roomId}/turn`),{movesInRound, turnIndex:(t.turnIndex+1)%t.order.length});
-      // Пропустить изгнанных
       let idx=(t.turnIndex+1)%t.order.length;
       for(let i=0;i<aliveOrder.length;i++){
         if(playersNow[t.order[idx]]&&!playersNow[t.order[idx]].kicked)break;
@@ -1407,17 +1708,14 @@ async function doReveal(key){
       return;
     }
 
-    // Круг завершён — обнуляем и запускаем событие
     const newRound = round+1;
 
-    // === РЕШЕНИЕ: квест или изгнание ===
-    const canQuest = round >= 1; // квест с 1-го круга
-    const canKick = round >= 2;  // изгнание со 2-го круга
+    const canQuest = round >= 1;
+    const canKick = round >= 2;
     const questRoll = Math.floor(Math.random()*100)+1;
-    const triggerQuest = canQuest && questRoll <= 30; // 30% шанс квеста
+    const triggerQuest = canQuest && questRoll <= 30;
 
     if(triggerQuest){
-      // Голосование бункера: кто идёт на квест
       await update(ref(db,`rooms/${roomId}/turn`),{
         phase:'vote',turnIndex:0,round:newRound,movesInRound:0
       });
@@ -1431,7 +1729,6 @@ async function doReveal(key){
     }
 
     if(canKick){
-      // Голосование: кого изгнать
       await update(ref(db,`rooms/${roomId}/turn`),{
         phase:'vote',turnIndex:0,round:newRound,movesInRound:0
       });
@@ -1444,7 +1741,6 @@ async function doReveal(key){
       return;
     }
 
-    // Первый круг без событий — начинаем новый круг
     await update(ref(db,`rooms/${roomId}/turn`),{
       phase:'reveal',turnIndex:0,round:newRound,movesInRound:0
     });
@@ -1471,6 +1767,10 @@ async function doVote(targetUid){
       setStatus('Неверная цель',false);return;
     }
     if(targetUid===uid){setStatus('Нельзя голосовать за себя',false);return;}
+    // Проверка щита
+    if(fresh.players[targetUid]?.shield){
+      setStatus('У этого игрока щит',false);return;
+    }
     myVote=targetUid;
     await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
     const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
@@ -1487,8 +1787,14 @@ async function finishVote(){
   const snap=await get(ref(db,`rooms/${roomId}/votes`));
   const v=snap.val()||{};
   const votes=v.votes||{};
+
   const counts={};
-  for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
+  for(const [voterUid, targetUid] of Object.entries(votes)){
+    const voter = roomData.players?.[voterUid];
+    const weight = (voter?.doubleVote) ? 2 : 1;
+    counts[targetUid]=(counts[targetUid]||0)+weight;
+  }
+
   let max=0,maxUid=null,tie=false;
   for(const [u,c] of Object.entries(counts)){
     if(c>max){max=c;maxUid=u;tie=false;}
@@ -1517,20 +1823,40 @@ async function finishVote(){
 
   await update(ref(db,`rooms/${roomId}/votes`),{active:false,finished:true,result});
 
+  // Сбрасываем щиты и двойные голоса
+  const resetUpdates={};
+  for(const p of Object.values(roomData.players||{})){
+    if(p.shield||p.doubleVote){
+      resetUpdates[`players/${p.uid}/shield`]=false;
+      resetUpdates[`players/${p.uid}/doubleVote`]=false;
+    }
+  }
+  if(Object.keys(resetUpdates).length){
+    await update(ref(db,`rooms/${roomId}`),resetUpdates);
+  }
+
   // === ГОЛОСОВАНИЕ ЗА КВЕСТ ===
   if(v.quest){
-    if(!chosen || maxUid==='__skip__'){
-      // Никто не идёт — продолжаем раскрытие
+    let forcedUid=null;
+    for(const p of Object.values(roomData.players||{})){
+      if(p.forceNext && !p.kicked){
+        forcedUid=p.forceNext;
+        await update(ref(db,`rooms/${roomId}/players/${p.uid}`),{forceNext:null});
+        break;
+      }
+    }
+
+    if((!chosen || maxUid==='__skip__') && !forcedUid){
       const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0),movesInRound:0});
       return;
     }
-    // Кто-то выбран — отправляем на квест
-    const player=roomData.players[maxUid];
+    const targetUid = (chosen && maxUid!=='__skip__') ? maxUid : forcedUid;
+    const player=roomData.players[targetUid];
     const questData=prepareQuest(player);
     if(!questData){
       const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0),movesInRound:0});
       return;
     }
     await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
@@ -1541,9 +1867,8 @@ async function finishVote(){
   // === ГОЛОСОВАНИЕ ЗА ИЗГНАНИЕ ===
   if(v.kick){
     if(!chosen){
-      // Ничья — никто не изгнан
       const alive=Object.values(roomData.players||{}).filter(p=>!p.kicked).map(p=>p.uid);
-      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0)});
+      await update(ref(db,`rooms/${roomId}/turn`),{order:alive,turnIndex:0,phase:'reveal',round:(roomData.turn?.round||0),movesInRound:0});
       return;
     }
     await update(ref(db,`rooms/${roomId}/players/${maxUid}`),{kicked:true});
@@ -1586,31 +1911,45 @@ $('openResultBtn').onclick=async()=>{
   if(!q?.active||!q?.data)return;
   const d=q.data;
   const roll=Math.floor(Math.random()*100)+1;
-  const success=roll<=d.chance;
-  const result={success,chance:d.chance,matchedTags:d.matchedTags,requiredTags:d.requiredTags,matchCount:d.matchCount,roll};
+  let success=roll<=d.chance;
+
+  const questPlayer=roomData.players?.[d.playerUid];
+  if(!success && questPlayer?.luckPending){
+    success=true;
+    await update(ref(db,`rooms/${roomId}/players/${d.playerUid}`),{luckPending:false});
+  }
+
+  const pool = success ? questSuccessOutcomes : questFailOutcomes;
+  const outcome = pool[Math.floor(Math.random()*pool.length)];
 
   const resDelta={food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
   const tagToRes={food:'food',medic:'medic',tech:'tech',craft:'tech',combat:'combat',strong:'combat',survival:'survival',social:'social',smart:'smart',healthy:'healthy',brave:'combat'};
+
   for(const tag of d.matchedTags){
     const res=tagToRes[tag];
     if(res)resDelta[res] += success ? 1 : -1;
   }
-  if(success && d.matchCount===0)resDelta.food += 1;
-  if(!success && d.matchCount===0){resDelta.food -= 1;resDelta.medic -= 1;}
+  if(outcome.res){
+    for(const [k,v] of Object.entries(outcome.res)){
+      resDelta[k]=(resDelta[k]||0)+v;
+    }
+  }
 
   const oldRes=roomData.bunker?.resources || {food:0,medic:0,tech:0,combat:0,survival:0,social:0,smart:0,healthy:0};
   const newRes={...oldRes};
   for(const k of Object.keys(newRes)){
-    newRes[k]=Math.max(0, (newRes[k]||0) + (resDelta[k]||0));
+    newRes[k]=Math.max(0,(newRes[k]||0)+(resDelta[k]||0));
   }
 
-  result.resDelta=resDelta;
-  result.newResources=newRes;
+  const result={
+    success,chance:d.chance,matchedTags:d.matchedTags,requiredTags:d.requiredTags,
+    matchCount:d.matchCount,roll,
+    resDelta,newResources:newRes,
+    outcomeText:outcome.text
+  };
 
   await update(ref(db,`rooms/${roomId}/bunker/resources`), newRes);
   await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:true,result});
-
-  // Квест НЕ убивает игрока — только ресурсы
 
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
   const all=psSnap.val()||{};
@@ -1636,6 +1975,12 @@ $('resetGameBtn').onclick=async()=>{
     updates[`players/${p.uid}/pickedProfession`]=null;
     updates[`players/${p.uid}/rerolled`]=false;
     updates[`players/${p.uid}/revealed`]=null;
+    updates[`players/${p.uid}/specialCard`]=null;
+    updates[`players/${p.uid}/cardUsed`]=false;
+    updates[`players/${p.uid}/doubleVote`]=false;
+    updates[`players/${p.uid}/shield`]=false;
+    updates[`players/${p.uid}/luckPending`]=false;
+    updates[`players/${p.uid}/forceNext`]=null;
   }
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
