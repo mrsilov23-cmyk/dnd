@@ -787,7 +787,8 @@ function defaultRoom(hostUid,name){
       isHost:true,kicked:false,character:null,
       pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
       specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null,
-      onQuest:false,questReturnRound:null
+      onQuest:false,questReturnRound:null,
+      abstainUsed:false
     }},
     turn:{order:[hostUid],turnIndex:0,phase:'lobby',round:0,movesInRound:0,questCooldown:0},
     bunker:{
@@ -858,13 +859,17 @@ function renderVoteModal(){
   for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
   const canVote=!!me&&!me.kicked&&!me.onQuest;
   const isQuest = v.type==='quest';
+  const isKick = v.kick === true;
   const skipKey='__skip__';
   const abstainKey='__abstain__';
   const skipCount=counts[skipKey]||0;
   const abstainCount=counts[abstainKey]||0;
 
-  $('voteModalTitle').textContent = v.kick ? '🚪 Изгнание игрока' : (isQuest ? '⚔️ Кто пойдёт на квест?' : '🗳️ Голосование');
-  $('voteModalSub').textContent = me?.onQuest ? 'Вы на квесте — не можете голосовать' : (v.kick ? 'Кто покинет бункер навсегда?' : (isQuest ? 'Бункер решает, кто пойдёт. Или никто.' : ''));
+  // Воздержание доступно ТОЛЬКО при изгнании и только 1 раз за игру
+  const abstainAvailable = isKick && !isQuest && !me?.abstainUsed;
+
+  $('voteModalTitle').textContent = isKick ? '🚪 Изгнание игрока' : (isQuest ? '⚔️ Кто пойдёт на квест?' : '🗳️ Голосование');
+  $('voteModalSub').textContent = me?.onQuest ? 'Вы на квесте — не можете голосовать' : (isKick ? 'Кто покинет бункер навсегда?' : (isQuest ? 'Бункер решает, кто пойдёт. Или никто.' : ''));
 
   $('voteModalBody').innerHTML=`
     <div class="vote-list">
@@ -893,12 +898,14 @@ function renderVoteModal(){
           <span class="count">${skipCount>0?'⚑ '+skipCount:''}</span>
         </button>
       `:''}
-      <button type="button" class="vote-btn ${myVote===abstainKey?'chosen':''}" data-vote="${abstainKey}" ${!canVote?'disabled':''} style="border-color:var(--muted);opacity:.85;">
-        <span>🤐 Не голосовать (воздержаться)</span>
-        <span class="count">${abstainCount>0?'⚑ '+abstainCount:''}</span>
-      </button>
+      ${abstainAvailable?`
+        <button type="button" class="vote-btn ${myVote===abstainKey?'chosen':''}" data-vote="${abstainKey}" ${!canVote?'disabled':''} style="border-color:var(--muted);opacity:.85;">
+          <span>🤐 Не голосовать (воздержаться) — доступно 1 раз за игру</span>
+          <span class="count">${abstainCount>0?'⚑ '+abstainCount:''}</span>
+        </button>
+      `:''}
     </div>
-    <div class="small muted" style="margin-top:10px;text-align:center;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0) + 1}</div>
+    <div class="small muted" style="margin-top:10px;text-align:center;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0) + (abstainAvailable?1:0)}</div>
   `;
 
   modal.classList.add('show');
@@ -1267,7 +1274,7 @@ function renderScenario(){
 
   const phaseLabels={'lobby':'Лобби','pick':'Выбор проф.','reveal':`Круг ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'};
   const cooldown = t?.questCooldown||0;
-  const cooldownText = cooldown>0?` · ⏳ кулдаун квеста: ${cooldown}`:'';
+  const cooldownText = cooldown>0?` · ⏳ кулдаун: ${cooldown}`:'';
 
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
@@ -1341,7 +1348,6 @@ function renderTurnBanner(){
   const curPlayer=cur?roomData.players?.[cur]:null;
   const curName=curPlayer?.name||'—';
 
-  // Если текущий игрок на квесте — пропускает ход
   if(curPlayer?.onQuest){
     el.innerHTML=`<div class="turn-banner quest-turn">
       <div class="who">⚔️ ${esc(curName)} на квесте</div>
@@ -1389,6 +1395,7 @@ function renderPlayers(){
     const revealedCount=REVEAL_KEYS.filter(k=>r[k]).length;
     const cardTag = p.specialCard && !p.cardUsed ? '<span class="player-tag purple">🎴</span>' : (p.specialCard?'<span class="player-tag" style="opacity:.5">🎴</span>':'');
     const questTag = p.onQuest ? '<span class="player-tag purple">⚔️ на квесте</span>' : '';
+    const abstainTag = p.abstainUsed ? '<span class="player-tag" style="opacity:.5">🤐</span>' : '';
     return `<div class="player ${isTurn?'turn':''} ${p.kicked?'kicked':''} ${p.onQuest?'on-quest':''}">
       <div class="player-name">
         ${esc(p.name)}
@@ -1399,6 +1406,7 @@ function renderPlayers(){
         <span class="player-tag green">${revealedCount}/7</span>
         ${cardTag}
         ${questTag}
+        ${abstainTag}
       </div>
       <div class="player-traits">
         ${row('💼',ch.profession.name,'profession')}
@@ -1548,7 +1556,8 @@ async function connectRoom(code){
       uid,name,joinedAt:Date.now(),isHost:false,kicked:false,
       character:null,pickOptions:null,pickedProfession:null,rerolled:false,revealed:null,
       specialCard:null,cardUsed:false,doubleVote:false,shield:false,luckPending:false,forceNext:null,
-      onQuest:false,questReturnRound:null
+      onQuest:false,questReturnRound:null,
+      abstainUsed:false
     });
   }
   const order=room.turn?.order||[];
@@ -1586,7 +1595,8 @@ $('confirmPick').onclick=async()=>{
     character,pickedProfession:prof.name,revealed,pickOptions:null,
     specialCard:card, cardUsed:false,
     doubleVote:false,shield:false,luckPending:false,forceNext:null,
-    onQuest:false,questReturnRound:null
+    onQuest:false,questReturnRound:null,
+    abstainUsed:false
   });
 
   const order=t.order||[];
@@ -1769,7 +1779,6 @@ async function doReveal(key){
     const me=fresh.players?.[uid];
     if(!me?.character)return;
 
-    // === Игрок на квесте пропускает ход ===
     if(me.onQuest){
       setStatus('Вы на квесте — пропускаете ход',false);
       const snap2=await get(ref(db,`rooms/${roomId}/players`));
@@ -1813,7 +1822,6 @@ async function doReveal(key){
       return;
     }
 
-    // Круг завершён
     await finishRound();
   }catch(e){
     console.error(e);
@@ -1822,7 +1830,6 @@ async function doReveal(key){
   }
 }
 
-/* Завершение круга: квест или изгнание */
 async function finishRound(){
   const snap=await get(ref(db,`rooms/${roomId}`));
   const fresh=snap.val();
@@ -1833,7 +1840,6 @@ async function finishRound(){
   const round = t.round||1;
   const newRound = round+1;
 
-  // Возвращаем игроков с квеста
   for(const u of aliveOrder){
     const p=playersNow[u];
     if(p?.onQuest && p.questReturnRound && round >= p.questReturnRound){
@@ -1841,7 +1847,6 @@ async function finishRound(){
     }
   }
 
-  // Кулдаун квеста
   let cooldown = t.questCooldown || 0;
   const canQuest = cooldown <= 0;
   const canKick = round >= 2;
@@ -1894,7 +1899,26 @@ async function doVote(targetUid){
     const me=fresh.players?.[uid];
     if(!me||me.kicked)return;
     if(me.onQuest){setStatus('Вы на квесте',false);return;}
-    const specialKeys=['__skip__','__abstain__'];
+
+    // Воздержание — только при изгнании и только 1 раз за игру
+    if(targetUid==='__abstain__'){
+      if(v.kick!==true || v.type==='quest'){
+        setStatus('Воздержаться можно только при изгнании',false);return;
+      }
+      if(me.abstainUsed){
+        setStatus('Вы уже использовали воздержание',false);return;
+      }
+      myVote=targetUid;
+      await set(ref(db,`rooms/${roomId}/votes/votes/${uid}`),targetUid);
+      await update(ref(db,`rooms/${roomId}/players/${uid}`),{abstainUsed:true});
+      const snap2=await get(ref(db,`rooms/${roomId}/votes/votes`));
+      const votes=snap2.val()||{};
+      const alive=Object.values(fresh.players||{}).filter(p=>!p.kicked && !p.onQuest);
+      if(Object.keys(votes).length>=alive.length)await finishVote();
+      return;
+    }
+
+    const specialKeys=['__skip__'];
     if(!specialKeys.includes(targetUid) && !fresh.players[targetUid]){setStatus('Неверная цель',false);return;}
     if(targetUid===uid){setStatus('Нельзя за себя',false);return;}
     if(fresh.players[targetUid]?.shield){setStatus('У игрока щит',false);return;}
@@ -1973,7 +1997,6 @@ async function finishVote(){
       return;
     }
     await update(ref(db,`rooms/${roomId}/quest`),{active:true,finished:false,data:questData,result:null});
-    // Игрок уходит на квест — пропускает следующий круг
     const currentRound = roomData.turn?.round||1;
     await update(ref(db,`rooms/${roomId}/players/${targetUid}`),{
       onQuest:true,
@@ -2060,7 +2083,6 @@ $('openResultBtn').onclick=async()=>{
   };
   await update(ref(db,`rooms/${roomId}/bunker/resources`), newRes);
   await update(ref(db,`rooms/${roomId}/quest`),{active:false,finished:true,result});
-  // Игрок возвращается с квеста
   await update(ref(db,`rooms/${roomId}/players/${d.playerUid}`),{onQuest:false,questReturnRound:null});
 
   const psSnap=await get(ref(db,`rooms/${roomId}/players`));
@@ -2094,6 +2116,7 @@ $('resetGameBtn').onclick=async()=>{
     updates[`players/${p.uid}/forceNext`]=null;
     updates[`players/${p.uid}/onQuest`]=false;
     updates[`players/${p.uid}/questReturnRound`]=null;
+    updates[`players/${p.uid}/abstainUsed`]=false;
   }
   updates['turn/phase']='lobby';
   updates['turn/round']=0;
