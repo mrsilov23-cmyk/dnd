@@ -14,7 +14,7 @@
   --blue:#60a5fa;--purple:#a78bfa;--orange:#fb923c;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%;overflow:hidden}
+html,body{margin:0;padding:0}
 body{
   background:
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(96,165,250,.08), transparent 70%),
@@ -22,14 +22,14 @@ body{
     var(--bg);
   color:var(--text);
   font:14px/1.45 'Manrope', -apple-system, system-ui, sans-serif;
+  min-height:100vh;
   -webkit-font-smoothing:antialiased;
-  display:flex;flex-direction:column;
 }
 header{
   padding:10px 16px;border-bottom:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
   background:rgba(11,15,25,.85);backdrop-filter:blur(12px);
-  flex-shrink:0;
+  position:sticky;top:0;z-index:50;
 }
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-icon{font-size:22px;filter:drop-shadow(0 0 12px rgba(240,184,74,.4));}
@@ -41,40 +41,25 @@ header{
 .dot.green{background:var(--green);box-shadow:0 0 6px var(--green);}
 .dot.red{background:var(--red);box-shadow:0 0 6px var(--red);}
 
-/* Контейнер с вкладками */
-.tabs{display:flex;gap:2px;padding:6px 12px 0;background:rgba(11,15,25,.5);flex-shrink:0;overflow-x:auto;}
-.tab{
-  background:transparent;border:1px solid var(--border2);border-bottom:0;
-  border-radius:8px 8px 0 0;padding:7px 14px;color:var(--muted);
-  font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;
-  transition:.15s;
+main{
+  max-width:1400px;margin:0 auto;padding:10px 12px 40px;
+  display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:10px;
+  align-items:start;
 }
-.tab:hover{color:var(--text);background:var(--card2);}
-.tab.active{color:var(--gold);background:var(--card);border-color:var(--gold);position:relative;top:1px;}
-.tab .badge-dot{
-  display:inline-block;width:6px;height:6px;border-radius:50%;
-  background:var(--red);margin-left:5px;vertical-align:middle;
-  box-shadow:0 0 6px var(--red);
+@media(max-width:1100px){
+  main{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:700px){
+  main{grid-template-columns:1fr;}
 }
 
-/* Основное содержимое */
-.content{
-  flex:1;overflow:hidden;padding:10px 12px;
-  display:flex;flex-direction:column;
-}
-.tab-content{display:none;flex:1;overflow:auto;padding-right:4px;}
-.tab-content.active{display:block;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:0;}
+.card h2{margin:0 0 8px;font-size:.8rem;font-weight:700;letter-spacing:.4px;color:var(--gold);
+  display:flex;align-items:center;gap:6px;text-transform:uppercase;
+  padding-bottom:6px;border-bottom:1px solid var(--border);}
 
-.card{
-  background:var(--card);border:1px solid var(--border);border-radius:12px;
-  padding:12px;margin-bottom:8px;
-}
-.card h2{margin:0 0 10px;font-size:.85rem;font-weight:700;letter-spacing:.4px;color:var(--gold);
-  display:flex;align-items:center;gap:6px;text-transform:uppercase;}
-.card h3{margin:10px 0 6px;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;}
-
-label{display:block;font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:8px 0 4px;}
-input,select,button{font:inherit;border-radius:8px;border:1px solid var(--border2);padding:8px 10px;outline:none;transition:.15s;font-size:.88rem;}
+label{display:block;font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:6px 0 3px;}
+input,select,button{font:inherit;border-radius:8px;border:1px solid var(--border2);padding:7px 10px;outline:none;transition:.15s;font-size:.85rem;}
 input,select{background:var(--bg2);color:var(--text);width:100%;}
 input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(96,165,250,.15);}
 button{cursor:pointer;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#111;font-weight:700;border-color:var(--gold);letter-spacing:.2px;}
@@ -84,15 +69,15 @@ button.secondary{background:var(--card2);color:var(--text);border-color:var(--bo
 button.secondary:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
 button.danger{background:linear-gradient(180deg,var(--red),var(--red2));color:#fff;border-color:var(--red);}
 button.ghost{background:transparent;border-color:var(--border2);color:var(--muted);}
-.row{display:flex;gap:8px;align-items:flex-end;}
+.row{display:flex;gap:6px;align-items:flex-end;}
 .row>*{flex:1;min-width:0;}
 .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
-.actions button{flex:1;min-width:90px;padding:8px 10px;font-size:.82rem;}
+.actions button{flex:1;min-width:90px;padding:7px 10px;font-size:.78rem;}
 .muted{color:var(--muted);}
 .small{font-size:.75rem;}
 .hidden{display:none!important;}
 
-.status-box{padding:8px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);margin:8px 0;font-size:.82rem;}
+.status-box{padding:8px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);margin:6px 0;font-size:.8rem;}
 .status-box.success{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3);color:var(--green);}
 .status-box.error{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red);}
 .status-box.warn{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.3);color:var(--orange);}
@@ -100,87 +85,148 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 #debugBar{position:fixed;bottom:8px;right:8px;max-width:400px;z-index:999;background:rgba(0,0,0,.9);color:#fff;font-family:monospace;font-size:10px;padding:6px 10px;border-radius:6px;border:1px solid var(--red);display:none;white-space:pre-wrap;}
 #debugBar.show{display:block;}
 
-/* Компактные карточки */
-.scenario{padding:12px;border-radius:10px;margin-bottom:10px;background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));border:1px solid rgba(251,146,60,.25);}
-.scenario-title{font-weight:800;color:var(--orange);font-size:.95rem;margin-bottom:6px;}
-.scenario-text{font-size:.82rem;line-height:1.5;color:var(--text);}
-.scenario-text.collapsed{max-height:56px;overflow:hidden;position:relative;}
-.scenario-text.collapsed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,var(--card));}
-.expand-btn{background:transparent;border:0;color:var(--gold);font-size:.75rem;cursor:pointer;padding:2px 0;margin-top:2px;}
-.scenario-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
-.stat{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:6px;padding:6px;text-align:center;}
-.stat b{display:block;color:var(--orange);font-size:1rem;font-family:'JetBrains Mono',monospace;}
-.stat span{color:var(--muted);font-size:.68rem;}
+/* Сценарий */
+.scenario{padding:10px;border-radius:10px;background:linear-gradient(135deg, rgba(251,146,60,.08), rgba(240,184,74,.04));border:1px solid rgba(251,146,60,.25);margin-bottom:8px;}
+.scenario-title{font-weight:800;color:var(--orange);font-size:.85rem;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.scenario-title .round-badge{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 7px;border-radius:12px;background:rgba(240,184,74,.15);color:var(--gold);border:1px solid rgba(240,184,74,.3);}
+.scenario-text{font-size:.78rem;line-height:1.4;color:var(--text);}
+.scenario-text.collapsed{max-height:36px;overflow:hidden;position:relative;}
+.scenario-text.collapsed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:16px;background:linear-gradient(transparent,rgba(22,29,46,1));}
+.expand-btn{background:transparent;border:0;color:var(--gold);font-size:.7rem;cursor:pointer;padding:0;margin-top:2px;}
+.scenario-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px;}
+.stat{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:6px;padding:5px;text-align:center;}
+.stat b{display:block;color:var(--orange);font-size:.9rem;font-family:'JetBrains Mono',monospace;}
+.stat span{color:var(--muted);font-size:.62rem;}
 
 /* Персонаж */
-.char-header{display:flex;align-items:center;gap:10px;padding:10px;background:linear-gradient(135deg,var(--card2),var(--bg2));border-radius:10px;margin-bottom:10px;border:1px solid var(--border2);}
-.char-avatar{font-size:2rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:9px;border:1px solid var(--border2);flex-shrink:0;}
-.char-info h3{margin:0;font-size:.95rem;font-weight:700;}
-.char-info p{margin:1px 0 0;color:var(--muted);font-size:.78rem;}
+.char-header{display:flex;align-items:center;gap:10px;padding:8px;background:linear-gradient(135deg,var(--card2),var(--bg2));border-radius:9px;margin-bottom:8px;border:1px solid var(--border2);}
+.char-avatar{font-size:1.8rem;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:8px;border:1px solid var(--border2);flex-shrink:0;}
+.char-info h3{margin:0;font-size:.85rem;font-weight:700;}
+.char-info p{margin:1px 0 0;color:var(--muted);font-size:.72rem;}
 
-.traits{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.trait{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;position:relative;overflow:hidden;}
+.traits{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.trait{background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:6px 8px;position:relative;overflow:hidden;}
 .trait.revealed{background:linear-gradient(135deg,rgba(240,184,74,.06),var(--bg2));border-color:rgba(240,184,74,.3);}
 .trait.revealed::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);}
-.trait-label{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;gap:4px;}
-.trait-label .open-mark{color:var(--green);font-size:.72rem;}
-.trait-value{color:var(--text);font-size:.82rem;line-height:1.3;}
+.trait-label{font-size:.6rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;gap:4px;}
+.trait-label .open-mark{color:var(--green);font-size:.68rem;}
+.trait-value{color:var(--text);font-size:.76rem;line-height:1.3;}
 
-.reveal-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
-.reveal-btn{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--border2);border-radius:8px;padding:8px 10px;color:var(--text);font-weight:600;font-size:.78rem;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;font-family:inherit;}
+.reveal-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;}
+.reveal-btn{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--border2);border-radius:7px;padding:7px 9px;color:var(--text);font-weight:600;font-size:.75rem;display:flex;align-items:center;justify-content:space-between;gap:5px;cursor:pointer;font-family:inherit;}
 .reveal-btn:hover:not(:disabled){border-color:var(--gold);}
 .reveal-btn:disabled{opacity:.35;cursor:not-allowed;}
 .reveal-btn.already{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.3);color:var(--green);}
 
 /* Карточки профессий */
-.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
-.pick-card{background:linear-gradient(160deg,var(--card2),var(--bg2));border:2px solid var(--border2);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;position:relative;}
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0;}
+.pick-card{background:linear-gradient(160deg,var(--card2),var(--bg2));border:2px solid var(--border2);border-radius:9px;padding:10px 6px;text-align:center;cursor:pointer;transition:.15s;position:relative;}
 .pick-card:hover{border-color:var(--gold);}
 .pick-card.chosen{border-color:var(--gold);background:linear-gradient(160deg,rgba(240,184,74,.15),var(--bg2));}
 .pick-card.taken{opacity:.35;cursor:not-allowed;border-color:var(--red);}
-.pick-card.taken::after{content:'занято';position:absolute;top:5px;right:5px;font-size:.6rem;color:var(--red);font-weight:700;}
-.pick-card .emoji{font-size:1.8rem;display:block;margin-bottom:4px;}
-.pick-card .name{font-weight:700;color:var(--text);font-size:.82rem;margin-bottom:2px;}
-.pick-card .bonus{color:var(--muted);font-size:.7rem;}
+.pick-card.taken::after{content:'занято';position:absolute;top:4px;right:4px;font-size:.55rem;color:var(--red);font-weight:700;}
+.pick-card .emoji{font-size:1.6rem;display:block;margin-bottom:3px;}
+.pick-card .name{font-weight:700;color:var(--text);font-size:.78rem;margin-bottom:2px;}
+.pick-card .bonus{color:var(--muted);font-size:.66rem;}
 
 /* Игроки */
-.players-list{display:flex;flex-direction:column;gap:6px;}
-.player{background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:9px 11px;position:relative;}
+.players-list{display:flex;flex-direction:column;gap:5px;}
+.player{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;position:relative;}
 .player.turn{border-color:var(--gold);box-shadow:0 0 0 2px rgba(240,184,74,.15);background:linear-gradient(135deg,rgba(240,184,74,.08),var(--bg2));}
 .player.kicked{opacity:.35;border-color:var(--red);}
-.player.kicked::after{content:'МЁРТВ';position:absolute;top:9px;right:11px;font-size:.6rem;font-weight:800;color:var(--red);letter-spacing:1.2px;font-family:'JetBrains Mono',monospace;}
-.player-name{font-weight:700;font-size:.85rem;margin-bottom:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
-.player-tag{font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:20px;background:rgba(96,165,250,.15);color:var(--blue);letter-spacing:.4px;text-transform:uppercase;}
+.player.kicked::after{content:'МЁРТВ';position:absolute;top:8px;right:10px;font-size:.55rem;font-weight:800;color:var(--red);letter-spacing:1.2px;font-family:'JetBrains Mono',monospace;}
+.player-name{font-weight:700;font-size:.8rem;margin-bottom:3px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.player-tag{font-size:.55rem;font-weight:700;padding:1px 5px;border-radius:20px;background:rgba(96,165,250,.15);color:var(--blue);letter-spacing:.4px;text-transform:uppercase;}
 .player-tag.gold{background:rgba(240,184,74,.15);color:var(--gold);}
 .player-tag.red{background:rgba(248,113,113,.15);color:var(--red);}
 .player-tag.green{background:rgba(74,222,128,.15);color:var(--green);}
 .player-tag.purple{background:rgba(167,139,250,.15);color:var(--purple);}
-.player-traits{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:.72rem;}
+.player-traits{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;font-size:.68rem;}
 .player-traits .pt{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .player-traits .pt b{color:var(--text);font-weight:500;}
 .player-traits .pt.locked b{color:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
 
-/* Голосование */
-.vote-info{background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:10px;margin-bottom:8px;}
+/* Баннер хода */
+.turn-banner{padding:8px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--border2);text-align:center;margin-bottom:8px;}
+.turn-banner.my-turn{background:linear-gradient(135deg,rgba(240,184,74,.12),rgba(240,184,74,.04));border-color:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,184,74,.3);}50%{box-shadow:0 0 0 10px rgba(240,184,74,0);}}
+.turn-banner .who{font-weight:700;font-size:.82rem;color:var(--text);margin-bottom:2px;}
+.turn-banner.my-turn .who{color:var(--gold);}
+.turn-banner .hint{color:var(--muted);font-size:.72rem;}
+
+/* Ресурсы */
+.res-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;font-size:.72rem;}
+.res-label{flex:0 0 80px;color:var(--muted);}
+.res-bar{flex:1;height:5px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
+.res-bar i{display:block;height:100%;transition:.4s;}
+.res-val{flex:0 0 20px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.72rem;}
+
+/* Финал */
+.final-panel{background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);border:2px solid var(--gold);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+.final-title{font-size:1.2rem;font-weight:800;text-align:center;letter-spacing:1.2px;color:var(--gold);margin-bottom:4px;}
+.final-subtitle{text-align:center;color:var(--muted);font-style:italic;margin-bottom:12px;font-size:.8rem;}
+.final-verdict{text-align:center;font-size:.95rem;font-weight:800;letter-spacing:.6px;padding:10px;border-radius:9px;margin-bottom:12px;}
+.final-verdict.win{background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.05));border:2px solid var(--green);color:var(--green);}
+.final-verdict.warn{background:linear-gradient(135deg,rgba(251,146,60,.2),rgba(251,146,60,.05));border:2px solid var(--orange);color:var(--orange);}
+.final-verdict.lose{background:linear-gradient(135deg,rgba(248,113,113,.2),rgba(248,113,113,.05));border:2px solid var(--red);color:var(--red);}
+.final-section{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:8px;padding:10px;margin-bottom:8px;}
+.final-section h3{margin:0 0 6px;font-size:.78rem;font-weight:700;color:var(--text);}
+.final-winners{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.final-winner{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--gold);border-radius:8px;padding:8px;}
+.fw-header{display:flex;align-items:center;gap:6px;margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid var(--border2);}
+.fw-emoji{font-size:1.3rem;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:6px;border:1px solid var(--border2);flex-shrink:0;}
+.fw-header h4{margin:0;font-size:.78rem;color:var(--gold);}
+.fw-header p{margin:0;font-size:.65rem;}
+.fw-traits{font-size:.66rem;line-height:1.4;color:var(--muted);}
+.fw-traits b{color:var(--text);}
+.fw-repro{font-size:.66rem;font-weight:700;margin-bottom:4px;padding-bottom:4px;border-bottom:1px dashed var(--border2);}
+.can-repro .fw-repro{color:var(--green);}
+.no-repro .fw-repro{color:var(--red);}
+.dead-list{display:flex;flex-wrap:wrap;gap:5px;}
+.dead-chip{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);padding:2px 8px;border-radius:20px;font-size:.7rem;font-weight:600;}
+.pair-check{display:flex;flex-direction:column;gap:4px;}
+.pair-item{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:6px;font-size:.72rem;font-weight:600;}
+.pair-item.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
+.verdict-reason{font-size:.7rem;font-weight:400;margin:3px 0 0;opacity:.9;font-style:italic;}
+
+/* МОДАЛЬНЫЕ ОКНА */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(5,4,2,.85);backdrop-filter:blur(6px);
+  z-index:200;display:none;align-items:center;justify-content:center;padding:16px;
+  overflow:auto;
+}
+.overlay.show{display:flex;}
+.modal{
+  background:var(--card);border:2px solid var(--gold);
+  border-radius:14px;padding:18px;max-width:640px;width:100%;
+  max-height:90vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+}
+.modal-title{
+  font-size:1.05rem;font-weight:800;color:var(--gold);letter-spacing:.6px;
+  margin-bottom:4px;text-align:center;
+}
+.modal-sub{
+  font-size:.8rem;color:var(--muted);text-align:center;
+  margin-bottom:14px;font-style:italic;
+}
+.modal-body{font-size:.85rem;line-height:1.5;color:var(--text);}
+
+/* Голосование в модалке */
+.vote-info{background:linear-gradient(135deg,rgba(248,113,113,.08),var(--bg2));border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:10px;margin-bottom:10px;}
 .vote-info h3{margin:0 0 2px;color:var(--red);font-size:.85rem;}
 .vote-info p{margin:0;color:var(--muted);font-size:.75rem;}
 .vote-list{display:flex;flex-direction:column;gap:6px;}
-.vote-btn{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center;color:var(--text);font-weight:500;font-size:.82rem;cursor:pointer;font-family:inherit;width:100%;}
+.vote-btn{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;color:var(--text);font-weight:500;font-size:.82rem;cursor:pointer;font-family:inherit;width:100%;text-align:left;}
 .vote-btn:hover:not(:disabled){border-color:var(--red);}
 .vote-btn.chosen{border-color:var(--red);background:rgba(248,113,113,.1);}
 .vote-btn.self{opacity:.5;cursor:not-allowed;}
-.vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.82rem;}
+.vote-btn .count{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);font-size:.82rem;margin-left:8px;}
 
-/* Баннер хода */
-.turn-banner{padding:9px 12px;border-radius:9px;background:var(--card2);border:1px solid var(--border2);text-align:center;margin-bottom:8px;}
-.turn-banner.my-turn{background:linear-gradient(135deg,rgba(240,184,74,.12),rgba(240,184,74,.04));border-color:var(--gold);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,184,74,.3);}50%{box-shadow:0 0 0 10px rgba(240,184,74,0);}}
-.turn-banner .who{font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:2px;}
-.turn-banner.my-turn .who{color:var(--gold);}
-.turn-banner .hint{color:var(--muted);font-size:.76rem;}
-
-/* Квест */
-.quest-box{background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(96,165,250,.05));border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:12px;margin:8px 0;}
+/* Квест в модалке */
+.quest-box{background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(96,165,250,.05));border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:14px;}
 .quest-title{font-weight:800;color:var(--purple);font-size:.95rem;margin-bottom:6px;}
 .quest-text{color:var(--text);line-height:1.5;font-size:.82rem;margin-bottom:8px;}
 .quest-hero{background:rgba(0,0,0,.3);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:.8rem;}
@@ -189,56 +235,16 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
 .quest-match .match-line.miss{background:rgba(248,113,113,.05);border-color:rgba(248,113,113,.2);color:var(--muted);}
 .quest-match .match-line .ok{color:var(--green);font-weight:700;}
 .quest-match .match-line .no{color:var(--red);font-weight:700;}
-.quest-result{padding:10px;border-radius:8px;text-align:center;margin-top:8px;font-weight:700;font-size:.9rem;}
+.quest-result{padding:12px;border-radius:8px;text-align:center;margin-top:10px;font-weight:700;font-size:.9rem;}
 .quest-result.win{background:rgba(74,222,128,.15);border:1px solid var(--green);color:var(--green);}
 .quest-result.lose{background:rgba(248,113,113,.15);border:1px solid var(--red);color:var(--red);}
 
-/* Ресурсы */
-.res-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:.78rem;}
-.res-label{flex:0 0 100px;color:var(--muted);}
-.res-bar{flex:1;height:6px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
-.res-bar i{display:block;height:100%;transition:.4s;}
-.res-val{flex:0 0 24px;text-align:right;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.78rem;}
+/* Спец-карта в модалке */
+.card-ability{display:flex;align-items:flex-start;gap:10px;padding:12px;background:linear-gradient(135deg,rgba(167,139,250,.08),var(--bg2));border:1px solid var(--purple);border-radius:9px;}
+.card-ability-icon{font-size:1.6rem;}
+.card-ability-info h4{margin:0 0 4px;color:var(--purple);font-size:.85rem;}
+.card-ability-info p{margin:0;color:var(--muted);font-size:.78rem;}
 
-/* Финал */
-.final-panel{background:linear-gradient(160deg,#1a1a2e 0%,#0d0d1a 100%);border:2px solid var(--gold);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
-.final-panel::before{content:'☢';position:absolute;top:-30px;right:-20px;font-size:180px;color:var(--gold);opacity:.04;pointer-events:none;}
-.final-title{font-size:1.3rem;font-weight:800;text-align:center;letter-spacing:1.5px;color:var(--gold);margin-bottom:4px;}
-.final-subtitle{text-align:center;color:var(--muted);font-style:italic;margin-bottom:14px;font-size:.85rem;}
-.final-verdict{text-align:center;font-size:1.05rem;font-weight:800;letter-spacing:.8px;padding:12px;border-radius:10px;margin-bottom:14px;}
-.final-verdict.win{background:linear-gradient(135deg,rgba(74,222,128,.2),rgba(74,222,128,.05));border:2px solid var(--green);color:var(--green);}
-.final-verdict.warn{background:linear-gradient(135deg,rgba(251,146,60,.2),rgba(251,146,60,.05));border:2px solid var(--orange);color:var(--orange);}
-.final-verdict.lose{background:linear-gradient(135deg,rgba(248,113,113,.2),rgba(248,113,113,.05));border:2px solid var(--red);color:var(--red);}
-.final-section{background:rgba(0,0,0,.25);border:1px solid var(--border2);border-radius:8px;padding:10px;margin-bottom:10px;}
-.final-section h3{margin:0 0 8px;font-size:.82rem;font-weight:700;color:var(--text);}
-.final-winners{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.final-winner{background:linear-gradient(160deg,var(--card2),var(--bg2));border:1px solid var(--gold);border-radius:9px;padding:10px;}
-.fw-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--border2);}
-.fw-emoji{font-size:1.5rem;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border-radius:7px;border:1px solid var(--border2);flex-shrink:0;}
-.fw-header h4{margin:0;font-size:.85rem;color:var(--gold);}
-.fw-header p{margin:0;font-size:.7rem;}
-.fw-traits{font-size:.72rem;line-height:1.5;color:var(--muted);}
-.fw-traits b{color:var(--text);}
-.fw-repro{font-size:.72rem;font-weight:700;margin-bottom:6px;padding-bottom:6px;border-bottom:1px dashed var(--border2);}
-.can-repro .fw-repro{color:var(--green);}
-.no-repro .fw-repro{color:var(--red);}
-.dead-list{display:flex;flex-wrap:wrap;gap:6px;}
-.dead-chip{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:var(--red);padding:3px 9px;border-radius:20px;font-size:.75rem;font-weight:600;}
-.pair-check{display:flex;flex-direction:column;gap:5px;}
-.pair-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;font-size:.78rem;font-weight:600;}
-.pair-item.ok{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.3);color:var(--green);}
-.pair-item.bad{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--red);}
-.verdict-reason{font-size:.75rem;font-weight:400;margin:4px 0 0;opacity:.9;font-style:italic;}
-
-/* Модалка */
-.dice-overlay{position:fixed;inset:0;background:rgba(5,4,2,.85);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s;}
-.dice-overlay.show{opacity:1;pointer-events:auto;}
-#cardModal .dice-stage{background:var(--card);border:2px solid var(--purple);border-radius:12px;padding:18px;max-width:520px;width:100%;display:flex;flex-direction:column;gap:10px;max-height:90vh;overflow:auto;}
-#cardModal .dice-label{color:var(--purple);font-weight:800;font-size:1rem;}
-#cardModal .dice-sub{color:var(--muted);font-size:.82rem;line-height:1.4;}
-
-/* Скрытие лишнего */
-.hide-compact{}
 @media(max-width:800px){
   .traits,.pick-grid,.reveal-grid,.final-winners{grid-template-columns:1fr 1fr;}
   .player-traits{grid-template-columns:1fr;}
@@ -261,35 +267,21 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
   </div>
 </header>
 
-<!-- Вкладки -->
-<nav class="tabs" id="tabsNav">
-  <button class="tab active" data-tab="game">🎮 Игра</button>
-  <button class="tab" data-tab="char">👤 Персонаж<span id="cardTabBadge" class="badge-dot" style="display:none;"></span></button>
-  <button class="tab" data-tab="players">🪑 Стол</button>
-  <button class="tab" data-tab="vote">🗳️ Голосование</button>
-  <button class="tab" data-tab="room">🚪 Комната</button>
-</nav>
+<main>
 
-<div class="content">
-
-<!-- ИГРА -->
-<div class="tab-content active" data-tab-content="game">
-  <div id="scenarioContainer"></div>
-  <div id="turnBanner"></div>
-  <div id="questContainer"></div>
-  <div id="masterPanel" class="card hidden">
-    <h2>🎬 Панель ведущего</h2>
-    <div class="actions">
-      <button id="startGameBtn">▶️ Начать игру</button>
-      <button id="beginRevealBtn" class="secondary hidden">🔓 Начать раскрытие</button>
-      <button id="openResultBtn" class="secondary hidden">📖 Открыть исход</button>
-      <button id="resetGameBtn" class="ghost">🔄 Сброс</button>
-    </div>
+<!-- ЛЕВАЯ КОЛОНКА: Сценарий + Ресурсы + Квест -->
+<section>
+  <div class="card">
+    <div id="scenarioContainer"></div>
   </div>
-</div>
+  <div class="card" id="questCard" style="display:none;margin-top:10px;">
+    <h2>⚔️ Текущий квест</h2>
+    <div id="questContainer"></div>
+  </div>
+</section>
 
-<!-- ПЕРСОНАЖ -->
-<div class="tab-content" data-tab-content="char">
+<!-- ЦЕНТР: Персонаж + Профессия -->
+<section>
   <div class="card" id="pickCard" style="display:none;">
     <h2>🎴 Выбор профессии</h2>
     <p class="muted small" style="margin-top:0;">Выберите одну из трёх. Выбор окончательный.</p>
@@ -300,32 +292,10 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
     </div>
   </div>
   <div class="card" id="myCharCard" style="display:none;">
-    <h2>👤 Ваш персонаж <span class="badge" id="revealProgress" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 7px;border-radius:12px;background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3);margin-left:auto;">0/7</span></h2>
+    <h2>👤 Ваш персонаж <span class="badge" id="revealProgress" style="font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:2px 7px;border-radius:12px;background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3);margin-left:auto;">0/7</span></h2>
     <div id="myChar"></div>
   </div>
-</div>
-
-<!-- СТОЛ -->
-<div class="tab-content" data-tab-content="players">
-  <div class="card">
-    <h2>🪑 За столом <span id="aliveBadge" class="badge" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 7px;border-radius:12px;background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3);margin-left:auto;">0 живых</span></h2>
-    <div class="players-list" id="players"></div>
-  </div>
-</div>
-
-<!-- ГОЛОСОВАНИЕ -->
-<div class="tab-content" data-tab-content="vote">
-  <div class="card">
-    <h2>🗳️ Голосование <span id="voteBadge" class="badge red" style="font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 7px;border-radius:12px;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3);margin-left:auto;">—</span></h2>
-    <div id="voteContainer">
-      <div class="status-box muted">Голосование не начато.</div>
-    </div>
-  </div>
-</div>
-
-<!-- КОМНАТА -->
-<div class="tab-content" data-tab-content="room">
-  <div class="card">
+  <div class="card" id="roomCard">
     <h2>🚪 Комната</h2>
     <div class="row">
       <div>
@@ -341,52 +311,111 @@ button.ghost{background:transparent;border-color:var(--border2);color:var(--mute
       <button id="createRoom">Создать (ведущий)</button>
       <button id="joinRoom" class="secondary">Войти</button>
     </div>
-    <div id="roomInfo" class="hidden" style="margin-top:12px;">
-      <label>Ссылка-приглашение</label>
+    <div id="roomInfo" class="hidden" style="margin-top:8px;">
+      <label>Ссылка</label>
       <div class="row">
         <input id="inviteLink" readonly>
-        <button id="copyLink" class="secondary" style="flex:0 0 auto;">Копировать</button>
+        <button id="copyLink" class="secondary" style="flex:0 0 auto;">📋</button>
       </div>
-      <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center;">
         <span class="small muted">Игроков: <b id="playerCount" style="color:var(--gold);">0</b>/12</span>
         <span class="small muted" id="hostLabel"></span>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-</div>
+<!-- ПРАВАЯ КОЛОНКА: Стол + Ведущий + Баннер -->
+<section>
+  <div id="turnBanner"></div>
+  <div id="masterPanel" class="card hidden" style="margin-bottom:10px;">
+    <h2>🎬 Панель ведущего</h2>
+    <div class="actions">
+      <button id="startGameBtn">▶️ Начать игру</button>
+      <button id="beginRevealBtn" class="secondary hidden">🔓 Раскрытие</button>
+      <button id="openResultBtn" class="secondary hidden">📖 Исход квеста</button>
+      <button id="resetGameBtn" class="ghost">🔄 Сброс</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>🪑 Стол <span id="aliveBadge" style="font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:2px 7px;border-radius:12px;background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3);margin-left:auto;">0</span></h2>
+    <div class="players-list" id="players"></div>
+  </div>
+</section>
+
+</main>
 
 <div id="debugBar"></div>
 
-<!-- МОДАЛКА КАРТЫ -->
-<div id="cardModal" class="dice-overlay">
-  <div class="dice-stage">
-    <div class="dice-label" id="cardModalTitle">Спец-карта</div>
-    <div class="dice-sub" id="cardModalDesc"></div>
+<!-- МОДАЛКА ГОЛОСОВАНИЯ -->
+<div id="voteModal" class="overlay">
+  <div class="modal">
+    <div class="modal-title" id="voteModalTitle">🗳️ Голосование</div>
+    <div class="modal-sub" id="voteModalSub">Определите судьбу игрока</div>
+    <div class="modal-body" id="voteModalBody"></div>
+  </div>
+</div>
 
-    <div id="cardTargetBlock" style="display:none;">
-      <label style="color:var(--muted);">Выберите игрока</label>
-      <select id="cardTargetSelect"></select>
+<!-- МОДАЛКА КВЕСТА (запуск) -->
+<div id="questStartModal" class="overlay">
+  <div class="modal">
+    <div class="modal-title">⚔️ Квест</div>
+    <div class="modal-sub">Опасное задание для одного из вас</div>
+    <div class="modal-body" id="questStartBody"></div>
+    <div class="actions">
+      <button id="questStartClose">Понятно</button>
     </div>
+  </div>
+</div>
 
-    <div id="cardTraitBlock" style="display:none;">
-      <label style="color:var(--muted);">Характеристика</label>
-      <select id="cardTraitSelect">
-        <option value="profession">💼 Профессия</option>
-        <option value="biology">🧬 Биология</option>
-        <option value="health">❤️ Здоровье</option>
-        <option value="hobby">🎯 Хобби</option>
-        <option value="phobia">😱 Фобия</option>
-        <option value="inventory">🎒 Багаж</option>
-        <option value="special">⭐ Спецусловие</option>
-      </select>
+<!-- МОДАЛКА КВЕСТА (итог) -->
+<div id="questResultModal" class="overlay">
+  <div class="modal">
+    <div class="modal-title">📖 Итог квеста</div>
+    <div class="modal-sub">Что случилось с героем?</div>
+    <div class="modal-body" id="questResultBody"></div>
+    <div class="actions">
+      <button id="questResultClose">Продолжить</button>
     </div>
+  </div>
+</div>
 
+<!-- МОДАЛКА СПЕЦ-КАРТЫ -->
+<div id="cardModal" class="overlay">
+  <div class="modal">
+    <div class="modal-title" id="cardModalTitle">🎴 Спец-карта</div>
+    <div class="modal-sub" id="cardModalDesc"></div>
+    <div class="modal-body">
+      <div id="cardTargetBlock" style="display:none;">
+        <label>Выберите игрока</label>
+        <select id="cardTargetSelect"></select>
+      </div>
+      <div id="cardTraitBlock" style="display:none;">
+        <label>Характеристика</label>
+        <select id="cardTraitSelect">
+          <option value="profession">💼 Профессия</option>
+          <option value="biology">🧬 Биология</option>
+          <option value="health">❤️ Здоровье</option>
+          <option value="hobby">🎯 Хобби</option>
+          <option value="phobia">😱 Фобия</option>
+          <option value="inventory">🎒 Багаж</option>
+          <option value="special">⭐ Спецусловие</option>
+        </select>
+      </div>
+    </div>
     <div class="actions">
       <button id="cardConfirmBtn">Подтвердить</button>
       <button id="cardCancelBtn" class="secondary">Отмена</button>
     </div>
+  </div>
+</div>
+
+<!-- МОДАЛКА ФИНАЛА -->
+<div id="finalModal" class="overlay">
+  <div class="modal" style="max-width:820px;">
+    <div class="modal-title">🏆 Игра окончена</div>
+    <div class="modal-sub">Итоги бункера</div>
+    <div class="modal-body" id="finalModalBody"></div>
   </div>
 </div>
 
@@ -410,17 +439,6 @@ window.addEventListener('unhandledrejection', e=>{
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-/* ---------- ВКЛАДКИ ---------- */
-let activeTab='game';
-function switchTab(name){
-  activeTab=name;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.toggle('active',c.dataset.tabContent===name));
-}
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>switchTab(t.dataset.tab));
-});
 
 /* ---------- FIREBASE ---------- */
 let initializeApp, getAuth, signInAnonymously, onAuthStateChanged;
@@ -637,8 +655,8 @@ const quests = [
 
 /* ---------- СПЕЦ-КАРТЫ ---------- */
 const specialCards = [
-  {id:'swap',name:'🔄 Обмен характеристикой',desc:'Поменяйте одну свою характеристику с другим игроком.',needTarget:true,needTrait:true},
-  {id:'reroll',name:'🎲 Переброс характеристики',desc:'Замените одну свою характеристику на случайную свободную.',needTrait:true},
+  {id:'swap',name:'🔄 Обмен характеристикой',desc:'Поменяйте одну свою характеристику с другим игроком. Оба увидят новое значение.',needTarget:true,needTrait:true},
+  {id:'reroll',name:'🎲 Переброс характеристики',desc:'Замените одну свою характеристику на случайную свободную из пула.',needTrait:true},
   {id:'peek',name:'👁️ Подглядеть',desc:'Узнайте скрытую характеристику любого игрока.',needTarget:true,needTrait:true},
   {id:'double_vote',name:'🚪 Двойной голос',desc:'На следующем голосовании ваш голос считается за двоих.',instant:true},
   {id:'shield',name:'🛡️ Щит',desc:'На следующем голосовании вас нельзя выбрать целью.',instant:true},
@@ -823,6 +841,9 @@ function setStatus(t,ok=true){
 }
 
 /* ---------- РЕНДЕР ---------- */
+let lastQuestId=null;
+let lastResultShown=null;
+
 function renderAll(){
   const safe=(name,fn)=>{try{fn();}catch(e){console.error('renderAll/'+name+':',e);showDebug(name+': '+e.message);}};
   safe('pick',renderPick);
@@ -831,23 +852,229 @@ function renderAll(){
   safe('master',renderMasterPanel);
   safe('banner',renderTurnBanner);
   safe('players',renderPlayers);
-  safe('vote',renderVote);
   safe('quest',renderQuest);
-  safe('tabBadge',renderTabBadges);
+  safe('voteModal',renderVoteModal);
+  safe('questStartModal',renderQuestStartModal);
+  safe('questResultModal',renderQuestResultModal);
+  safe('final',renderFinalIfNeeded);
 
   const v=roomData?.votes;
   if(!v?.active)myVote=null;
   if(v?.active&&v?.votes&&uid&&!v.votes[uid])myVote=null;
   bindGlobalClicks();
 }
-function renderTabBadges(){
-  // Индикатор на вкладке "Персонаж" если есть карта
+
+/* ---------- МОДАЛКА ГОЛОСОВАНИЯ ---------- */
+function renderVoteModal(){
+  const v=roomData?.votes;
+  const modal=$('voteModal');
   const me=roomData?.players?.[uid];
-  const badge=$('cardTabBadge');
-  if(badge){
-    badge.style.display = (me?.specialCard && !me?.cardUsed)?'inline-block':'none';
+
+  if(!v?.active){
+    modal.classList.remove('show');
+    return;
   }
+
+  const candidates=Array.isArray(v.candidates)?v.candidates:[];
+  const votes=v.votes||{};
+  const counts={};
+  for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
+  const canVote=!!me&&!me.kicked;
+  const isQuest = v.type==='quest';
+  const skipKey='__skip__';
+  const skipCount=counts[skipKey]||0;
+
+  $('voteModalTitle').textContent = v.kick ? '🚪 Изгнание игрока' : (isQuest ? '⚔️ Кто пойдёт на квест?' : '🗳️ Голосование');
+  $('voteModalSub').textContent = v.kick ? 'Кто покинет бункер навсегда?' : (isQuest ? 'Бункер решает, кто пойдёт. Или никто.' : '');
+
+  $('voteModalBody').innerHTML=`
+    <div class="vote-list">
+      ${candidates.map(c=>{
+        const p=roomData.players?.[c];
+        if(!p)return '';
+        const cnt=counts[c]||0;
+        const chosen=myVote===c;
+        const self=c===uid;
+        const shielded = p.shield===true;
+        const disabled = !canVote || self || shielded;
+        return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${disabled?'disabled':''}>
+          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}${shielded?' 🛡️':''}</span>
+          <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
+        </button>`;
+      }).join('')}
+      ${isQuest?`
+        <button type="button" class="vote-btn ${myVote===skipKey?'chosen':''}" data-vote="${skipKey}" ${!canVote?'disabled':''}>
+          <span>🚫 Никто не идёт — пропустить квест</span>
+          <span class="count">${skipCount>0?'⚑ '+skipCount:''}</span>
+        </button>
+      `:''}
+    </div>
+    <div class="small muted" style="margin-top:10px;text-align:center;">Проголосовало: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0)}</div>
+  `;
+
+  modal.classList.add('show');
 }
+
+/* ---------- МОДАЛКА СТАРТА КВЕСТА ---------- */
+function renderQuestStartModal(){
+  const q=roomData?.quest;
+  const modal=$('questStartModal');
+  if(!q?.active || !q?.data){
+    modal.classList.remove('show');
+    return;
+  }
+  const d=q.data;
+  if(lastQuestId===d.questId+'|'+d.playerUid && modal.classList.contains('show')){
+    return;
+  }
+  // Показываем только когда фаза quest
+  if(roomData.turn?.phase!=='quest'){modal.classList.remove('show');return;}
+
+  lastQuestId = d.questId+'|'+d.playerUid;
+
+  const reqMap={food:'🍞 Еда',medic:'💊 Медицина',tech:'🔧 Техника',craft:'🔧 Ремесло',combat:'⚔️ Бой',strong:'💪 Сила',survival:'🧭 Выживание',social:'💬 Общение',smart:'🧠 Ум',healthy:'💪 Здоровье',brave:'🦁 Отвага'};
+
+  $('questStartBody').innerHTML=`
+    <div class="quest-box">
+      <div class="quest-title">${esc(d.title)}</div>
+      <div class="quest-text">${esc(d.text)}</div>
+      <div class="quest-hero">
+        <b>Отправлен:</b> ${esc(d.playerName)}<br>
+        <span class="muted small">Требуется: ${d.requiredTags.map(t=>reqMap[t]||t).join(' · ')}</span>
+      </div>
+      ${isHost?'<p class="muted small" style="text-align:center;">Нажмите «📖 Исход квеста» в панели ведущего, когда будете готовы.</p>':'<p class="muted small" style="text-align:center;">⏳ Ждём, пока ведущий откроет исход…</p>'}
+    </div>
+  `;
+  modal.classList.add('show');
+}
+$('questStartClose').onclick=()=>$('questStartModal').classList.remove('show');
+
+/* ---------- МОДАЛКА РЕЗУЛЬТАТА КВЕСТА ---------- */
+function renderQuestResultModal(){
+  const q=roomData?.quest;
+  const modal=$('questResultModal');
+  if(!q?.finished || !q?.result || !q?.data){
+    modal.classList.remove('show');
+    return;
+  }
+  const key = q.data.questId+'|'+q.data.playerUid+'|'+(q.result.roll||'')+'|'+(q.result.outcomeText||'');
+  if(lastResultShown===key){
+    return; // уже показали
+  }
+  lastResultShown=key;
+
+  const d=q.data;
+  const r=q.result;
+
+  const matchLines=(r.matchedTags||[]).length ? (r.matchedTags||[]).map(t=>`<div class="match-line"><span class="ok">✓</span><span>Подошло: <b>${esc(t)}</b></span></div>`).join('') : '';
+  const missLines=(r.requiredTags||[]).filter(t=>!(r.matchedTags||[]).includes(t)).map(t=>`<div class="match-line miss"><span class="no">✗</span><span>Не хватило: ${esc(t)}</span></div>`).join('');
+
+  let resDeltaHtml='';
+  if(r.resDelta){
+    const labelMap={food:'🍞 Еда',medic:'💊 Медицина',tech:'🔧 Техника',combat:'⚔️ Бой',survival:'🧭 Выживание',social:'💬 Социум',smart:'🧠 Ум',healthy:'💪 Здоровье'};
+    const rows=Object.entries(r.resDelta).filter(([k,v])=>v!==0).map(([k,v])=>{
+      const color=v>0?'var(--green)':'var(--red)';
+      const sign=v>0?'+':'';
+      return `<div style="display:flex;justify-content:space-between;padding:3px 0;font-size:.8rem;"><span class="muted">${labelMap[k]||k}</span><span style="color:${color};font-weight:700;font-family:'JetBrains Mono',monospace;">${sign}${v}</span></div>`;
+    }).join('');
+    if(rows){
+      resDeltaHtml=`<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border2);"><div class="small muted" style="margin-bottom:4px;">📦 Влияние на ресурсы:</div>${rows}</div>`;
+    }
+  }
+
+  const outcomeText = r.outcomeText || (r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'😰 ВЕРНУЛСЯ НИ С ЧЕМ');
+  const outcomeClass = r.success ? 'win' : 'lose';
+
+  $('questResultBody').innerHTML=`
+    <div class="quest-box">
+      <div class="quest-title">${esc(d.title)}</div>
+      <div class="quest-hero">
+        <b>${esc(d.playerName)}</b> · Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b> · Бросок: ${r.roll}
+      </div>
+      ${matchLines}${missLines}
+      <div class="quest-result ${outcomeClass}">${esc(outcomeText)}</div>
+      ${resDeltaHtml}
+    </div>
+  `;
+  modal.classList.add('show');
+}
+$('questResultClose').onclick=()=>$('questResultModal').classList.remove('show');
+
+/* ---------- МОДАЛКА ФИНАЛА ---------- */
+let lastFinalShown=false;
+function renderFinalIfNeeded(){
+  const b=roomData?.bunker;
+  const modal=$('finalModal');
+  if(!b?.finished || !b?.outcome){
+    modal.classList.remove('show');
+    lastFinalShown=false;
+    return;
+  }
+  if(lastFinalShown && modal.classList.contains('show')){
+    return;
+  }
+  lastFinalShown=true;
+
+  const o=b.outcome;
+  const apoId = roomData?.apocalypse || 'nuclear';
+  const apo = apocalypses.find(a=>a.id===apoId) || apocalypses[0];
+
+  const winnersHtml = o.winners.map(w=>{
+    const ch=w.character;
+    if(!ch)return `<div class="final-winner"><h4>${esc(w.name)}</h4></div>`;
+    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
+    const sexLabel=w.sex==='M'?'♂️':w.sex==='W'?'♀️':'—';
+    const reproLabel=w.canRepro?'✅ к потомству':'❌ не способен';
+    return `<div class="final-winner ${w.canRepro?'can-repro':'no-repro'}">
+      <div class="fw-header">
+        <span class="fw-emoji">${ch.profession.emoji}</span>
+        <div><h4>${esc(w.name)}</h4><p class="muted small">${sexLabel} · ${esc(ch.biology.text)}</p></div>
+      </div>
+      <div class="fw-repro">${reproLabel}</div>
+      <div class="fw-traits">
+        <div><b>💼</b> ${esc(ch.profession.name)}</div>
+        <div><b>❤️</b> ${esc(ch.health.text)}</div>
+        <div><b>🎯</b> ${esc(ch.hobby.text)}</div>
+        <div><b>🎒</b> ${esc(invText)}</div>
+        <div><b>⭐</b> ${esc(ch.special.text)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const resourcesHtml = o.resources.map(r=>{
+    const v=r.value;
+    const bar=Math.min(100,v*25);
+    const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--red)';
+    return `<div class="res-row"><span class="res-label">${r.label}</span><div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div><span class="res-val" style="color:${color}">${v}</span></div>`;
+  }).join('');
+
+  const deadHtml = (b.dead||[]).length
+    ? b.dead.map(p=>`<span class="dead-chip">💀 ${esc(p.name)}</span>`).join('')
+    : '<span class="muted small">Никто не погиб.</span>';
+
+  const pairCheck = `
+    <div class="pair-check">
+      <div class="pair-item ${o.exactlyTwo?'ok':'bad'}"><span>${o.exactlyTwo?'✅':'❌'}</span><span>Ровно 2 выживших (${o.winners.length})</span></div>
+      <div class="pair-item ${o.hasMan?'ok':'bad'}"><span>${o.hasMan?'✅':'❌'}</span><span>Мужчина, способный к потомству</span></div>
+      <div class="pair-item ${o.hasWoman?'ok':'bad'}"><span>${o.hasWoman?'✅':'❌'}</span><span>Женщина, способная к потомству</span></div>
+    </div>`;
+
+  const verdictClass = o.verdictType==='win'?'win':o.verdictType==='lose'?'lose':'warn';
+
+  $('finalModalBody').innerHTML=`
+    <div class="final-panel">
+      <div class="final-title">${apo.emoji} ИТОГИ</div>
+      <div class="final-subtitle">${esc(apo.title)}</div>
+      <div class="final-verdict ${verdictClass}">${o.verdict}<p class="verdict-reason">${esc(o.reason)}</p></div>
+      <div class="final-section"><h3>🧬 Проверка пары</h3>${pairCheck}</div>
+      <div class="final-section"><h3>🛠️ Ресурсы · счёт ${o.score}</h3>${resourcesHtml}</div>
+      <div class="final-section"><h3>✅ Выжившие</h3><div class="final-winners">${winnersHtml}</div></div>
+      <div class="final-section"><h3>💀 Погибшие</h3><div class="dead-list">${deadHtml}</div></div>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
 let globalClicksBound=false;
 function bindGlobalClicks(){
   if(globalClicksBound)return;
@@ -888,7 +1115,7 @@ function renderPick(){
 
   if(!isMyPickTurn){
     const curName=curUid?roomData.players?.[curUid]?.name:'—';
-    $('pickGrid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:20px 10px;color:var(--muted);font-style:italic;font-size:.82rem;">
+    $('pickGrid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:16px 10px;color:var(--muted);font-style:italic;font-size:.8rem;">
       ⏳ Сейчас выбирает <b style="color:var(--gold)">${esc(curName)}</b>
     </div>`;
     $('confirmPick').disabled=true;
@@ -977,7 +1204,7 @@ function renderMyChar(){
           <span class="open-mark" style="color:${used?'var(--muted)':'var(--green)'};">${status}</span>
         </div>
         <div class="trait-value" style="margin-bottom:6px;">${esc(myCard.desc)}</div>
-        ${!used?`<button type="button" id="useCardBtn" style="width:100%;background:linear-gradient(180deg,#a78bfa,#7c5cd6);color:#fff;border-color:#a78bfa;padding:7px;font-size:.82rem;">🎴 Использовать</button>`:''}
+        ${!used?`<button type="button" id="useCardBtn" style="width:100%;background:linear-gradient(180deg,#a78bfa,#7c5cd6);color:#fff;border-color:#a78bfa;padding:7px;font-size:.78rem;">🎴 Использовать</button>`:''}
       </div>
     `;
   }
@@ -992,7 +1219,7 @@ function renderMyChar(){
     </div>
     <div class="traits">${traits}</div>
     ${cardHtml}
-    <div class="small muted" style="margin-top:10px;text-align:center;">${hint}</div>
+    <div class="small muted" style="margin-top:8px;text-align:center;">${hint}</div>
     <div class="reveal-grid" id="revealGrid">${buttons}</div>
   `;
 
@@ -1052,16 +1279,19 @@ function renderScenario(){
   const phaseLabels={'lobby':'Лобби','pick':'Выбор проф.','reveal':`Круг ${t?.round||0}`,'vote':'Голосование','quest':'Квест','finished':'Финал'};
   $('scenarioContainer').innerHTML=`
     <div class="scenario">
-      <div class="scenario-title">${apo.emoji} ${esc(apo.title)} · <span style="color:var(--muted);font-weight:500;font-size:.85rem;">${phaseLabels[phase]||phase}</span></div>
+      <div class="scenario-title">
+        <span>${apo.emoji} ${esc(apo.title)}</span>
+        <span class="round-badge">${phaseLabels[phase]||phase}</span>
+      </div>
       <div class="scenario-text collapsed" id="scenarioText">${esc(apo.text)}</div>
       <button class="expand-btn" id="expandScenario">▾ Показать полностью</button>
-      <div class="scenario-stats" style="margin-top:8px;">
+      <div class="scenario-stats" style="margin-top:6px;">
         <div class="stat"><b>2</b><span>места</span></div>
         <div class="stat"><b>${n}</b><span>игроков</span></div>
         <div class="stat"><b>${t?.round||0}</b><span>круг</span></div>
       </div>
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border2);">
-        <div style="font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:6px;">🛠️ Ресурсы бункера</div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border2);">
+        <div style="font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:5px;">🛠️ Ресурсы бункера</div>
         ${resourcesHtml}
       </div>
     </div>
@@ -1089,7 +1319,7 @@ function renderTurnBanner(){
   const t=roomData?.turn;
   const phase=t?.phase||'lobby';
   if(phase==='lobby'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание начала</div><div class="hint">${isHost?'Нажмите «Начать игру»':'Ждём ведущего'}</div></div>`;
+    el.innerHTML=`<div class="turn-banner"><div class="who">Ожидание</div><div class="hint">${isHost?'Нажмите «Начать игру»':'Ждём ведущего'}</div></div>`;
     return;
   }
   if(phase==='pick'){
@@ -1098,7 +1328,7 @@ function renderTurnBanner(){
     const isMine=curUid===uid;
     el.innerHTML=`<div class="turn-banner ${isMine?'my-turn':''}">
       <div class="who">🎴 Выбор профессии${isMine?' — ваш ход':''}</div>
-      <div class="hint">${isMine?'Откройте вкладку «Персонаж»':'Выбирает: '+esc(curName)}</div>
+      <div class="hint">${isMine?'Выберите карту ниже':'Выбирает: '+esc(curName)}</div>
     </div>`;
     return;
   }
@@ -1107,11 +1337,11 @@ function renderTurnBanner(){
     return;
   }
   if(phase==='finished'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Выжившие определены</div></div>`;
+    el.innerHTML=`<div class="turn-banner"><div class="who">🏆 Игра окончена</div><div class="hint">Итоги в модальном окне</div></div>`;
     return;
   }
   if(phase==='vote'){
-    el.innerHTML=`<div class="turn-banner"><div class="who">🗳️ Голосование</div><div class="hint">Откройте вкладку «Голосование»</div></div>`;
+    el.innerHTML=`<div class="turn-banner"><div class="who">🗳️ Голосование</div><div class="hint">Голосуйте в окне по центру</div></div>`;
     return;
   }
   const cur=t.order?.[t.turnIndex];
@@ -1120,14 +1350,14 @@ function renderTurnBanner(){
   el.innerHTML=`
     <div class="turn-banner ${isMyTurn?'my-turn':''}">
       <div class="who">${isMyTurn?'👑 Ваш ход':'Ход: '+esc(curName)}</div>
-      <div class="hint">${isMyTurn?'Вскройте характеристику во вкладке «Персонаж»':'Ждите очереди'}</div>
+      <div class="hint">${isMyTurn?'Вскройте характеристику':'Ждите очереди'}</div>
     </div>
   `;
 }
 function renderPlayers(){
   const ps=Object.values(roomData?.players||{});
   const alive=ps.filter(p=>!p.kicked).length;
-  $('aliveBadge').textContent=alive+' живых';
+  $('aliveBadge').textContent=alive;
   const t=roomData?.turn;
   $('players').innerHTML=ps.map(p=>{
     const ch=p.character;
@@ -1169,58 +1399,20 @@ function renderPlayers(){
     </div>`;
   }).join('')||'<p class="muted small">Пока никого нет</p>';
 }
-function renderVote(){
-  const v=roomData?.votes;
-  const vc=$('voteContainer');
-  const me=roomData?.players?.[uid];
-  $('voteBadge').textContent=v?.active?'Активно':(v?.finished?'Завершено':'—');
-  if(!v?.active){
-    if(v?.finished&&v?.result){
-      const r=v.result;
-      vc.innerHTML=`<div class="status-box ${r.chosen?'success':''}">
-        <b>${esc(r.label||'Голосование')}:</b> ${r.chosen?`выбран <b>${esc(r.chosenName)}</b> (${r.maxVotes})`:'никто не выбран'}
-      </div>`;
-    } else {
-      vc.innerHTML='<div class="status-box muted">Голосование не начато.</div>';
-    }
-    return;
-  }
-  const candidates=Array.isArray(v.candidates)?v.candidates:[];
-  const votes=v.votes||{};
-  const counts={};
-  for(const t of Object.values(votes)) counts[t]=(counts[t]||0)+1;
-  const canVote=!!me&&!me.kicked;
-  const isQuest = v.type==='quest';
-  const skipKey='__skip__';
-  const skipCount=counts[skipKey]||0;
-
-  vc.innerHTML=`
-    <div class="vote-info">
-      <h3>${v.kick?'🚪 Изгнание':isQuest?'⚔️ Кто пойдёт на квест?':'🗳️ Голосование'}</h3>
-      <p>${v.kick?'Кто покинет бункер?':isQuest?'Или никто не идёт':'Кто отправится?'}</p>
+function renderQuest(){
+  const q=roomData?.quest;
+  const card=$('questCard');
+  if(!q?.active && !q?.finished){card.style.display='none';return;}
+  if(roomData?.turn?.phase==='finished'){card.style.display='none';return;}
+  card.style.display='';
+  const d=q.data;
+  if(!d){$('questContainer').innerHTML='';return;}
+  const reqMap={food:'🍞',medic:'💊',tech:'🔧',craft:'🔧',combat:'⚔️',strong:'💪',survival:'🧭',social:'💬',smart:'🧠',healthy:'💪',brave:'🦁'};
+  $('questContainer').innerHTML=`
+    <div style="font-size:.78rem;line-height:1.4;">
+      <b style="color:var(--purple);">${esc(d.title)}</b><br>
+      <span class="muted">${esc(d.playerName)} · ${d.requiredTags.map(t=>reqMap[t]||t).join(' ')}</span>
     </div>
-    <div class="vote-list">
-      ${candidates.map(c=>{
-        const p=roomData.players?.[c];
-        if(!p)return '';
-        const cnt=counts[c]||0;
-        const chosen=myVote===c;
-        const self=c===uid;
-        const shielded = p.shield===true;
-        const disabled = !canVote || self || shielded;
-        return `<button type="button" class="vote-btn ${chosen?'chosen':''} ${self?'self':''}" data-vote="${c}" ${disabled?'disabled':''}>
-          <span>${esc(p.name)}${p.isHost?' 👑':''}${self?' (вы)':''}${shielded?' 🛡️':''}</span>
-          <span class="count">${cnt>0?'⚑ '+cnt:''}</span>
-        </button>`;
-      }).join('')}
-      ${isQuest?`
-        <button type="button" class="vote-btn ${myVote===skipKey?'chosen':''}" data-vote="${skipKey}" ${!canVote?'disabled':''}>
-          <span>🚫 Никто не идёт</span>
-          <span class="count">${skipCount>0?'⚑ '+skipCount:''}</span>
-        </button>
-      `:''}
-    </div>
-    <div class="small muted" style="margin-top:8px;">Голосов: ${Object.keys(votes).length} / ${candidates.length + (isQuest?1:0)}</div>
   `;
 }
 
@@ -1249,7 +1441,6 @@ function calcBunkerOutcome(winners){
     {key:'sick', label:'🤢 Больные', value:(tags.sick||0)},
     {key:'fear', label:'😱 Фобии', value:(tags.fear||0)}
   ];
-
   const men = winners.filter(w=>getSex(w.character)==='M');
   const women = winners.filter(w=>getSex(w.character)==='W');
   const menCanRepro = men.filter(w=>canReproduce(w.character));
@@ -1313,121 +1504,6 @@ async function finalizeGame(alive, allPlayers){
   await update(ref(db,`rooms/${roomId}/turn`),{phase:'finished'});
 }
 
-function renderQuest(){
-  const el=$('questContainer');
-  if(roomData?.turn?.phase==='finished'){renderFinalSummary(el);return;}
-  const q=roomData?.quest;
-  if(!q?.active&&!q?.finished){el.innerHTML='';return;}
-  const d=q.data;
-  if(!d){el.innerHTML='';return;}
-
-  if(q.active){
-    const reqMap={food:'🍞',medic:'💊',tech:'🔧',craft:'🔧',combat:'⚔️',strong:'💪',survival:'🧭',social:'💬',smart:'🧠',healthy:'💪',brave:'🦁'};
-    el.innerHTML=`
-      <div class="quest-box">
-        <div class="quest-title">⚔️ ${esc(d.title)}</div>
-        <div class="quest-text">${esc(d.text)}</div>
-        <div class="quest-hero">
-          <b>Отправлен:</b> ${esc(d.playerName)}<br>
-          <span class="muted small">Требуется: ${d.requiredTags.map(t=>reqMap[t]||t).join(' ')}</span>
-        </div>
-        <p class="muted small" style="text-align:center;margin-top:6px;">⏳ Ведущий откроет исход…</p>
-      </div>`;
-    return;
-  }
-
-  const r=q.result;
-  if(!r){el.innerHTML='';return;}
-
-  let resDeltaHtml='';
-  if(r.resDelta){
-    const labelMap={food:'🍞',medic:'💊',tech:'🔧',combat:'⚔️',survival:'🧭',social:'💬',smart:'🧠',healthy:'💪'};
-    const parts=Object.entries(r.resDelta).filter(([k,v])=>v!==0).map(([k,v])=>{
-      const color=v>0?'var(--green)':'var(--red)';
-      const sign=v>0?'+':'';
-      return `<span style="color:${color};font-weight:700;font-family:'JetBrains Mono',monospace;">${labelMap[k]||k}${sign}${v}</span>`;
-    }).join(' ');
-    if(parts){
-      resDeltaHtml=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border2);font-size:.82rem;">Ресурсы: ${parts}</div>`;
-    }
-  }
-
-  const outcomeText = r.outcomeText || (r.success?'✅ ВЕРНУЛСЯ ЖИВЫМ':'😰 ВЕРНУЛСЯ НИ С ЧЕМ');
-  const outcomeClass = r.success ? 'win' : 'lose';
-
-  el.innerHTML=`
-    <div class="quest-box">
-      <div class="quest-title">⚔️ ${esc(d.title)}</div>
-      <div class="quest-hero">
-        <b>${esc(d.playerName)}</b> · Шанс: <b style="color:${r.chance>=50?'var(--green)':'var(--orange)'}">${r.chance}%</b>
-      </div>
-      <div class="quest-result ${outcomeClass}">${esc(outcomeText)}</div>
-      ${resDeltaHtml}
-    </div>`;
-}
-
-function renderFinalSummary(el){
-  const b=roomData?.bunker;
-  if(!b?.outcome){el.innerHTML=`<div class="final-panel"><div class="final-title">🏆 Игра окончена</div><p class="muted">Итоги не рассчитаны.</p></div>`;return;}
-  const o=b.outcome;
-
-  const apoId = roomData?.apocalypse || 'nuclear';
-  const apo = apocalypses.find(a=>a.id===apoId) || apocalypses[0];
-
-  const winnersHtml = o.winners.map(w=>{
-    const ch=w.character;
-    if(!ch)return `<div class="final-winner"><h4>${esc(w.name)}</h4></div>`;
-    const invText=Array.isArray(ch.inventory)?ch.inventory.map(i=>i.text).join(' · '):'';
-    const sexLabel=w.sex==='M'?'♂️':w.sex==='W'?'♀️':'—';
-    const reproLabel=w.canRepro?'✅ к потомству':'❌ не способен';
-    return `<div class="final-winner ${w.canRepro?'can-repro':'no-repro'}">
-      <div class="fw-header">
-        <span class="fw-emoji">${ch.profession.emoji}</span>
-        <div><h4>${esc(w.name)}</h4><p class="muted small">${sexLabel} · ${esc(ch.biology.text)}</p></div>
-      </div>
-      <div class="fw-repro">${reproLabel}</div>
-      <div class="fw-traits">
-        <div><b>💼</b> ${esc(ch.profession.name)}</div>
-        <div><b>❤️</b> ${esc(ch.health.text)}</div>
-        <div><b>🎯</b> ${esc(ch.hobby.text)}</div>
-        <div><b>🎒</b> ${esc(invText)}</div>
-        <div><b>⭐</b> ${esc(ch.special.text)}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  const resourcesHtml = o.resources.map(r=>{
-    const v=r.value;
-    const bar=Math.min(100,v*25);
-    const color=v>=3?'var(--green)':v>=1?'var(--gold)':'var(--red)';
-    return `<div class="res-row"><span class="res-label">${r.label}</span><div class="res-bar"><i style="width:${bar}%;background:${color}"></i></div><span class="res-val" style="color:${color}">${v}</span></div>`;
-  }).join('');
-
-  const deadHtml = (b.dead||[]).length
-    ? b.dead.map(p=>`<span class="dead-chip">💀 ${esc(p.name)}</span>`).join('')
-    : '<span class="muted small">Никто не погиб.</span>';
-
-  const pairCheck = `
-    <div class="pair-check">
-      <div class="pair-item ${o.exactlyTwo?'ok':'bad'}"><span>${o.exactlyTwo?'✅':'❌'}</span><span>Ровно 2 выживших (${o.winners.length})</span></div>
-      <div class="pair-item ${o.hasMan?'ok':'bad'}"><span>${o.hasMan?'✅':'❌'}</span><span>Мужчина, способный к потомству</span></div>
-      <div class="pair-item ${o.hasWoman?'ok':'bad'}"><span>${o.hasWoman?'✅':'❌'}</span><span>Женщина, способная к потомству</span></div>
-    </div>`;
-
-  const verdictClass = o.verdictType==='win'?'win':o.verdictType==='lose'?'lose':'warn';
-
-  el.innerHTML=`
-    <div class="final-panel">
-      <div class="final-title">${apo.emoji} ИТОГИ</div>
-      <div class="final-subtitle">${esc(apo.title)}</div>
-      <div class="final-verdict ${verdictClass}">${o.verdict}<p class="verdict-reason">${esc(o.reason)}</p></div>
-      <div class="final-section"><h3>🧬 Проверка пары</h3>${pairCheck}</div>
-      <div class="final-section"><h3>🛠️ Ресурсы · счёт ${o.score}</h3>${resourcesHtml}</div>
-      <div class="final-section"><h3>✅ Выжившие</h3><div class="final-winners">${winnersHtml}</div></div>
-      <div class="final-section"><h3>💀 Погибшие</h3><div class="dead-list">${deadHtml}</div></div>
-    </div>`;
-}
-
 /* ---------- КОМНАТА ---------- */
 async function createRoom(){
   if(!auth.currentUser)throw new Error('Подождите');
@@ -1436,7 +1512,6 @@ async function createRoom(){
   await set(ref(db,`rooms/${roomId}`),defaultRoom(uid,name));
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();
-  switchTab('game');
 }
 async function connectRoom(code){
   if(!auth.currentUser)throw new Error('Подождите');
@@ -1449,7 +1524,6 @@ async function connectRoom(code){
   if(room.hostUid===uid){
     history.replaceState(null,'',`?room=${roomId}`);
     startListeners();
-    switchTab('game');
     return;
   }
   const players=room.players||{};
@@ -1470,7 +1544,6 @@ async function connectRoom(code){
   }
   history.replaceState(null,'',`?room=${roomId}`);
   startListeners();
-  switchTab('game');
 }
 $('createRoom').onclick=()=>createRoom().catch(e=>setStatus(e.message,false));
 $('joinRoom').onclick=()=>connectRoom($('roomCode').value).catch(e=>setStatus(e.message,false));
@@ -1718,7 +1791,6 @@ async function doReveal(key){
         active:true,type:'quest',label:'Кто пойдёт на квест?',
         kick:false,quest:true,candidates:aliveOrder,votes:{},finished:false,result:null
       });
-      switchTab('vote');
       return;
     }
     if(canKick){
@@ -1727,7 +1799,6 @@ async function doReveal(key){
         active:true,type:'kick',label:'Кого изгнать?',
         kick:true,quest:false,candidates:aliveOrder,votes:{},finished:false,result:null
       });
-      switchTab('vote');
       return;
     }
     await update(ref(db,`rooms/${roomId}/turn`),{phase:'reveal',turnIndex:0,round:newRound,movesInRound:0});
@@ -1859,7 +1930,6 @@ $('startGameBtn').onclick=async()=>{
   const order=ps.map(p=>p.uid);
   await update(ref(db,`rooms/${roomId}/turn`),{order,turnIndex:0,phase:'pick',round:0,movesInRound:0});
   await update(ref(db,`rooms/${roomId}/bunker`),{capacity:2,started:true,finished:false,winners:[]});
-  switchTab('char');
 };
 $('beginRevealBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1869,7 +1939,6 @@ $('beginRevealBtn').onclick=async()=>{
   const without=ps.filter(p=>!p.character);
   if(without.length)return setStatus('Не все выбрали: '+without.map(p=>p.name).join(', '),false);
   await update(ref(db,`rooms/${roomId}/turn`),{order:ps.map(p=>p.uid),turnIndex:0,phase:'reveal',round:1,movesInRound:0});
-  switchTab('game');
 };
 $('openResultBtn').onclick=async()=>{
   if(!isHost)return;
@@ -1960,10 +2029,12 @@ $('resetGameBtn').onclick=async()=>{
   updates['quest/result']=null;
   updates['quest/data']=null;
   await update(ref(db,`rooms/${roomId}`),updates);
+  lastQuestId=null;
+  lastResultShown=null;
+  lastFinalShown=false;
 };
 
 setStatus('Введите имя и создайте комнату',false);
-switchTab('room');
 </script>
 </body>
 </html>
